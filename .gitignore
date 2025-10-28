@@ -31,3 +31,5 @@ go.work.sum
 # .idea/
 # .vscode/
 /vendor
+*.DS_Store
+mgo_web

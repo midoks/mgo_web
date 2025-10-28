@@ -3,9 +3,8 @@ package cmd
 import (
 	"github.com/urfave/cli"
 
-	// "mgo/app"
-	// "mgo/internal/conf"
-	// "mgo/internal/db"
+	"mgo/internal/conf"
+	"mgo/internal/app"
 	// "mgo/internal/log"
 )
 
@@ -20,8 +19,9 @@ var Web = cli.Command{
 }
 
 func runWeb(c *cli.Context) error {
-	// _ = conf.Init("")
+	_ = conf.Init("")
 	// log.Init()
 	// db.InitDb()
+	app.Run()
 	return nil
 }
