@@ -1,0 +1,106 @@
+{[template "/base/header_head" .]}
+
+
+<body class="layui-layout-body">
+<!-- start -->
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
+
+                <!-- <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="/">系统</a></li> -->
+            </ul>
+
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="note">
+                        <i class="layui-icon layui-icon-note"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>{[.LoggedUserName]}</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd style="text-align: center;"><a href="/logout">退出</a></dd>
+                    </dl>
+                </li>
+              
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+            </ul>
+        </div>
+      
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo layui-hide-xs layui-bg-black">
+                    <span>管理</span>
+                </div>
+
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+
+                   <!--  <li data-name="home" class="layui-nav-item layui-nav-itemed {[if .PageIsHome ]}layui-this{[end]}">
+                        <a href="/" lay-tips="控制台" lay-direction="2" >
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>控制台</cite>
+                        </a>
+                    </li> -->
+
+                    <li data-name="user" class="layui-nav-item layui-nav-itemed {[if .PageIsUser ]}layui-this{[end]}">
+                        <a href="/user" lay-tips="用户管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-release"></i>
+                            <cite>用户管理</cite>
+                        </a>
+                    </li>
+
+                    <li data-name="server" class="layui-nav-item layui-nav-itemed {[if .PageIsServer ]}layui-this{[end]}">
+                        <a href="/server" lay-tips="服务器管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-release"></i>
+                            <cite>服务器管理</cite>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+         <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage" style="right:0px;"></div>
+
+            <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
+                <div class="layui-breadcrumb" lay-filter="breadcrumb">
+                    {[if .PageIsHome ]}<a><cite>主页</cite></a>{[end]}
+                    {[if .PageIsUser ]}<a><cite>用户管理</cite></a>{[end]}
+                    {[if .PageIsServer ]}<a><cite>服务器管理</cite></a>{[end]}
+                </div>
+            </div>
+        </div>
+      
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show" style="overflow-y: auto;margin-bottom: 40px;">
+<!--     
+        </div>
+</div> 
+-->

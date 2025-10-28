@@ -1,0 +1,77 @@
+{[template "/base/header" .]}
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                <form class="layui-form" action="" id="comic_form" onclick="return false;">
+                    <div class="layui-inline mr0" >
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('添加','/server/edit?id=0',800,480)">添加</button>
+                    </div>
+                </form>
+                </div>
+                <div id="list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+
+table.render({
+    elem: '#list',
+    url: '/server/list',
+    title: '数据表',
+    cols: [[
+        {field:'id', title:'ID',width:120},
+        {field:'ip', title:'IP地址',width:330},
+        {field:'mark', title:'备注'},
+        {title:'操作', toolbar: '#cmdTpl', width:230, fixed: 'right'}
+     ]],
+    page: true
+});
+
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'close':close_server(obj);break;
+    };
+});
+
+function close_server(obj){
+    console.log(obj);
+    layer.confirm('确定要关机吗?', { title:'提示', btn: ['确定', '取消'],shade:0.001}, function(index) {
+        $.post("/server/close", { 'id':obj.data.id }, function(res) {
+            showMsg(res.msg, function(){
+                if(res.code > -1){
+                    location.reload();
+                }
+            },{icon: res.code > -1 ? 1 : 2,shift:res.code ? 0 : 6});
+        },'json');
+    }, function(index) {
+        layer.close(index);
+    });
+}
+
+///
+});
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+    <a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.ip}}】'+'编辑','server/edit?id={{d.id}}',800,300)">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'server/delete','{{d.id}}')">删除</a>
+
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='close'>关机</a>
+</script>
+
+{[template "/base/footer" .]}

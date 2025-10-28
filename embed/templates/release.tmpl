@@ -1,0 +1,15 @@
+<html>
+
+<body>
+	<h1>文件下载服务</h1>
+	<ul>
+
+		{[if .files]}
+		{[range .files]}
+			<li><a href="/download/{[.]}">{[.]}</a></li>
+		{[end]}
+		{[end]}
+	</ul>
+</body>
+
+</html>

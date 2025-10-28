@@ -1,0 +1,499 @@
+{[template "/base/header_head" .]}
+
+<!-- iOS H5 优化样式 -->
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.password-verify-container {
+    max-width: 375px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.verify-header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.verify-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.verify-header p {
+    font-size: 16px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.verify-form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 50px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 0 50px 0 20px;
+    font-size: 16px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-wrapper input:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-wrapper input.error {
+    border-color: #ff4757;
+    background: #fff5f5;
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.password-strength {
+    height: 4px;
+    background: #e1e5e9;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-weak { background: #ff4757; width: 33%; }
+.strength-medium { background: #ffa502; width: 66%; }
+.strength-strong { background: #2ed573; width: 100%; }
+
+.strength-text {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+}
+
+.error-message {
+    color: #ff4757;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 16px;
+}
+
+.submit-btn {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.security-tips {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    color: #333;
+}
+
+.security-tips h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.security-tips ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.security-tips li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    position: relative;
+}
+
+.security-tips li:before {
+    content: "•";
+    color: #667eea;
+    font-weight: bold;
+    position: absolute;
+    left: -15px;
+}
+
+/* iOS 安全区域适配 */
+@supports (padding: max(0px)) {
+    .password-verify-container {
+        padding-top: max(20px, env(safe-area-inset-top));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+    .password-verify-container {
+        padding: 15px;
+    }
+    
+    .verify-form {
+        padding: 25px 20px;
+    }
+    
+    .verify-header h1 {
+        font-size: 24px;
+    }
+}
+
+/* 触摸反馈 */
+.submit-btn:active,
+.input-wrapper input:active {
+    transform: scale(0.98);
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .verify-form {
+        background: rgba(30, 30, 30, 0.95);
+        color: white;
+    }
+    
+    .input-wrapper input {
+        background: #2a2a2a;
+        border-color: #404040;
+        color: white;
+    }
+    
+    .input-wrapper input:focus {
+        background: #333;
+    }
+    
+    .security-tips {
+        background: rgba(30, 30, 30, 0.9);
+        color: #e0e0e0;
+    }
+}
+</style>
+
+<!-- iOS H5 密码验证页面 -->
+<div class="password-verify-container">
+    <div class="verify-header">
+        <h1>密码验证</h1>
+        <p>为了您的账户安全，请验证密码</p>
+    </div>
+    
+    <form class="verify-form" id="passwordForm">
+        <!-- 当前密码 -->
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="password" id="currentPassword" value="{[if .Info ]}{[.Info.Password]}{[end]}"  name="password" required>
+                <span class="input-icon">🔒</span>
+            </div>
+        </div>
+        
+        <!-- 提交按钮 -->
+        <button type="submit" class="submit-btn" id="submitBtn" lay-submit lay-filter="LAY-user-submit">
+            <span class="btn-text">确认</span>
+            <div class="loading-spinner" style="display: none;"></div>
+        </button>
+
+    </form>
+    
+</div>
+
+
+<!-- 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('passwordForm');
+    const currentPassword = document.getElementById('currentPassword');
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthLevel = document.getElementById('strengthLevel');
+    const confirmError = document.getElementById('confirmError');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+
+    // 密码强度检测
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        
+        strengthBar.className = 'strength-bar';
+        
+        if (strength <= 2) {
+            strengthBar.classList.add('strength-weak');
+            strengthLevel.textContent = '弱';
+            strengthLevel.style.color = '#ff4757';
+        } else if (strength <= 4) {
+            strengthBar.classList.add('strength-medium');
+            strengthLevel.textContent = '中';
+            strengthLevel.style.color = '#ffa502';
+        } else {
+            strengthBar.classList.add('strength-strong');
+            strengthLevel.textContent = '强';
+            strengthLevel.style.color = '#2ed573';
+        }
+    }
+
+    // 监听新密码输入
+    newPassword.addEventListener('input', function() {
+        const password = this.value;
+        if (password) {
+            checkPasswordStrength(password);
+        } else {
+            strengthBar.className = 'strength-bar';
+            strengthLevel.textContent = '-';
+            strengthLevel.style.color = '#666';
+        }
+        
+        // 如果确认密码已输入，重新验证
+        if (confirmPassword.value) {
+            validateConfirmPassword();
+        }
+    });
+
+    // 验证确认密码
+    function validateConfirmPassword() {
+        const newPwd = newPassword.value;
+        const confirmPwd = confirmPassword.value;
+        
+        if (confirmPwd && newPwd !== confirmPwd) {
+            confirmPassword.classList.add('error');
+            confirmError.textContent = '两次输入的密码不一致';
+            return false;
+        } else {
+            confirmPassword.classList.remove('error');
+            confirmError.textContent = '';
+            return true;
+        }
+    }
+
+    // 监听确认密码输入
+    confirmPassword.addEventListener('input', validateConfirmPassword);
+
+    // 表单提交
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // 验证表单
+        if (!currentPassword.value || !newPassword.value || !confirmPassword.value) {
+            showMessage('请填写完整信息', 'error');
+            return;
+        }
+        
+        if (newPassword.value.length < 6) {
+            showMessage('新密码长度不能少于6位', 'error');
+            return;
+        }
+        
+        if (!validateConfirmPassword()) {
+            return;
+        }
+        
+        // 显示加载状态
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        
+        // 模拟提交
+        const formData = new FormData(form);
+        
+        fetch('/user/change-password', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 0) {
+                showMessage('密码修改成功！', 'success');
+                form.reset();
+                strengthBar.className = 'strength-bar';
+                strengthLevel.textContent = '-';
+                strengthLevel.style.color = '#666';
+            } else {
+                showMessage(data.msg || '密码修改失败', 'error');
+            }
+        })
+        .catch(error => {
+            showMessage('网络错误，请稍后重试', 'error');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            btnText.style.display = 'block';
+            loadingSpinner.style.display = 'none';
+        });
+    });
+
+    // 消息提示
+    function showMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 9999;
+            animation: slideDown 0.3s ease;
+            background: ${type === 'success' ? '#2ed573' : '#ff4757'};
+        `;
+        
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 3000);
+    }
+
+    // 添加动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script> -->
+
+<script>
+layui.config({
+    base: '/static/layuiadmin/'
+}).extend({
+    index: 'lib/index'
+}).use(['index','jquery'], function(){
+///
+var $ = layui.$
+,admin = layui.admin
+,form = layui.form;
+form.render();
+
+//提交
+form.on('submit(LAY-user-submit)', function(d){
+    var pass = $("input[name=password]").val();
+    var uid = "{[.Id]}";
+    // console.log(pass);
+    layer.confirm('确定要执行吗?', { title:'提示', btn: ['确定', '取消'],shade:0.001}, function(index) {
+            $.post("/page/done", {"id":uid,"password":pass}, function(res) {
+                // console.log(res);
+                showMsg(res.msg, function(){
+                    if(res.code > -1){
+                        location.reload();
+                    }
+                },{icon: res.code > -1 ? 1 : 2,shift:res.code ? 0 : 6});
+            },'json');
+        }, function(index) {
+            layer.close(index);
+        });
+
+    return false;
+});
+///
+});
+</script>
+
+{[template "/base/footer" .]}
