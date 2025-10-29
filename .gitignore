@@ -33,3 +33,4 @@ go.work.sum
 /vendor
 *.DS_Store
 mgo_web
+/custom

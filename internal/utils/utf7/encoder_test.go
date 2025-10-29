@@ -3,7 +3,7 @@ package utf7_test
 import (
 	"testing"
 
-	"./utf7"
+	"utf7"
 )
 
 var encode = []struct {

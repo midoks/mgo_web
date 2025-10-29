@@ -1,24 +1,21 @@
 package conf
 
-
 import (
 	"fmt"
 	"log"
+	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
-	"net/url"
-	"path/filepath"
 
 	"github.com/pkg/errors"
 	"gopkg.in/ini.v1"
 
 	"mgo/embed"
-
 )
 
 var File *ini.File
-
 
 // creates a default configuration file if it doesn't exist
 func autoMakeCustomConf(customConf string) error {
@@ -35,18 +32,14 @@ func autoMakeCustomConf(customConf string) error {
 	}
 
 	// Set default values
-	cfg.Section("").Key("app_name").SetValue("dztasks")
+	cfg.Section("").Key("app_name").SetValue("mgo")
 	cfg.Section("").Key("run_mode").SetValue("prod")
 
-	cfg.Section("web").Key("http_port").SetValue("9921")
+	cfg.Section("web").Key("http_port").SetValue("9999")
 	cfg.Section("session").Key("provider").SetValue("memory")
 
 	cfg.Section("database").Key("type").SetValue("sqlite3")
 	cfg.Section("database").Key("path").SetValue("data/mgo.db")
-
-	cfg.Section("plugins").Key("path").SetValue("plugins")
-	cfg.Section("plugins").Key("show_error").SetValue("true")
-	cfg.Section("plugins").Key("show_cmd").SetValue("true")
 
 	// Ensure directory exists
 	if err := os.MkdirAll(filepath.Dir(customConf), os.ModePerm); err != nil {

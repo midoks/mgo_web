@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/urfave/cli"
 
-	"mgo/internal/conf"
 	"mgo/internal/app"
+	"mgo/internal/conf"
 	// "mgo/internal/log"
 )
 

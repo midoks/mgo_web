@@ -1,6 +1,6 @@
 package app
 
-import(
+import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -8,8 +8,8 @@ import(
 	"mgo/internal/conf"
 )
 
-func Run(){
+func Run() {
 	r := gin.New()
 
-	r.Run(fmt.Sprintf(":%s", conf.Web.HTTPPort))
+	r.Run(fmt.Sprintf(":%d", conf.Web.HTTPPort))
 }
