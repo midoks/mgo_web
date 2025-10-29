@@ -25,6 +25,7 @@ var (
 		BrandName string
 		RunUser   string
 		RunMode   string
+		Debug     bool
 	}
 
 	// log
