@@ -101,7 +101,7 @@
 </div>
 
 <script type="text/javascript">
-    var test=0;
+var test=0;
 layui.define(['element', 'form'], function(exports) {
     var $ = layui.jquery, layer = layui.layer, form = layui.form;
     form.on('submit(formTest)', function(data) {
@@ -112,7 +112,7 @@ layui.define(['element', 'form'], function(exports) {
             _form = $(this).parents('form');
         }
         
-        layer.msg("{:lang('wait_submit')}",{time:500000});
+        layer.msg("数据提交中...",{time:500000});
         $.ajax({
             type: "POST",
             url: _form.attr('action'),
@@ -129,7 +129,7 @@ layui.define(['element', 'form'], function(exports) {
     });
     form.on('submit(formSubmit)', function(data) {
         if(test==0){
-            layer.msg("{:lang('install/submit_tip')}");
+            layer.msg("请先点击并通过测试数据连接!");
             return false;
         }
 
