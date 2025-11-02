@@ -1,4 +1,4 @@
-dev: true
+dev: false
 title: zzz
 frequency: 3
 dirfilter:

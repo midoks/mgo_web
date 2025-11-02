@@ -17,10 +17,10 @@ func AdminPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.tmpl", data)
 }
 
-func HomePage(c *gin.Context) {
-	if !conf.Security.InstallLock {
-		c.Redirect(302, "/install")
-	}
+func Home(c *gin.Context) {
+	// if !conf.Security.InstallLock {
+	// 	c.Redirect(302, "/install")
+	// }
 	data := common.CommonVer()
 	c.HTML(http.StatusOK, "home.tmpl", data)
 }
