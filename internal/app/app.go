@@ -3,6 +3,9 @@ package app
 import (
 	"fmt"
 	"html/template"
+	"io/fs"
+	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -24,34 +27,47 @@ func initTemp(r *gin.Engine) {
 		},
 	}
 
-	// Use custom delimiters to avoid conflicts with client-side "{{ }}" templates
-	// and apply function map before parsing templates
-	tpl := template.Must(
-		template.New("").Delims("{[", "]}").Funcs(funcMap).ParseFS(
-			embed.Templates,
-			"templates/*.tmpl",
-			"templates/**/*.tmpl",
-		),
-	)
+	// Build template set with directory-aware names (e.g., "install/index.tmpl")
+	// so that we can reference templates across multiple directories explicitly.
+	tpl := template.New("").Delims("{[", "]}").Funcs(funcMap)
+
+	for _, name := range embed.TemplatesAllNames("templates") {
+		// Trim the leading "templates/" so template names are like "install/index.tmpl"
+		short := strings.TrimPrefix(name, "templates/")
+		content, err := embed.Templates.ReadFile(name)
+		if err != nil {
+			panic(err)
+		}
+		if _, err := tpl.New(short).Parse(string(content)); err != nil {
+			panic(err)
+		}
+	}
 
 	r.SetHTMLTemplate(tpl)
 }
 
 func initRuote(r *gin.Engine) {
+	// Static files from embedded filesystem subdir "static"
+	staticFS, err := fs.Sub(embed.Static, "static")
+	if err != nil {
+		panic(err)
+	}
+	r.StaticFS("/static", http.FS(staticFS))
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
 
-	r.GET("/install", install.Home)
+	r.GET("/install", install.HomePage)
 	r.GET("/", handles.Home)
 }
 
 func Run() {
 	r := gin.New()
 
-	if conf.App.Debug {
-		r.Use(gin.Logger())
-	}
+	// if conf.App.Debug {
+	r.Use(gin.Logger())
+	// }
 
 	r.Use(gin.Recovery())
 
