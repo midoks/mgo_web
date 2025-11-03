@@ -22,5 +22,5 @@ func Home(c *gin.Context) {
 	// 	c.Redirect(302, "/install")
 	// }
 	data := common.CommonVer()
-	c.HTML(http.StatusOK, "home.tmpl", data)
+	c.HTML(http.StatusOK, "admin/index/index.tmpl", data)
 }
