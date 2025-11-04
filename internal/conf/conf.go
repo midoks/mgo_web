@@ -36,6 +36,8 @@ func autoMakeCustomConf(customConf string) error {
 	cfg.Section("").Key("run_mode").SetValue("prod")
 
 	cfg.Section("web").Key("http_port").SetValue("9999")
+	cfg.Section("web").Key("admin_path").SetValue("admin")
+
 	cfg.Section("session").Key("provider").SetValue("memory")
 
 	cfg.Section("database").Key("type").SetValue("sqlite3")

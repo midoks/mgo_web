@@ -54,6 +54,12 @@ func initRuote(r *gin.Engine) {
 	}
 	r.StaticFS("/static", http.FS(staticFS))
 
+	//admin
+	admin := r.Group(conf.Web.AdminPath)
+	admin.GET("/pings", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})

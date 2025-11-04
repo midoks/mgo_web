@@ -65,6 +65,7 @@ var (
 	Web struct {
 		HTTPAddr                 string `ini:"http_addr"`
 		HTTPPort                 int    `ini:"http_port"`
+		AdminPath                string `ini:"admin_path"`
 		Domain                   string
 		AppDataPath              string
 		AccessControlAllowOrigin string `ini:"access_control_allow_origin"`

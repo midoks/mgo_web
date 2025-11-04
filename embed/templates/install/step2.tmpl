@@ -9,50 +9,74 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>数据库配置</legend>
     </fieldset>
-    <form class="layui-form layui-form-pane" action="?step=4" method="post">
+    <form class="layui-form layui-form-pane" action="?step=2" method="post">
+
         <div class="layui-form-item">
+            <label class="layui-form-label">数据库类型</label>
+            <div class="layui-input-inline w200">
+                <select name="type" lay-filter="db_type">
+                    <option value="sqlite3" selected="selected">SQLite3</option>
+                    <option value="mysql">MySQL</option>
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">数据库类型，MySQL、SQLite3</div>
+        </div>
+
+        <div class="layui-form-item" id="dbpath" style="display: block;">
+            <label class="layui-form-label">数据库路径</label>
+            <div class="layui-input-inline w200">
+                <input type="text" class="layui-input" name="dbpath" lay-verify="title" value="data/mgo.db">
+            </div>
+            <div class="layui-form-mid layui-word-aux">数据库文件路径</div>
+        </div>
+
+        <div class="layui-form-item" id="hostname" style="display: none;">
             <label class="layui-form-label">服务器地址</label>
             <div class="layui-input-inline w200">
                 <input type="text" class="layui-input" name="hostname" lay-verify="title" value="127.0.0.1">
             </div>
             <div class="layui-form-mid layui-word-aux">数据库服务器地址，一般为127.0.0.1</div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="port" style="display: none;">
             <label class="layui-form-label">数据库端口</label>
             <div class="layui-input-inline w200">
                 <input type="text" class="layui-input" name="hostport" lay-verify="title" value="3306">
             </div>
             <div class="layui-form-mid layui-word-aux">系统数据库端口，一般为3306</div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="dbname" style="display: none;">
             <label class="layui-form-label">数据库名称</label>
             <div class="layui-input-inline w200">
                 <input type="text" class="layui-input" name="database" lay-verify="title">
             </div>
             <div class="layui-form-mid layui-word-aux">系统数据库名,必须包含字母</div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" id="username" style="display: none;">
             <label class="layui-form-label">数据库账号</label>
             <div class="layui-input-inline w200">
                 <input type="text" class="layui-input" name="username" lay-verify="title">
             </div>
             <div class="layui-form-mid layui-word-aux">连接数据库的用户名</div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" id="password" style="display: none;">
             <label class="layui-form-label">数据库密码</label>
             <div class="layui-input-inline w200">
                 <input type="password" class="layui-input" name="password" lay-verify="title">
             </div>
             <div class="layui-form-mid layui-word-aux">连接数据库的密码</div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" id="table_prefix" style="display: block;">
             <label class="layui-form-label">数据库前缀</label>
             <div class="layui-input-inline w200">
                 <input type="text" class="layui-input" name="prefix" lay-verify="title" value="mg_">
             </div>
             <div class="layui-form-mid layui-word-aux">建议使用默认,数据库前缀必须带_</div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item" id="cover_check" style="display: none;">
             <label class="layui-form-label">覆盖数据库</label>
             <div class="layui-input-inline w200">
                 <input type="radio" name="cover" value="1" title="覆盖">
@@ -60,7 +84,7 @@
             </div>
             <div class="layui-form-mid layui-word-aux">如需保留原有数据，请选择不覆盖</div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="cover_check_btn" style="display: none;">
             <button type="submit" class="layui-btn fl" style="margin-left:120px;" lay-submit="" lay-filter="formTest">测试数据库连接</button>
             <div class="layui-form-mid layui-word-aux">请先点击 【测试数据连接】 再安装</div>
         </div>
@@ -102,38 +126,82 @@
 
 <script type="text/javascript">
 var test=0;
-layui.define(['element', 'form'], function(exports) {
-    var $ = layui.jquery, layer = layui.layer, form = layui.form;
-    form.on('submit(formTest)', function(data) {
-        var _form = '';
-        if ($(this).attr('data-form')) {
-            _form = $($(this).attr('data-form'));
-        } else {
-            _form = $(this).parents('form');
-        }
-        
-        layer.msg("数据提交中...",{time:500000});
-        $.ajax({
-            type: "POST",
-            url: _form.attr('action'),
-            data: _form.serialize(),
-            dataType:'json',
-            success: function(res) {
-                if(res.code==1){
-                    test=1;
-                }
-                layer.msg(res.msg);
-            }
-        });
-        return false;
-    });
-    form.on('submit(formSubmit)', function(data) {
-        if(test==0){
-            layer.msg("请先点击并通过测试数据连接!");
-            return false;
-        }
+layui.use(function(){
+///
+var $ = layui.$
+,setter = layui.setter
+,form = layui.form;
 
+form.render();
+form.on('select(db_type)', function(data){
+    var elem = data.elem;
+    var othis = data.othis;
+    var db_type = data.value; // 获得被选中的值
+
+    if (db_type === "sqlite3") {
+        $('#hostname').hide();
+        $('#port').hide();
+        $('#dbname').hide();
+        $('#username').hide();
+        $('#password').hide();
+        $('#dbtest').hide();
+
+
+        $('#cover_check').hide();
+        $('#cover_check_btn').hide();
+
+        if (db_type === "sqlite3") {
+            $('#dbpath').show().val('data/mgo.db');
+        }
+        return;
+    } else if(db_type === "mysql") {
+        $('#dbpath').hide();
+        $('#hostname').show();
+        $('#port').show();
+        $('#dbname').show();
+        $('#username').show();
+        $('#password').show();
+        $('#dbtest').show();
+        $('#table_prefix').show();
+
+        $('#cover_check').show();
+        $('#cover_check_btn').show();
+
+    }
+});
+
+form.on('submit(formTest)', function(data) {
+    var _form = '';
+    if ($(this).attr('data-form')) {
+        _form = $($(this).attr('data-form'));
+    } else {
+        _form = $(this).parents('form');
+    }
+    
+    layer.msg("数据提交中...",{time:500000});
+    $.ajax({
+        type: "POST",
+        url: _form.attr('action'),
+        data: _form.serialize(),
+        dataType:'json',
+        success: function(res) {
+            if(res.code==1){
+                test=1;
+            }
+            layer.msg(res.msg);
+        }
     });
+    return false;
+});
+form.on('submit(formSubmit)', function(data) {
+    if(test==0){
+        layer.msg("请先点击并通过测试数据连接!");
+        return false;
+    }
+
+});
+
+///
 });
 </script>
 
