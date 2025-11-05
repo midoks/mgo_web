@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"net/url"
-	"os"
+// "net/url"
+// "os"
 )
 
 // CustomConf returns the absolute path of custom configuration file that is used.
@@ -34,12 +34,6 @@ var (
 		RootPath string
 	}
 
-	// log
-	Admin struct {
-		User string
-		Pass string
-	}
-
 	// Cache settings
 	Cache struct {
 		Adapter  string
@@ -63,50 +57,9 @@ var (
 
 	// web settings
 	Web struct {
-		HTTPAddr                 string `ini:"http_addr"`
-		HTTPPort                 int    `ini:"http_port"`
-		AdminPath                string `ini:"admin_path"`
-		Domain                   string
-		AppDataPath              string
-		AccessControlAllowOrigin string `ini:"access_control_allow_origin"`
-
-		ExternalURL          string `ini:"EXTERNAL_URL"`
-		Protocol             string
-		CertFile             string
-		KeyFile              string
-		TLSMinVersion        string `ini:"TLS_MIN_VERSION"`
-		UnixSocketPermission string
-		LocalRootURL         string `ini:"LOCAL_ROOT_URL"`
-
-		OfflineMode      bool
-		DisableRouterLog bool
-		EnableGzip       bool
-
-		LoadAssetsFromDisk bool
-
-		LandingURL string `ini:"LANDING_URL"`
-
-		// Derived from other static values
-		URL            *url.URL    `ini:"-"` // Parsed URL object of ExternalURL.
-		Subpath        string      `ini:"-"` // Subpath found the ExternalURL. Should be empty when not found.
-		SubpathDepth   int         `ini:"-"` // The number of slashes found in the Subpath.
-		UnixSocketMode os.FileMode `ini:"-"` // Parsed file mode of UnixSocketPermission.
-
-		MailSaveMode string
-	}
-
-	// Authentication settings
-	Auth struct {
-		ActivateCodeLives         int
-		ResetPasswordCodeLives    int
-		RequireEmailConfirmation  bool
-		RequireSigninView         bool
-		DisableRegistration       bool
-		EnableRegistrationCaptcha bool
-
-		EnableReverseProxyAuthentication   bool
-		EnableReverseProxyAutoRegistration bool
-		ReverseProxyAuthenticationHeader   string
+		HTTPAddr  string `ini:"http_addr"`
+		HTTPPort  int    `ini:"http_port"`
+		AdminPath string `ini:"admin_path"`
 	}
 
 	// Session settings

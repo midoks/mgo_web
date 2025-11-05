@@ -9,8 +9,8 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>数据库配置</legend>
     </fieldset>
-    <form class="layui-form layui-form-pane" action="?step=2" method="post">
-
+    <!-- <form class="layui-form layui-form-pane" action="?step=2" method="post"> -->
+    <form class="layui-form layui-form-pane" action="/install_step1" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label">数据库类型</label>
             <div class="layui-input-inline w200">
@@ -88,10 +88,7 @@
             <button type="submit" class="layui-btn fl" style="margin-left:120px;" lay-submit="" lay-filter="formTest">测试数据库连接</button>
             <div class="layui-form-mid layui-word-aux" style="margin-left:10px;">请先点击 【测试数据连接】 再安装</div>
         </div>
-    </form>
-    <form class="layui-form layui-form-pane" action="?step=5" method="post">
-        <input type="hidden" name="install_dir" value="{$install_dir}">
-        <input type="hidden" name="__token__" value="{$Request.buildToken}" />
+    
         <fieldset class="layui-elem-field layui-field-title">
             <legend>其他设置</legend>
         </fieldset>
@@ -119,7 +116,7 @@
         </div>
         <div class="step-btns">
             <a href="/install" class="layui-btn layui-btn-primary layui-btn-big fl">返回上一步</a>
-            <button type="submit" class="layui-btn layui-btn-big layui-btn-normal fr" lay-submit="" lay-filter="formSubmit" >立即执行安装</button>
+            <button type="submit" class="layui-btn layui-btn-big layui-btn-normal fr" lay-submit="" lay-filter="install" >立即执行安装</button>
         </div>
     </form>
 </div>
@@ -193,12 +190,32 @@ form.on('submit(formTest)', function(data) {
     });
     return false;
 });
-form.on('submit(formSubmit)', function(data) {
-    if(test==0){
-        layer.msg("请先点击并通过测试数据连接!");
-        return false;
+
+
+//安装提交
+form.on('submit(install)', function(data){
+    var db_type = $('select[lay-filter="db_type"]').val();
+    if (db_type == 'mysql'){
+        if(test==0){
+            layer.msg("请先点击并通过测试数据连接!");
+            return false;
+        }
     }
 
+    var _form = $(this).parents('form');
+    // console.log(_form.serialize());
+    //location.href = "index.html";
+
+    $.ajax({
+        type: "POST",
+        url: _form.attr('action'),
+        data: _form.serialize(),
+        dataType:'json',
+        success: function(res) {
+            layer.msg(res.message, {icon: res.code>0?1:2});
+        }
+    });
+    return false;
 });
 
 ///

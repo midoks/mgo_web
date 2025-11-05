@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"../internal/conf"
+	"mgo/internal/conf"
 )
 
 func TestInit(t *testing.T) {

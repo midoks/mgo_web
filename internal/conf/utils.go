@@ -1,9 +1,11 @@
 package conf
 
 import (
+	"math/rand"
 	"os"
 	"os/user"
 	"path/filepath"
+	"time"
 )
 
 // CurrentUsername returns the username of the current user.
@@ -44,17 +46,28 @@ func CheckRunUser(runUser string) (string, bool) {
 	return currentUser, runUser == currentUser
 }
 
-// IsExist returns true if a file or directory exists.
-func IsExist(path string) bool {
+// isExist returns true if a file or directory exists.
+func isExist(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil || os.IsExist(err)
 }
 
-// IsFile returns true if given path exists as a file (i.e. not a directory).
-func IsFile(path string) bool {
+// isFile returns true if given path exists as a file (i.e. not a directory).
+func isFile(path string) bool {
 	f, e := os.Stat(path)
 	if e != nil {
 		return false
 	}
 	return !f.IsDir()
+}
+
+// randString generate random string
+func randString(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	rand.Seed(time.Now().UnixNano())
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
 }

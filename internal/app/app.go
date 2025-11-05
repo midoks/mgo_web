@@ -46,6 +46,11 @@ func initTemp(r *gin.Engine) {
 	r.SetHTMLTemplate(tpl)
 }
 
+func initRuoteInstall(r *gin.Engine) {
+	r.GET("/install", install.HomePage)
+	r.POST("/install_step1", install.PostInstallStep1)
+}
+
 func initRuote(r *gin.Engine) {
 	// Static files from embedded filesystem subdir "static"
 	staticFS, err := fs.Sub(embed.Static, "static")
@@ -64,7 +69,7 @@ func initRuote(r *gin.Engine) {
 		c.String(200, "pong")
 	})
 
-	r.GET("/install", install.HomePage)
+	initRuoteInstall(r)
 	r.GET("/", handles.Home)
 }
 

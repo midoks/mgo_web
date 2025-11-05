@@ -19,7 +19,7 @@ import (
 
 	"mgo/internal/conf"
 	"mgo/internal/model"
-	"mgo/internal/utils"
+	utils "mgo/internal/utils"
 )
 
 var db *gorm.DB
@@ -114,20 +114,19 @@ func Init(d *gorm.DB) {
 	db = d
 
 	// performance optimization: configure connection pool using performance config
-	sqlDB, err := db.DB()
+	sqlDb, err := db.DB()
 	if err == nil {
-		// import performance configuration
-		conf.InitPerformanceConfig()
+		// Use conservative, safe defaults for the connection pool
+		defaultMaxIdleConns := 10
+		defaultMaxOpenConns := 100
+		defaultConnMaxLifetime := time.Hour
 
-		// set maximum number of idle connections in the connection pool
-		sqlDB.SetMaxIdleConns(conf.Performance.DB.MaxIdleConns)
-		// set maximum number of open database connections
-		sqlDB.SetMaxOpenConns(conf.Performance.DB.MaxOpenConns)
-		// set maximum time a connection can be reused
-		sqlDB.SetConnMaxLifetime(conf.Performance.DB.ConnMaxLifetime)
+		sqlDb.SetMaxIdleConns(defaultMaxIdleConns)
+		sqlDb.SetMaxOpenConns(defaultMaxOpenConns)
+		sqlDb.SetConnMaxLifetime(defaultConnMaxLifetime)
 
 		log.Infof("Database connection pool configured: MaxIdle=%d, MaxOpen=%d, MaxLifetime=%v",
-			conf.Performance.DB.MaxIdleConns, conf.Performance.DB.MaxOpenConns, conf.Performance.DB.ConnMaxLifetime)
+			defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
 	}
 
 	err = AutoMigrate(new(model.User))

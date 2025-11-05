@@ -20,7 +20,8 @@ var Web = cli.Command{
 }
 
 func runWeb(c *cli.Context) error {
-	_ = conf.Init("")
+	conf.InitConf(c.String("config"))
+
 	log.Init()
 	db.InitDb()
 

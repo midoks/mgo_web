@@ -5,11 +5,9 @@ import (
 // "time"
 )
 
-type User struct {
+type Admin struct {
 	ID       int64  `json:"id" gorm:"primaryKey"`                      // unique key
 	Username string `json:"username" gorm:"unique" binding:"required"` // username
-	PwdHash  string `json:"-"`                                         // password hash
-	PwdTS    int64  `json:"-"`                                         // password timestamp
-	Salt     string `json:"salt"`                                      // unique salt
 	Password string `json:"password"`                                  // password
+	Salt     string `json:"salt"`                                      // unique salt
 }

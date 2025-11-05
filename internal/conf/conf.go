@@ -3,10 +3,10 @@ package conf
 import (
 	"fmt"
 	"log"
-	"net/url"
+	// "net/url"
 	"os"
 	"path/filepath"
-	"strconv"
+	// "strconv"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -17,15 +17,34 @@ import (
 
 var File *ini.File
 
+func ReadConf() (*ini.File, error) {
+	cfg := ini.Empty()
+	data, err := embed.Conf.ReadFile("conf/app.conf")
+	if err != nil {
+		return cfg, errors.Wrap(err, "read file 'conf/app.conf'")
+	}
+
+	File, err := ini.LoadSources(ini.LoadOptions{
+		IgnoreInlineComment: true,
+	}, data)
+
+	File.NameMapper = ini.TitleUnderscore
+	if err != nil {
+		return cfg, errors.Wrap(err, "parse 'conf/app.conf'")
+	}
+
+	return cfg, nil
+}
+
 // creates a default configuration file if it doesn't exist
 func autoMakeCustomConf(customConf string) error {
-	if IsExist(customConf) {
+	if isExist(customConf) {
 		return nil
 	}
 
 	// Create default configuration
 	cfg := ini.Empty()
-	if IsFile(customConf) {
+	if isFile(customConf) {
 		if err := cfg.Append(customConf); err != nil {
 			return errors.Wrap(err, "append existing config")
 		}
@@ -56,8 +75,65 @@ func autoMakeCustomConf(customConf string) error {
 	return nil
 }
 
+func InstallConf(data map[string]string) error {
+	File, err := ReadConf()
+	if err != nil {
+		return err
+	}
+
+	err = renderSection(File)
+	if err != nil {
+		return err
+	}
+
+	customConf := filepath.Join(CustomDir(), "conf", "app.conf")
+
+	if !isExist(filepath.Dir(customConf)) {
+		os.MkdirAll(filepath.Dir(customConf), os.ModePerm)
+	}
+
+	File.Section("").Key("app_name").SetValue(App.Name)
+	File.Section("").Key("brand_name").SetValue(App.BrandName)
+	File.Section("").Key("run_user").SetValue(App.RunUser)
+	File.Section("").Key("run_mode").SetValue("prod")
+
+	// File.Section("log").Key("format").SetValue(Log.Format)
+	File.Section("log").Key("root_path").SetValue(Log.RootPath)
+
+	File.Section("web").Key("port").SetValue("9999")
+	admin_path := fmt.Sprintf("/mgo_%s", randString(6))
+	File.Section("web").Key("admin_path").SetValue(admin_path)
+
+	if strings.EqualFold(data["type"], "mysql") {
+		File.Section("database").Key("type").SetValue("mysql")
+		File.Section("database").Key("hostname").SetValue(data["hostname"])
+		File.Section("database").Key("hostport").SetValue(data["hostport"])
+		File.Section("database").Key("name").SetValue(data["dbname"])
+		File.Section("database").Key("user").SetValue(data["username"])
+		File.Section("database").Key("password").SetValue(data["password"])
+		File.Section("database").Key("table_prefix").SetValue(data["table_prefix"])
+	} else if strings.EqualFold(data["type"], "sqlite3") {
+		File.Section("database").Key("type").SetValue("sqlite3")
+		File.Section("database").Key("path").SetValue(data["dbpath"])
+	}
+
+	File.Section("security").Key("install_lock").SetValue("true")
+	File.Section("security").Key("secret_key").SetValue(randString(10))
+
+	if err := File.SaveTo(customConf); err != nil {
+		return err
+	}
+
+	// write custom configuration file, rewrite initialization read
+	err = InitConf("")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Init initializes the configuration system
-func Init(customConf string) error {
+func InitConf(customConf string) error {
 	data, err := embed.Conf.ReadFile("conf/app.conf")
 	if err != nil {
 		return errors.Wrap(err, "read embedded config")
@@ -86,7 +162,7 @@ func Init(customConf string) error {
 	CustomConf = customConf
 
 	// Append custom configuration if exists
-	if IsFile(customConf) {
+	if isFile(customConf) {
 		if err = File.Append(customConf); err != nil {
 			return errors.Wrapf(err, "append %q", customConf)
 		}
@@ -96,54 +172,41 @@ func Init(customConf string) error {
 
 	File.NameMapper = ini.TitleUnderscore
 
-	// Map default section to App struct
-	if err = File.Section(ini.DefaultSection).MapTo(&App); err != nil {
-		return errors.Wrap(err, "mapping default section")
+	// Check run user when the install is locked.
+	if Security.InstallLock {
+		currentUser, match := CheckRunUser(App.RunUser)
+		if !match {
+			return fmt.Errorf("user configured to run imail is %q, but the current user is %q", App.RunUser, currentUser)
+		}
 	}
 
-	// ***************************
-	// ----- Log settings -----
-	// ***************************
-	if err = File.Section("log").MapTo(&Log); err != nil {
-		return errors.Wrap(err, "mapping [log] section")
+	err = renderSection(File)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func renderSection(File *ini.File) error {
+	// Map default section to App struct
+	if err := File.Section(ini.DefaultSection).MapTo(&App); err != nil {
+		return errors.Wrap(err, "mapping default section")
 	}
 
 	// ****************************
 	// ----- Web settings -----
 	// ****************************
 
-	if err = File.Section("web").MapTo(&Web); err != nil {
+	if err := File.Section("web").MapTo(&Web); err != nil {
 		return errors.Wrap(err, "mapping [web] section")
 	}
 
-	Web.AppDataPath = ensureAbs(Web.AppDataPath)
-
-	if !strings.HasSuffix(Web.ExternalURL, "/") {
-		Web.ExternalURL += "/"
-	}
-	Web.URL, err = url.Parse(Web.ExternalURL)
-	if err != nil {
-		return errors.Wrapf(err, "parse '[server] EXTERNAL_URL' %q", err)
-	}
-
-	// Subpath should start with '/' and end without '/', i.e. '/{subpath}'.
-	Web.Subpath = strings.TrimRight(Web.URL.Path, "/")
-	Web.SubpathDepth = strings.Count(Web.Subpath, "/")
-
-	unixSocketMode, err := strconv.ParseUint(Web.UnixSocketPermission, 8, 32)
-	if err != nil {
-		return errors.Wrapf(err, "parse '[server] unix_socket_permission' %q", Web.UnixSocketPermission)
-	}
-	if unixSocketMode > 0777 {
-		unixSocketMode = 0666
-	}
-	Web.UnixSocketMode = os.FileMode(unixSocketMode)
-
-	// ****************************
-	// ----- Session settings -----
-	// ****************************
-	if err = File.Section("session").MapTo(&Session); err != nil {
-		return errors.Wrap(err, "mapping [session] section")
+	// ***************************
+	// ----- Log settings -----
+	// ***************************
+	if err := File.Section("log").MapTo(&Log); err != nil {
+		return errors.Wrap(err, "mapping [log] section")
 	}
 
 	// ***************************
@@ -153,20 +216,11 @@ func Init(customConf string) error {
 		return errors.Wrap(err, "mapping [database] section")
 	}
 
-	// *****************************
+	// ***************************
 	// ----- Security settings -----
-	// *****************************
-	if err = File.Section("security").MapTo(&Security); err != nil {
+	// ***************************
+	if err := File.Section("security").MapTo(&Security); err != nil {
 		return errors.Wrap(err, "mapping [security] section")
 	}
-
-	// Check run user when the install is locked.
-	if Security.InstallLock {
-		currentUser, match := CheckRunUser(App.RunUser)
-		if !match {
-			return fmt.Errorf("user configured to run imail is %q, but the current user is %q", App.RunUser, currentUser)
-		}
-	}
-
 	return nil
 }
