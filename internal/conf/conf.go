@@ -100,7 +100,7 @@ func InstallConf(data map[string]string) error {
 	// File.Section("log").Key("format").SetValue(Log.Format)
 	File.Section("log").Key("root_path").SetValue(Log.RootPath)
 
-	File.Section("web").Key("port").SetValue("9999")
+	File.Section("web").Key("http_port").SetValue("9999")
 	admin_path := fmt.Sprintf("/mgo_%s", randString(6))
 	File.Section("web").Key("admin_path").SetValue(admin_path)
 
@@ -173,12 +173,12 @@ func InitConf(customConf string) error {
 	File.NameMapper = ini.TitleUnderscore
 
 	// Check run user when the install is locked.
-	if Security.InstallLock {
-		currentUser, match := CheckRunUser(App.RunUser)
-		if !match {
-			return fmt.Errorf("user configured to run imail is %q, but the current user is %q", App.RunUser, currentUser)
-		}
-	}
+	// if Security.InstallLock {
+	// 	currentUser, match := CheckRunUser(App.RunUser)
+	// 	if !match {
+	// 		return fmt.Errorf("user configured to run mgo is %q, but the current user is %q", App.RunUser, currentUser)
+	// 	}
+	// }
 
 	err = renderSection(File)
 	if err != nil {
