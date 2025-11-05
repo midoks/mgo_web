@@ -5,6 +5,7 @@ import (
 
 	"mgo/internal/app"
 	"mgo/internal/conf"
+	"mgo/internal/db"
 	"mgo/internal/log"
 )
 
@@ -21,7 +22,9 @@ var Web = cli.Command{
 func runWeb(c *cli.Context) error {
 	_ = conf.Init("")
 	log.Init()
-	// db.InitDb()
+	db.InitDb()
+
+	//
 	app.Run()
 	return nil
 }
