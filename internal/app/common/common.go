@@ -36,6 +36,8 @@ func CommonVer() map[string]interface{} {
 	data := map[string]interface{}{
 		"title": "MGOWEB",
 	}
+
+	data["admin_path"] = conf.Web.AdminPath
 	return data
 }
 

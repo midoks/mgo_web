@@ -1,8 +1,7 @@
 package conf
 
 import (
-	"fmt"
-	"log"
+	// "fmt"
 	// "net/url"
 	"os"
 	"path/filepath"
@@ -36,45 +35,6 @@ func ReadConf() (*ini.File, error) {
 	return cfg, nil
 }
 
-// creates a default configuration file if it doesn't exist
-func autoMakeCustomConf(customConf string) error {
-	if isExist(customConf) {
-		return nil
-	}
-
-	// Create default configuration
-	cfg := ini.Empty()
-	if isFile(customConf) {
-		if err := cfg.Append(customConf); err != nil {
-			return errors.Wrap(err, "append existing config")
-		}
-	}
-
-	// Set default values
-	cfg.Section("").Key("app_name").SetValue("mgo")
-	cfg.Section("").Key("run_mode").SetValue("prod")
-
-	cfg.Section("web").Key("http_port").SetValue("9999")
-	cfg.Section("web").Key("admin_path").SetValue("admin")
-
-	cfg.Section("session").Key("provider").SetValue("memory")
-
-	cfg.Section("database").Key("type").SetValue("sqlite3")
-	cfg.Section("database").Key("path").SetValue("data/mgo.db")
-
-	// Ensure directory exists
-	if err := os.MkdirAll(filepath.Dir(customConf), os.ModePerm); err != nil {
-		return errors.Wrap(err, "create config directory")
-	}
-
-	// Save configuration file
-	if err := cfg.SaveTo(customConf); err != nil {
-		return errors.Wrap(err, "save config file")
-	}
-
-	return nil
-}
-
 func InstallConf(data map[string]string) error {
 	File, err := ReadConf()
 	if err != nil {
@@ -101,7 +61,8 @@ func InstallConf(data map[string]string) error {
 	File.Section("log").Key("root_path").SetValue(Log.RootPath)
 
 	File.Section("web").Key("http_port").SetValue("9999")
-	admin_path := fmt.Sprintf("/mgo_%s", randString(6))
+	// admin_path := fmt.Sprintf("/mgo_%s", randString(6))
+	admin_path := "mgo"
 	File.Section("web").Key("admin_path").SetValue(admin_path)
 
 	if strings.EqualFold(data["type"], "mysql") {
@@ -143,6 +104,8 @@ func InitConf(customConf string) error {
 	File, err = ini.LoadSources(ini.LoadOptions{
 		IgnoreInlineComment: true,
 	}, data)
+
+	File.NameMapper = ini.TitleUnderscore
 	if err != nil {
 		return errors.Wrap(err, "parse 'conf/app.conf'")
 	}
@@ -150,9 +113,6 @@ func InitConf(customConf string) error {
 	// Determine custom config path
 	if customConf == "" {
 		customConf = filepath.Join(CustomDir(), "conf", "app.conf")
-		if err := autoMakeCustomConf(customConf); err != nil {
-			return errors.Wrap(err, "create default config")
-		}
 	} else {
 		customConf, err = filepath.Abs(customConf)
 		if err != nil {
@@ -166,19 +126,7 @@ func InitConf(customConf string) error {
 		if err = File.Append(customConf); err != nil {
 			return errors.Wrapf(err, "append %q", customConf)
 		}
-	} else {
-		log.Printf("Custom config %s not found. Ignore this warning if you're running for the first time", customConf)
 	}
-
-	File.NameMapper = ini.TitleUnderscore
-
-	// Check run user when the install is locked.
-	// if Security.InstallLock {
-	// 	currentUser, match := CheckRunUser(App.RunUser)
-	// 	if !match {
-	// 		return fmt.Errorf("user configured to run mgo is %q, but the current user is %q", App.RunUser, currentUser)
-	// 	}
-	// }
 
 	err = renderSection(File)
 	if err != nil {

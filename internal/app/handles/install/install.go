@@ -46,6 +46,7 @@ func PostInstallStep1(c *gin.Context) {
 
 	init_account := c.PostForm("account")
 	init_pass := c.PostForm("pass")
+
 	if conf.Security.InstallLock {
 		db.InitDb()
 		op.InitAdmin(init_account, init_pass)

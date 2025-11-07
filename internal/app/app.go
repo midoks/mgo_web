@@ -7,10 +7,13 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 
 	"mgo/embed"
 	"mgo/internal/app/handles"
+	handle_admin "mgo/internal/app/handles/admin"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/conf"
 )
@@ -46,15 +49,12 @@ func initTemp(r *gin.Engine) {
 	r.SetHTMLTemplate(tpl)
 }
 
-// 后台
+// 后台/backstage
 func initRuoteAdmin(r *gin.Engine) {
-	//admin
-
 	fmt.Println("conf.Web.AdminPath:", conf.Web.AdminPath)
-	admin := r.Group(conf.Web.AdminPath)
-	admin.GET("/pings", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
+	backstage := r.Group(conf.Web.AdminPath)
+	backstage.GET("/login", handle_admin.LoginPage)
+	backstage.POST("/login", handle_admin.PostLogin)
 }
 
 func initRuoteInstall(r *gin.Engine) {
@@ -80,6 +80,10 @@ func initRuote(r *gin.Engine) {
 
 func Run() {
 	r := gin.New()
+
+	// 初始化 session 存储
+	store := cookie.NewStore([]byte("mgo"))
+	r.Use(sessions.Sessions("app", store))
 
 	// if conf.App.Debug {
 	r.Use(gin.Logger())

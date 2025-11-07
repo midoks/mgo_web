@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pkg/errors"
+
+	"mgo/internal/errs"
 	utils "mgo/internal/utils"
 )
 
@@ -21,14 +24,23 @@ type Admin struct {
 	UpdateTime time.Time `json:"update_time"`                               // update_time
 }
 
-func StaticHash(password string) string {
-	return utils.HashData(utils.SHA256, []byte(fmt.Sprintf("%s-%s", password, StaticHashSalt)))
+func (u *Admin) ValidatePwdStaticHash(password string) error {
+	if password == "" {
+		return errors.WithStack(errs.EmptyPassword)
+	}
+
+	fmt.Println("login", u.Password, HashPwd(password, u.Salt), password, u.Salt)
+	if u.Password != HashPwd(password, u.Salt) {
+		return errors.WithStack(errs.WrongPassword)
+	}
+	return nil
 }
 
-func HashPwd(static string, salt string) string {
-	return utils.HashData(utils.SHA256, []byte(fmt.Sprintf("%s-%s", static, salt)))
+func HashPwd(password string, salt string) string {
+	return utils.HashData(utils.SHA256, []byte(fmt.Sprintf("%s-%s", password, salt)))
 }
 
 func TwoHashPwd(password string, salt string) string {
-	return HashPwd(StaticHash(password), salt)
+	fmt.Println("reg", password, HashPwd(password, salt), password, salt)
+	return HashPwd(password, salt)
 }
