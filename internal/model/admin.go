@@ -10,8 +10,6 @@ import (
 	utils "mgo/internal/utils"
 )
 
-const StaticHashSalt = "mgo"
-
 type Admin struct {
 	ID         int64     `json:"id" gorm:"primaryKey"`                      // unique key
 	Username   string    `json:"username" gorm:"unique" binding:"required"` // username
@@ -28,8 +26,6 @@ func (u *Admin) ValidatePwdStaticHash(password string) error {
 	if password == "" {
 		return errors.WithStack(errs.EmptyPassword)
 	}
-
-	fmt.Println("login", u.Password, HashPwd(password, u.Salt), password, u.Salt)
 	if u.Password != HashPwd(password, u.Salt) {
 		return errors.WithStack(errs.WrongPassword)
 	}
@@ -41,6 +37,5 @@ func HashPwd(password string, salt string) string {
 }
 
 func TwoHashPwd(password string, salt string) string {
-	fmt.Println("reg", password, HashPwd(password, salt), password, salt)
 	return HashPwd(password, salt)
 }
