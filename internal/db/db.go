@@ -111,10 +111,10 @@ func InitDb() {
 }
 
 func Init(d *gorm.DB) {
+	// assign to package-level DB
 	db = d
-
 	// performance optimization: configure connection pool using performance config
-	sqlDb, err := db.DB()
+	sqlDb, err := d.DB()
 	if err == nil {
 		// Use conservative, safe defaults for the connection pool
 		defaultMaxIdleConns := 10
@@ -129,7 +129,7 @@ func Init(d *gorm.DB) {
 			defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
 	}
 
-	err = AutoMigrate(new(model.User))
+	err = AutoMigrate(new(model.Admin), new(model.User))
 	if err != nil {
 		log.Fatalf("failed migrate database: %s", err.Error())
 	}

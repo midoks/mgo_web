@@ -8,7 +8,8 @@ import (
 
 	"mgo/internal/app/common"
 	"mgo/internal/conf"
-	// "mgo/internal/db"
+	"mgo/internal/db"
+	"mgo/internal/op"
 )
 
 func HomePage(c *gin.Context) {
@@ -43,12 +44,12 @@ func PostInstallStep1(c *gin.Context) {
 		return
 	}
 
-	// init_account := c.PostForm("account")
-	// init_pass := c.PostForm("pass")
-	// if conf.Security.InstallLock {
-	// 	db.InitDb()
-	// 	userdata.InitAdmin(init_account, init_pass)
-	// }
+	init_account := c.PostForm("account")
+	init_pass := c.PostForm("pass")
+	if conf.Security.InstallLock {
+		db.InitDb()
+		op.InitAdmin(init_account, init_pass)
+	}
 
 	common.SuccessResp(c, gin.H{"token": "安装成功!"})
 }

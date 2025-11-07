@@ -1,0 +1,37 @@
+package op
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/pkg/errors"
+	"gorm.io/gorm"
+
+	"mgo/internal/db"
+	"mgo/internal/model"
+	utils "mgo/internal/utils"
+)
+
+func InitAdmin(user string, pass string) error {
+	data, err := db.GetAdminById(1)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+
+			salt := utils.RandString(16)
+			admin := &model.Admin{
+				Username: user,
+				Password: model.TwoHashPwd(pass, salt),
+				Salt:     salt,
+			}
+
+			admin.CreateTime = time.Now()
+			admin.UpdateTime = time.Now()
+			if err := db.CreateAdmin(admin); err != nil {
+				return err
+			}
+		}
+	}
+
+	fmt.Println("data:", data)
+	return nil
+}

@@ -46,6 +46,17 @@ func initTemp(r *gin.Engine) {
 	r.SetHTMLTemplate(tpl)
 }
 
+// 后台
+func initRuoteAdmin(r *gin.Engine) {
+	//admin
+
+	fmt.Println("conf.Web.AdminPath:", conf.Web.AdminPath)
+	admin := r.Group(conf.Web.AdminPath)
+	admin.GET("/pings", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+}
+
 func initRuoteInstall(r *gin.Engine) {
 	r.GET("/install", install.HomePage)
 	r.POST("/install_step1", install.PostInstallStep1)
@@ -58,17 +69,11 @@ func initRuote(r *gin.Engine) {
 		panic(err)
 	}
 	r.StaticFS("/static", http.FS(staticFS))
-
-	//admin
-	admin := r.Group(conf.Web.AdminPath)
-	admin.GET("/pings", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
-
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
 
+	initRuoteAdmin(r)
 	initRuoteInstall(r)
 	r.GET("/", handles.Home)
 }
