@@ -90,28 +90,30 @@ func Run() {
 	store := cookie.NewStore([]byte("mgo"))
 	r.Use(sessions.Sessions("app", store))
 
-	// 定制 Logger，过滤静态资源（.js/.css）请求日志
-	r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
-		p := param.Path
-		if strings.Contains(p, ".js") || strings.Contains(p, ".css") {
-			return ""
-		}
-		if strings.Contains(p, ".woff2") {
-			return ""
-		}
-		return fmt.Sprintf("%s - [%s] \"%s %s %s\" %d %s \"%s\"\n",
-			param.ClientIP,
-			param.TimeStamp.Format(time.RFC1123),
-			param.Method,
-			p,
-			param.Request.Proto,
-			param.StatusCode,
-			param.Latency,
-			param.ErrorMessage,
-		)
-	}))
+	if conf.App.Debug {
+		// 定制 Logger，过滤静态资源（.js/.css）请求日志
+		r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+			p := param.Path
+			if strings.Contains(p, ".js") || strings.Contains(p, ".css") {
+				return ""
+			}
+			if strings.Contains(p, ".woff2") {
+				return ""
+			}
+			return fmt.Sprintf("%s - [%s] \"%s %s %s\" %d %s \"%s\"\n",
+				param.ClientIP,
+				param.TimeStamp.Format(time.RFC1123),
+				param.Method,
+				p,
+				param.Request.Proto,
+				param.StatusCode,
+				param.Latency,
+				param.ErrorMessage,
+			)
+		}))
+	}
 
-	// r.Use(gin.Recovery())
+	r.Use(gin.Recovery())
 	r.SetTrustedProxies(nil)
 
 	initTemp(r)
