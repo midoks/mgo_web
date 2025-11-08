@@ -66,10 +66,16 @@
                     </li>
 
                     <li data-name="user" class="layui-nav-item layui-nav-itemed {[if .PageIsUser ]}layui-this{[end]}">
-                        <a href="/{[.admin_path]}/admin" lay-tips="管理员" lay-direction="2">
+                        <a lay-tips="管理员" lay-direction="2">
                             <i class="layui-icon layui-icon-release"></i>
                             <cite>管理员</cite>
                         </a>
+
+                        <dl class="layui-nav-child">
+                            <dd class="layui-this">
+                                <a href="/{[.admin_path]}/admin/list">管理员列表</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     <li data-name="server" class="layui-nav-item layui-nav-itemed {[if .PageIsServer ]}layui-this{[end]}">
