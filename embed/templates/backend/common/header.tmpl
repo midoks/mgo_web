@@ -58,24 +58,24 @@
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
 
-                   <!--  <li data-name="home" class="layui-nav-item layui-nav-itemed {[if .PageIsHome ]}layui-this{[end]}">
-                        <a href="/" lay-tips="控制台" lay-direction="2" >
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed {[if .PageIsHome ]}layui-this{[end]}">
+                        <a href="/{[.admin_path]}" lay-tips="控制台" lay-direction="2" >
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>控制台</cite>
                         </a>
-                    </li> -->
+                    </li>
 
                     <li data-name="user" class="layui-nav-item layui-nav-itemed {[if .PageIsUser ]}layui-this{[end]}">
-                        <a href="/admin/user" lay-tips="用户管理" lay-direction="2">
+                        <a href="/{[.admin_path]}/admin" lay-tips="管理员" lay-direction="2">
                             <i class="layui-icon layui-icon-release"></i>
-                            <cite>用户管理</cite>
+                            <cite>管理员</cite>
                         </a>
                     </li>
 
                     <li data-name="server" class="layui-nav-item layui-nav-itemed {[if .PageIsServer ]}layui-this{[end]}">
-                        <a href="/server" lay-tips="服务器管理" lay-direction="2">
+                        <a href="/{[.admin_path]}/server" lay-tips="边缘节点" lay-direction="2">
                             <i class="layui-icon layui-icon-release"></i>
-                            <cite>服务器管理</cite>
+                            <cite>边缘节点</cite>
                         </a>
                     </li>
 

@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -21,11 +21,7 @@ func HomePage(c *gin.Context) {
 	// if !conf.Security.InstallLock {
 	// 	c.Redirect(302, "/install")
 	// }
-
-	fmt.Println("....")
 	data := common.CommonVer()
-
-	fmt.Println(data)
 	c.HTML(http.StatusOK, "backend/index/index.tmpl", data)
 }
 
