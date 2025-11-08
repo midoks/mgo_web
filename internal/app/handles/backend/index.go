@@ -1,7 +1,7 @@
-package handles
+package backend
 
 import (
-	// "fmt"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -17,9 +17,21 @@ type LoginReq struct {
 	Password string `json:"password" binding:"required"`
 }
 
+func HomePage(c *gin.Context) {
+	// if !conf.Security.InstallLock {
+	// 	c.Redirect(302, "/install")
+	// }
+
+	fmt.Println("....")
+	data := common.CommonVer()
+
+	fmt.Println(data)
+	c.HTML(http.StatusOK, "backend/index/index.tmpl", data)
+}
+
 func LoginPage(c *gin.Context) {
 	data := common.CommonVer()
-	c.HTML(http.StatusOK, "admin/login.tmpl", data)
+	c.HTML(http.StatusOK, "backend/login.tmpl", data)
 }
 
 func PostLogin(c *gin.Context) {

@@ -14,7 +14,7 @@ import (
 
 	"mgo/embed"
 	"mgo/internal/app/handles"
-	handle_admin "mgo/internal/app/handles/admin"
+	backend "mgo/internal/app/handles/backend"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/conf"
 )
@@ -52,13 +52,14 @@ func initTemp(r *gin.Engine) {
 
 // 后台/backstage
 func initRuoteAdmin(r *gin.Engine) {
-	fmt.Println("conf.Web.AdminPath:", conf.Web.AdminPath)
+	// fmt.Println("conf.Web.AdminPath:", conf.Web.AdminPath)
 	backstage := r.Group(conf.Web.AdminPath)
-	backstage.GET("/login", handle_admin.LoginPage)
-	backstage.POST("/login", handle_admin.PostLogin)
+	backstage.GET("/login", backend.LoginPage)
+	backstage.POST("/login", backend.PostLogin)
 
-	backstage.GET("", handles.Home)
+	backstage.GET("", backend.HomePage)
 	backstage.GET("/index", handles.Home)
+	backstage.GET("/admin", handles.Home)
 
 }
 
@@ -90,30 +91,29 @@ func Run() {
 	store := cookie.NewStore([]byte("mgo"))
 	r.Use(sessions.Sessions("app", store))
 
-	if conf.App.Debug {
-		// 定制 Logger，过滤静态资源（.js/.css）请求日志
-		r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
-			p := param.Path
-			if strings.Contains(p, ".js") || strings.Contains(p, ".css") {
-				return ""
-			}
-			if strings.Contains(p, ".woff2") {
-				return ""
-			}
-			return fmt.Sprintf("%s - [%s] \"%s %s %s\" %d %s \"%s\"\n",
-				param.ClientIP,
-				param.TimeStamp.Format(time.RFC1123),
-				param.Method,
-				p,
-				param.Request.Proto,
-				param.StatusCode,
-				param.Latency,
-				param.ErrorMessage,
-			)
-		}))
-	}
+	// if conf.App.Debug {
+	// 	r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+	// 		p := param.Path
+	// 		if strings.Contains(p, ".js") || strings.Contains(p, ".css") {
+	// 			return ""
+	// 		}
+	// 		if strings.Contains(p, ".woff2") {
+	// 			return ""
+	// 		}
+	// 		return fmt.Sprintf("%s - [%s] \"%s %s %s\" %d %s \"%s\"\n",
+	// 			param.ClientIP,
+	// 			param.TimeStamp.Format(time.RFC1123),
+	// 			param.Method,
+	// 			p,
+	// 			param.Request.Proto,
+	// 			param.StatusCode,
+	// 			param.Latency,
+	// 			param.ErrorMessage,
+	// 		)
+	// 	}))
+	// }
 
-	r.Use(gin.Recovery())
+	// r.Use(gin.Recovery())
 	r.SetTrustedProxies(nil)
 
 	initTemp(r)
