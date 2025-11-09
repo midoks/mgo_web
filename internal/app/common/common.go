@@ -34,7 +34,8 @@ type LayuiResp[T any] struct {
 
 func CommonVer() map[string]interface{} {
 	data := map[string]interface{}{
-		"title": "MGOWEB",
+		"title":   "MGOWEB",
+		"version": conf.App.Version,
 	}
 
 	data["admin_path"] = conf.Web.AdminPath
