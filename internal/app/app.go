@@ -16,6 +16,7 @@ import (
 	"mgo/embed"
 	"mgo/internal/app/handles"
 	backend "mgo/internal/app/handles/backend"
+	backend_admin "mgo/internal/app/handles/backend/admin"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
 	"mgo/internal/conf"
@@ -59,13 +60,12 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage.GET("/login", backend.LoginPage)
 	backstage.POST("/login", backend.PostLogin)
 
-	authorized := backstage.Group("")
-	authorized.Use(middleware.AuthRequired())
-	{
-		authorized.GET("", backend.HomePage)
-		authorized.GET("/index", handles.Home)
-		authorized.GET("/admin", handles.Home)
-	}
+	backstage_admin := backstage.Group("")
+	backstage_admin.Use(middleware.AuthRequired())
+
+	backstage_admin.GET("", backend.HomePage)
+	backstage_admin.GET("/index", handles.Home)
+	backstage_admin.GET("/admin/list", backend_admin.HomePage)
 
 }
 

@@ -18,9 +18,6 @@ func AdminPage(c *gin.Context) {
 }
 
 func Home(c *gin.Context) {
-	// if !conf.Security.InstallLock {
-	// 	c.Redirect(302, "/install")
-	// }
 	data := common.CommonVer()
-	c.HTML(http.StatusOK, "backend/index/index.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }
