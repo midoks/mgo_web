@@ -31,7 +31,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/user/list',
+    url: '/{[.admin_path]}/admin/list',
     title: '数据表',
     cols: [[
         {field:'id', title:'ID',width:120},

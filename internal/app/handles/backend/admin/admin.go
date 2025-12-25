@@ -12,7 +12,12 @@ import (
 	// "mgo/internal/op"
 )
 
-func HomePage(c *gin.Context) {
+func Home(c *gin.Context) {
+	data := common.CommonVer()
+	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
+}
+
+func List(c *gin.Context) {
 	data := common.CommonVer()
 	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }

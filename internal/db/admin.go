@@ -12,6 +12,20 @@ import (
 	// "mgo/internal/utils"
 )
 
+func GetAdminList(page, size int) ([]model.Admin, int64, error) {
+	adminM := db.Model(&model.Admin{})
+	var count int64
+	if err := adminM.Count(&count).Error; err != nil {
+		return nil, 0, errors.Wrapf(err, "failed get server count")
+	}
+
+	var list []model.Admin
+	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
+		return nil, 0, errors.WithStack(err)
+	}
+	return list, count, nil
+}
+
 func GetAdminById(id int64) (*model.Admin, error) {
 	var u model.Admin
 	if err := db.First(&u, id).Error; err != nil {

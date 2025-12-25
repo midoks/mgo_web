@@ -65,7 +65,8 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	backstage_admin.GET("", backend.HomePage)
 	backstage_admin.GET("/index", handles.Home)
-	backstage_admin.GET("/admin/list", backend_admin.HomePage)
+	backstage_admin.GET("/admin/index", backend_admin.Home)
+	backstage_admin.GET("/admin/list", backend_admin.List)
 
 }
 
