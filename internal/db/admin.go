@@ -1,15 +1,13 @@
 package db
 
 import (
-	"fmt"
-	// "encoding/base64"
-	// "sync"
-	// "time"
+	"time"
 
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
 
 	"mgo/internal/model"
-	// "mgo/internal/utils"
+	utils "mgo/internal/utils"
 )
 
 func GetAdminList(page, size int) ([]model.Admin, int64, error) {
@@ -42,8 +40,62 @@ func GetAdminByName(username string) (*model.Admin, error) {
 	return &info, nil
 }
 
-func CreateAdmin(u *model.Admin) error {
+func AdminUpdateEmail(id int64, email string) error {
+	return db.Model(&model.Admin{ID: id}).Update("email", email).Error
+}
 
-	fmt.Println(u)
+func AdminUpdateTel(id int64, tel string) error {
+	return db.Model(&model.Admin{ID: id}).Update("tel", tel).Error
+}
+
+func AdminUpdatePass(id int64, password string) error {
+	u := model.Admin{}
+	u.ID = id
+
+	if password != "" {
+		salt := utils.RandString(16)
+		u.Password = model.TwoHashPwd(password, salt)
+		u.Salt = salt
+	}
+	u.UpdateTime = time.Now()
+	return UpdateAdmin(&u)
+}
+
+func UpdateAdmin(u *model.Admin) error {
+	if u.Password == "" {
+		if err := db.Model(u).Updates(map[string]interface{}{"password": u.Password, "update_time": u.UpdateTime}).Error; err != nil {
+			return errors.WithStack(err)
+		}
+	} else {
+		if err := db.Model(u).Updates(u).Error; err != nil {
+			return errors.WithStack(err)
+		}
+	}
+	return nil
+}
+
+func InitAdmin(user string, pass string) error {
+	_, err := GetAdminById(1)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+
+			salt := utils.RandString(16)
+			admin := &model.Admin{
+				Username: user,
+				Password: model.TwoHashPwd(pass, salt),
+				Salt:     salt,
+			}
+
+			admin.CreateTime = time.Now()
+			admin.UpdateTime = time.Now()
+			if err := CreateAdmin(admin); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func CreateAdmin(u *model.Admin) error {
 	return errors.WithStack(db.Create(u).Error)
 }

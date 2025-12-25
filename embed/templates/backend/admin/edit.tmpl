@@ -64,21 +64,21 @@
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-block">
-                                <input type="text" name="username" autocomplete="off" lay-verify="required" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="用户名">
+                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="用户名">
                             </div>
                         </div>
 
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label">手机</label>
                             <div class="layui-input-block">
-                                <input type="text" name="tel" autocomplete="off" lay-verify="required" class="layui-input" value="{[if .Data]}{[.Data.Tel]}{[end]}" placeholder="用户名">
+                                <input type="text" name="tel" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Tel]}{[end]}" placeholder="用户名">
                             </div>
                         </div>
 
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label">邮件</label>
                             <div class="layui-input-block">
-                                <input type="text" name="email" autocomplete="off" lay-verify="required" class="layui-input" value="{[if .Data]}{[.Data.Email]}{[end]}" placeholder="用户名">
+                                <input type="text" name="email" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Email]}{[end]}" placeholder="用户名">
                             </div>
                         </div>
 
@@ -102,5 +102,3 @@
 </div>
 
 {[template "backend/common/footer.tmpl" .]}
-
-
