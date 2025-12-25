@@ -39,7 +39,7 @@ function string2ArrayObject(str){
 }
 
 function copyText(value) {
-    var clipboard = new ClipboardJS('#mw_copys');
+    var clipboard = new ClipboardJS('#text_copys');
     clipboard.on('success', function (e) {
         layer.msg('复制成功',{icon:1,time:2000});
     });
@@ -47,8 +47,8 @@ function copyText(value) {
     clipboard.on('error', function (e) {
         layer.msg('复制失败，浏览器不兼容!',{icon:2,time:2000});
     });
-    $("#mw_copys").attr('data-clipboard-text',value);
-    $("#mw_copys").click();
+    $("#text_copys").attr('data-clipboard-text',value);
+    $("#text_copys").click();
 }
 
 //表单多维转一维
