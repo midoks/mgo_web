@@ -1,11 +1,11 @@
 package admin
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
 
-	// "github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
@@ -88,4 +88,27 @@ func PostEdit(c *gin.Context) {
 	}
 
 	common.ErrorResp(c, err, 0)
+}
+
+func Delete(c *gin.Context) {
+	var f struct {
+		Id int64 `form:"id"`
+	}
+
+	if err := c.ShouldBind(&f); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if f.Id == 1 {
+		common.ErrorResp(c, errors.New("the admin cannot delete!"), -1)
+		return
+	}
+
+	err := db.AdminDeleteById(f.Id)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
 }

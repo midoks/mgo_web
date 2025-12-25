@@ -96,6 +96,11 @@ func InitAdmin(user string, pass string) error {
 	return nil
 }
 
+func AdminDeleteById(id int64) error {
+	var d model.Admin
+	return db.Where("id = ?", id).Delete(&d).Error
+}
+
 func CreateAdmin(u *model.Admin) error {
 	return errors.WithStack(db.Create(u).Error)
 }

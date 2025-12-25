@@ -91,7 +91,7 @@
 
                     </div>
                     <div class="layui-form-item" style="text-align: center;">
-                        <input type="hidden" name="id" value="{[if .Id]}{[.Id]}{[end]}">
+                        <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
                         <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
