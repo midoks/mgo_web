@@ -1,4 +1,6 @@
-{[template "/base/header" .]}
+
+
+{[template "backend/common/header.tmpl" .]}
 
 <div class="layui-fluid">
     <div class="layui-col-md12" style="padding: 5px;">
@@ -8,7 +10,6 @@
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >
                         <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('添加','/user/edit?id=0',800,480)">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" id="install_node" lay-event="install_node">安装节点</button>
                     </div>
                 </form>
                 </div>
@@ -99,4 +100,5 @@ $("#install_node").click(function(){
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'user/delete','{{d.id}}')">删除</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='page'>登陆页</a>
 </script>
-{[template "/base/footer" .]}
+
+{[template "backend/common/footer.tmpl" .]}
