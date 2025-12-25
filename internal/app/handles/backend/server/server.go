@@ -17,6 +17,8 @@ import (
 
 func Home(c *gin.Context) {
 	data := common.CommonVer()
+	data["PageIsServer"] = true
+
 	c.HTML(http.StatusOK, "backend/server/index.tmpl", data)
 }
 
