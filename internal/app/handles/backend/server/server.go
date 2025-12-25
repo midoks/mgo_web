@@ -1,4 +1,4 @@
-package admin
+package server
 
 import (
 	"errors"
@@ -17,8 +17,7 @@ import (
 
 func Home(c *gin.Context) {
 	data := common.CommonVer()
-	data["PageIsAdmin"] = true
-	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
+	c.HTML(http.StatusOK, "backend/server/index.tmpl", data)
 }
 
 func Edit(c *gin.Context) {
@@ -29,7 +28,7 @@ func Edit(c *gin.Context) {
 
 	data := common.CommonVer()
 	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/admin/edit.tmpl", data)
+	c.HTML(http.StatusOK, "backend/server/edit.tmpl", data)
 }
 
 func List(c *gin.Context) {

@@ -1,13 +1,7 @@
 package model
 
 import (
-	"fmt"
 	"time"
-
-	"github.com/pkg/errors"
-
-	"mgo/internal/errs"
-	utils "mgo/internal/utils"
 )
 
 type Server struct {

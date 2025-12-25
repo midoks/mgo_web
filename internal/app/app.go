@@ -17,6 +17,7 @@ import (
 	"mgo/internal/app/handles"
 	backend "mgo/internal/app/handles/backend"
 	backend_admin "mgo/internal/app/handles/backend/admin"
+	backend_server "mgo/internal/app/handles/backend/server"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
 	"mgo/internal/conf"
@@ -63,6 +64,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin := backstage.Group("")
 	backstage_admin.Use(middleware.AuthRequired())
 
+	// 管理员
 	backstage_admin.GET("", backend.HomePage)
 	backstage_admin.GET("/index", handles.Home)
 	backstage_admin.GET("/admin/index", backend_admin.Home)
@@ -70,6 +72,9 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/admin/edit", backend_admin.PostEdit)
 	backstage_admin.GET("/admin/list", backend_admin.List)
 	backstage_admin.POST("/admin/delete", backend_admin.Delete)
+
+	// 边缘节点
+	backstage_admin.GET("/server/index", backend_server.Home)
 
 }
 
