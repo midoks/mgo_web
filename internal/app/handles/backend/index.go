@@ -28,7 +28,10 @@ func LoginPage(c *gin.Context) {
 }
 
 func LoginOut(c *gin.Context) {
-
+	session := sessions.Default(c)
+	session.Clear()
+	session.Save()
+	common.SuccessResp(c, gin.H{"message": "退出成功"})
 }
 
 func PostLogin(c *gin.Context) {
