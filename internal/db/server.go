@@ -9,9 +9,9 @@ import (
 )
 
 func GetServerList(page, size int) ([]model.Server, int64, error) {
-	adminM := db.Model(&model.Server{})
+	serverM := db.Model(&model.Server{})
 	var count int64
-	if err := adminM.Count(&count).Error; err != nil {
+	if err := serverM.Count(&count).Error; err != nil {
 		return nil, 0, errors.Wrapf(err, "failed get server count")
 	}
 

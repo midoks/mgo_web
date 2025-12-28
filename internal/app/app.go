@@ -76,6 +76,8 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点
 	backstage_admin.GET("/server/index", backend_server.Home)
+	backstage_admin.GET("/server/list", backend_server.List)
+	backstage_admin.GET("/server/edit", backend_server.Edit)
 
 }
 

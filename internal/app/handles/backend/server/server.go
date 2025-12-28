@@ -32,7 +32,7 @@ func Edit(c *gin.Context) {
 }
 
 func List(c *gin.Context) {
-	result, count, _ := db.GetAdminList(1, 10)
+	result, count, _ := db.GetServerList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 

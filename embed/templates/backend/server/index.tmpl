@@ -29,7 +29,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/admin/list',
+    url: '/{[.admin_path]}/server/list',
     title: '数据表',
     cols: [[
         {field:'id', title:'ID',width:120},
@@ -44,7 +44,6 @@ table.render({
 
 table.on('tool(list)', function(obj){
     switch(obj.event){
-        case 'install_node':install_node(obj);break;
     };
 });
 
