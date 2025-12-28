@@ -18,16 +18,17 @@ type LoginReq struct {
 }
 
 func HomePage(c *gin.Context) {
-	// if !conf.Security.InstallLock {
-	// 	c.Redirect(302, "/install")
-	// }
-	data := common.CommonVer()
-	c.HTML(http.StatusOK, "backend/index/index.tmpl", data)
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/index.tmpl", data)
 }
 
 func LoginPage(c *gin.Context) {
-	data := common.CommonVer()
+	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/login.tmpl", data)
+}
+
+func LoginOut(c *gin.Context) {
+
 }
 
 func PostLogin(c *gin.Context) {

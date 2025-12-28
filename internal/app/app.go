@@ -60,6 +60,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage := r.Group(conf.Web.AdminPath)
 	backstage.GET("/login", backend.LoginPage)
 	backstage.POST("/login", backend.PostLogin)
+	backstage.POST("/logout", backend.LoginOut)
 
 	backstage_admin := backstage.Group("")
 	backstage_admin.Use(middleware.AuthRequired())

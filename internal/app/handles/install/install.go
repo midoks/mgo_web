@@ -13,7 +13,7 @@ import (
 )
 
 func HomePage(c *gin.Context) {
-	data := common.CommonVer()
+	data := common.CommonVer(c)
 	step := c.Query("step")
 	if step == "2" {
 		c.HTML(http.StatusOK, "install/step2.tmpl", data)
@@ -23,7 +23,7 @@ func HomePage(c *gin.Context) {
 }
 
 func Step2Page(c *gin.Context) {
-	data := common.CommonVer()
+	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "install/step2.tmpl", data)
 }
 

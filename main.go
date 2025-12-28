@@ -27,6 +27,7 @@ func main() {
 	app.Usage = "a mgo service"
 	app.Commands = []cli.Command{
 		cmd.Web,
+		cmd.Root,
 	}
 
 	if err := app.Run(os.Args); err != nil {

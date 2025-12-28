@@ -16,8 +16,7 @@ import (
 )
 
 func Home(c *gin.Context) {
-	data := common.CommonVer()
-	data["PageIsAdmin"] = true
+	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }
 
@@ -27,7 +26,7 @@ func Edit(c *gin.Context) {
 
 	admin_data, _ := db.GetAdminById(idInt)
 
-	data := common.CommonVer()
+	data := common.CommonVer(c)
 	data["Data"] = admin_data
 	c.HTML(http.StatusOK, "backend/admin/edit.tmpl", data)
 }

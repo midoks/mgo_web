@@ -125,8 +125,8 @@ func Init(d *gorm.DB) {
 		sqlDb.SetMaxOpenConns(defaultMaxOpenConns)
 		sqlDb.SetConnMaxLifetime(defaultConnMaxLifetime)
 
-		log.Infof("Database connection pool configured: MaxIdle=%d, MaxOpen=%d, MaxLifetime=%v",
-			defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
+		// log.Infof("Database connection pool configured: MaxIdle=%d, MaxOpen=%d, MaxLifetime=%v",
+		// 	defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
 	}
 
 	err = AutoMigrate(new(model.Admin), new(model.User))

@@ -10,6 +10,7 @@ import (
 	"mgo/internal/conf"
 	// "mgo/internal/utils"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -32,11 +33,15 @@ type LayuiResp[T any] struct {
 	Data  T      `json:"data"`
 }
 
-func CommonVer() map[string]interface{} {
+func CommonVer(c *gin.Context) map[string]interface{} {
 	data := map[string]interface{}{
 		"title":   "MGOWEB",
 		"version": conf.App.Version,
 	}
+
+	session := sessions.Default(c)
+	username := session.Get("username")
+	data["login_name"] = username
 
 	data["admin_path"] = conf.Web.AdminPath
 	return data
