@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
+	"mgo/internal/conf"
 	"mgo/internal/db"
 	// "mgo/internal/op"
 )
@@ -31,7 +32,7 @@ func LoginOut(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Clear()
 	session.Save()
-	common.SuccessResp(c, gin.H{"message": "退出成功"})
+	c.Redirect(http.StatusFound, "/"+conf.Web.AdminPath+"/login")
 }
 
 func PostLogin(c *gin.Context) {

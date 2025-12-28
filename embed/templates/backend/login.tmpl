@@ -79,7 +79,7 @@ form.on('submit(login-submit)', function(d){
             } else if (res.code == 200){
                 layer.msg("登录成功", {icon: 1});
                 setTimeout(function(){
-                    location.href = "/{[.admin_path]}";
+                    location.href = "/{[.admin_path]}/index";
                 }, 2000);
             } else {
                 layer.msg("访问异常!", {icon: 2});

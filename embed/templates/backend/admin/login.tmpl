@@ -74,7 +74,7 @@ form.on('submit(LAY-user-login-submit)', function(d){
         // console.log(rdata);
         if (rdata.code>-1){
             layer.msg(rdata.msg, {icon: 1 ,time: 1000 }, function(){
-                location.href = "/";
+                location.href = "/{[.admin_path]}/index";
             });
         } else {
             layer.msg(rdata.msg, {icon: 2 ,time: 1000 });
