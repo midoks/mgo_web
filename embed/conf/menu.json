@@ -1,0 +1,60 @@
+[
+    {
+        "code": "home",
+        "name": "数据看板",
+        "icon": "layui-icon-home",
+        "path": "/index",
+        "perm": ""
+    },
+    {
+        "code": "server",
+        "name": "边缘节点",
+        "icon": "layui-icon-release",
+        "path": "",
+        "perm": "server.view",
+        "children": [
+            {
+                "code": "server_list",
+                "name": "服务器",
+                "path": "/server/index",
+                "perm": "server.view"
+            },
+            {
+                "code": "tag_list",
+                "name": "标签",
+                "path": "/tag/index",
+                "perm": "server.view"
+            }
+        ]
+    },
+    {
+        "code": "admin",
+        "name": "管理员",
+        "icon": "layui-icon-user",
+        "path": "",
+        "perm": "admin.view",
+        "children": [
+            {
+                "code": "admin_list",
+                "name": "管理员列表",
+                "path": "/admin/index",
+                "perm": "admin.view"
+            }
+        ]
+    },
+    {
+        "code": "system",
+        "name": "系统设置",
+        "icon": "layui-icon-set",
+        "path": "",
+        "perm": "server.view",
+        "children": [
+            {
+                "code": "system_base",
+                "name": "基础设置",
+                "path": "/system/base",
+                "perm": "server.view"
+            }
+        ]
+    }
+]

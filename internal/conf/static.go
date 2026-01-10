@@ -29,6 +29,11 @@ var (
 	}
 
 	// log
+	General struct {
+		MenuFile string
+	}
+
+	// log
 	Log struct {
 		Format   string
 		RootPath string

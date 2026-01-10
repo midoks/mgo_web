@@ -69,15 +69,19 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("", backend.HomePage)
 	backstage_admin.GET("/index", handles.Home)
 	backstage_admin.GET("/admin/index", backend_admin.Home)
-	backstage_admin.GET("/admin/edit", backend_admin.Edit)
-	backstage_admin.POST("/admin/edit", backend_admin.PostEdit)
-	backstage_admin.GET("/admin/list", backend_admin.List)
-	backstage_admin.POST("/admin/delete", backend_admin.Delete)
+	backstage_admin.GET("/admin/edit", middleware.PermissionRequired("admin.edit"), backend_admin.Edit)
+	backstage_admin.POST("/admin/edit", middleware.PermissionRequired("admin.edit"), backend_admin.PostEdit)
+	backstage_admin.GET("/admin/list", middleware.PermissionRequired("admin.view"), backend_admin.List)
+	backstage_admin.POST("/admin/delete", middleware.PermissionRequired("admin.edit"), backend_admin.Delete)
 
 	// 边缘节点
 	backstage_admin.GET("/server/index", backend_server.Home)
-	backstage_admin.GET("/server/list", backend_server.List)
-	backstage_admin.GET("/server/edit", backend_server.Edit)
+	backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)
+	backstage_admin.GET("/server/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
+
+	backstage_admin.GET("/tag/index", backend_server.Home)
+	backstage_admin.GET("/tag/list", middleware.PermissionRequired("server.view"), backend_server.List)
+	backstage_admin.GET("/tag/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
 
 }
 

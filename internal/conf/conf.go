@@ -143,6 +143,14 @@ func renderSection(File *ini.File) error {
 	}
 
 	// ****************************
+	// ----- general settings -----
+	// ****************************
+
+	if err := File.Section("general").MapTo(&General); err != nil {
+		return errors.Wrap(err, "mapping [general] section")
+	}
+
+	// ****************************
 	// ----- Web settings -----
 	// ****************************
 

@@ -129,10 +129,18 @@ func Init(d *gorm.DB) {
 		// 	defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
 	}
 
-	err = AutoMigrate(new(model.Admin), new(model.User))
+	err = AutoMigrate(
+		new(model.Admin),
+		new(model.User),
+		new(model.Role),
+		new(model.Permission),
+		new(model.AdminRole),
+		new(model.RolePermission),
+	)
 	if err != nil {
 		log.Fatalf("failed migrate database: %s", err.Error())
 	}
+	InitRBACDefault()
 }
 
 func AutoMigrate(dst ...interface{}) error {

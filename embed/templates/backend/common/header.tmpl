@@ -58,44 +58,40 @@
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
 
-                    <li data-name="home" class="layui-nav-item {[if .PageIsHome ]}layui-this{[end]}">
-                        <a href="/{[.admin_path]}/index" lay-tips="控制台" lay-direction="2" >
-                            <i class="layui-icon layui-icon-home"></i>
-                            <cite>控制台</cite>
-                        </a>
-                    </li>
+                    {[range $menu := .Menus]}
+                        {[if or (eq $menu.Perm "") (call $.HasPerm $menu.Perm)]}
 
-                    <li data-name="admin" class="layui-nav-item {[if .PageIsAdmin ]}layui-nav-itemed{[end]}">
-                        <a lay-tips="管理员" lay-direction="2">
-                            <i class="layui-icon layui-icon-release"></i>
-                            <cite>管理员</cite>
-                        </a>
+                        {[$isActive := false]}
+                        
+                        {[if eq $menu.Code $.ActiveMenu]}
+                            {[$isActive = true]}
+                        {[end]}
 
-                        <dl class="layui-nav-child">
-                            <dd class="layui-this">
-                                <a href="/{[.admin_path]}/admin/index">管理员列表</a>
-                            </dd>
-                        </dl>
-                    </li>
+                        {[range $child := $menu.Children]}
+                            {[if eq $child.Code $.ActiveMenu]}
+                                {[$isActive = true]}
+                            {[end]}
+                        {[end]}
 
-                    <li data-name="server" class="layui-nav-item {[if .PageIsServer ]}layui-nav-itemed{[end]}">
-                        <a lay-tips="边缘节点" lay-direction="2">
-                            <i class="layui-icon layui-icon-release"></i>
-                            <cite>边缘节点</cite>
-                        </a>
-
-                        <dl class="layui-nav-child">
-                            <dd class="layui-this">
-                                <a href="/{[.admin_path]}/server/index">服务器</a>
-                            </dd>
-                        </dl>
-
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="/{[.admin_path]}/tag/index">标签</a>
-                            </dd>
-                        </dl>
-                    </li>
+                        <li data-name="{[$menu.Code]}" class="layui-nav-item {[if $isActive]}layui-nav-itemed{[end]} {[if and (eq $menu.Code $.ActiveMenu) (not $menu.Children)]}layui-this{[end]}">
+                            <a href="{[if $menu.Children]}javascript:;{[else]}/{[$.admin_path]}{[$menu.Path]}{[end]}" lay-tips="{[$menu.Name]}" lay-direction="2">
+                                <i class="layui-icon {[$menu.Icon]}"></i>
+                                <cite>{[$menu.Name]}</cite>
+                            </a>
+                            {[if $menu.Children]}
+                            <dl class="layui-nav-child">
+                                {[range $child := $menu.Children]}
+                                    {[if or (eq $child.Perm "") (call $.HasPerm $child.Perm)]}
+                                    <dd class="{[if eq $child.Code $.ActiveMenu]}layui-this{[end]}">
+                                        <a href="/{[$.admin_path]}{[$child.Path]}">{[$child.Name]}</a>
+                                    </dd>
+                                    {[end]}
+                                {[end]}
+                            </dl>
+                            {[end]}
+                        </li>
+                        {[end]}
+                    {[end]}
 
                 </ul>
             </div>
@@ -108,10 +104,17 @@
 
             <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
                 <div class="layui-breadcrumb" lay-filter="breadcrumb">
-                    {[if .PageIsHome ]}<a><cite>主页</cite></a>{[end]}
-                    {[if .PageIsUser ]}<a><cite>用户管理</cite></a>{[end]}
-                    {[if .PageIsServer ]}<a><cite>服务器管理</cite></a>{[end]}
-                    {[if .PageIsTag ]}<a><cite>标签</cite></a>{[end]}
+                    {[range $menu := .Menus]}
+                        {[if eq $menu.Code $.ActiveMenu]}
+                            <a><cite>{[$menu.Name]}</cite></a>
+                        {[end]}
+                        {[range $child := $menu.Children]}
+                            {[if eq $child.Code $.ActiveMenu]}
+                                <a><cite>{[$menu.Name]}</cite></a>
+                                <a><cite>{[$child.Name]}</cite></a>
+                            {[end]}
+                        {[end]}
+                    {[end]}
                 </div>
             </div>
         </div>

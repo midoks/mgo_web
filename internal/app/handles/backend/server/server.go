@@ -17,6 +17,7 @@ import (
 
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
+
 	c.HTML(http.StatusOK, "backend/server/index.tmpl", data)
 }
 
@@ -24,7 +25,7 @@ func Edit(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
 
-	admin_data, _ := db.GetServerById(idInt)
+	admin_data, _ := db.GetAdminById(idInt)
 
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
@@ -32,7 +33,7 @@ func Edit(c *gin.Context) {
 }
 
 func List(c *gin.Context) {
-	result, count, _ := db.GetServerList(1, 10)
+	result, count, _ := db.GetAdminList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 

@@ -3,11 +3,14 @@ package common
 import (
 	"context"
 	"encoding/json"
+
 	// "fmt"
 	"net/http"
 	// "strings"
 
 	"mgo/internal/conf"
+	"mgo/internal/db"
+
 	// "mgo/internal/utils"
 
 	"github.com/gin-contrib/sessions"
@@ -43,7 +46,33 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	username := session.Get("username")
 	data["login_name"] = username
 
+	userIDRaw := session.Get("user_id")
+	var adminID int64
+	switch v := userIDRaw.(type) {
+	case int64:
+		adminID = v
+	case int:
+		adminID = int64(v)
+	case uint:
+		adminID = int64(v)
+	case uint64:
+		adminID = int64(v)
+	}
+	data["HasPerm"] = func(code string) bool {
+		if adminID == 0 {
+			return false
+		}
+		ok, err := db.HasAdminPermission(adminID, code)
+		if err != nil {
+			return false
+		}
+		return ok
+	}
+
 	data["admin_path"] = conf.Web.AdminPath
+	data["Menus"] = GetMenus()
+	data["CurrentPath"] = c.Request.URL.Path
+	data["ActiveMenu"] = FindMenuCodeByPath(c.Request.URL.Path, conf.Web.AdminPath)
 	return data
 }
 
