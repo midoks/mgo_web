@@ -17,6 +17,7 @@ import (
 	"mgo/internal/app/handles"
 	backend "mgo/internal/app/handles/backend"
 	backend_admin "mgo/internal/app/handles/backend/admin"
+	backend_clusters "mgo/internal/app/handles/backend/clusters"
 	backend_server "mgo/internal/app/handles/backend/server"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
@@ -75,6 +76,10 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/admin/delete", middleware.PermissionRequired("admin.edit"), backend_admin.Delete)
 
 	// 边缘节点
+	backstage_admin.GET("/clusters", backend_clusters.Home)
+	// backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)
+	// backstage_admin.GET("/server/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
+
 	backstage_admin.GET("/server/index", backend_server.Home)
 	backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)
 	backstage_admin.GET("/server/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)

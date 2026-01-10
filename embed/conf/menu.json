@@ -2,20 +2,32 @@
     {
         "code": "home",
         "name": "数据看板",
-        "icon": "layui-icon-home",
+        "icon": "layui-icon-console",
         "path": "/index",
         "perm": ""
     },
     {
-        "code": "server",
+        "code": "node",
         "name": "边缘节点",
-        "icon": "layui-icon-release",
+        "icon": "layui-icon-engine",
         "path": "",
         "perm": "server.view",
         "children": [
             {
+                "code": "clusters",
+                "name": "集群列表",
+                "path": "/clusters",
+                "perm": "server.view"
+            },
+            {
                 "code": "server_list",
-                "name": "服务器",
+                "name": "节点IP",
+                "path": "/server/index",
+                "perm": "server.view"
+            },
+            {
+                "code": "grants",
+                "name": "节点SSH",
                 "path": "/server/index",
                 "perm": "server.view"
             },
@@ -39,8 +51,21 @@
                 "name": "管理员列表",
                 "path": "/admin/index",
                 "perm": "admin.view"
+            },
+            {
+                "code": "admin_recipients",
+                "name": "通知媒介",
+                "path": "/admin/recipients",
+                "perm": "admin.view"
             }
         ]
+    },
+    {
+        "code": "log",
+        "name": "日志审计",
+        "icon": "layui-icon-refresh-3",
+        "path": "/log",
+        "perm": ""
     },
     {
         "code": "system",
