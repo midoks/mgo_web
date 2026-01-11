@@ -46,7 +46,12 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
+function requestLogs(){
+    $.get('/log', function(rdata) {
+        //console.log(rdata);
+        $('#run_logs textarea').text(rdata.data);
+    },'json');
+}
 
 
 ///
