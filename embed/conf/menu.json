@@ -14,10 +14,24 @@
         "perm": "server.view",
         "children": [
             {
-                "code": "clusters",
+                "code": "cluster",
                 "name": "集群列表",
-                "path": "/clusters",
-                "perm": "server.view"
+                "path": "/cluster",
+                "perm": "server.view",
+                "children":[
+                    {
+                        "code":"cluster",
+                        "path": "/cluster/create"
+                    },
+                    {
+                        "code":"cluster",
+                        "path": "/cluster/node"
+                    },
+                    {
+                        "code":"cluster",
+                        "path": "/cluster/update"
+                    }
+                ]
             },
             {
                 "code": "server_list",

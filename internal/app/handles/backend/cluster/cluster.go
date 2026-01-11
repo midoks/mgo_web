@@ -1,4 +1,4 @@
-package clusters
+package cluster
 
 import (
 	"errors"
@@ -17,8 +17,17 @@ import (
 
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/index.tmpl", data)
+}
 
-	c.HTML(http.StatusOK, "backend/clusters/index.tmpl", data)
+func Create(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
+}
+
+func Node(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
 
 func Edit(c *gin.Context) {
@@ -29,11 +38,11 @@ func Edit(c *gin.Context) {
 
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/clusters/edit.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/edit.tmpl", data)
 }
 
 func List(c *gin.Context) {
-	result, count, _ := db.GetAdminList(1, 10)
+	result, count, _ := db.GetClusterList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 

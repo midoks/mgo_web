@@ -1,6 +1,8 @@
 package common
 
 import (
+	// "fmt"
+
 	"encoding/json"
 	"mgo/embed"
 	"sync"
@@ -52,6 +54,8 @@ func findMenuCodeRecursive(menus []MenuConf, requestPath string, adminPath strin
 			fullPath = m.Path
 		}
 
+		// fmt.Println(m.Path, fullPath, requestPath)
+		// fmt.Println(m.Children)
 		// Check exact match
 		if m.Path != "" && fullPath == requestPath {
 			return m.Code

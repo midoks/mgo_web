@@ -4,13 +4,33 @@
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             <div class="layui-card-body">
+
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title" id="status">
+                        <li class="layui-this" data-status="1">集群</li>
+                        <li data-status="0">节点</li>
+                        <span>|</span>
+                        <li data-status="1"><a href="/{[.admin_path]}/cluster/create">创建集群</a></li>
+                    </ul>
+                </div>
+
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
-                    <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('添加','edit?id=0',500,400)">添加</button>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="集群、节点关键词" autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+                
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
                     </div>
                 </form>
                 </div>
+
                 <div id="list"></div>
             </div>
         </div>
@@ -29,10 +49,9 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/server/list',
+    url: '/{[.admin_path]}/cluster/list',
     title: '数据表',
     cols: [[
-        {field:'id', title:'ID',width:120},
         {field:'username', title:'用户名'},
         {field:'tel', title:'手机号'},
         {field:'email', title:'邮件地址'},
