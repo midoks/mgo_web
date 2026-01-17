@@ -76,10 +76,12 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/admin/delete", middleware.PermissionRequired("admin.edit"), backend_admin.Delete)
 
 	// 边缘节点
-	backstage_admin.GET("/cluster", backend_cluster.Home)
-	backstage_admin.GET("/cluster/list", backend_cluster.List)
-	backstage_admin.GET("/cluster/create", backend_cluster.Create)
-	backstage_admin.GET("/cluster/node", backend_cluster.Node)
+	backstage_admin.GET("/clusters", backend_cluster.Home)
+	backstage_admin.GET("/clusters/list", backend_cluster.List)
+	backstage_admin.GET("/clusters/create", backend_cluster.Create)
+	backstage_admin.GET("/clusters/node", backend_cluster.Node)
+
+	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 
 	backstage_admin.GET("/server/index", backend_server.Home)
 	backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)

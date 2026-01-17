@@ -7,8 +7,8 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
-                        <li data-status="1"><a href="/{[.admin_path]}/cluster">集群</a></li>
-                        <li data-status="2"><a href="/{[.admin_path]}/cluster/node">节点</a></li>
+                        <li data-status="1"><a href="/{[.admin_path]}/clusters">集群</a></li>
+                        <li data-status="2"><a href="/{[.admin_path]}/clusters/node">节点</a></li>
                         <li data-status="3" class="layui-this">创建集群</li>
                     </ul>
                 </div>
@@ -51,7 +51,7 @@ var admin = layui.admin
 form.on('submit(submit)', function(data){
     console.log(data);
 
-    $.post('/{[.admin_path]}/cluster/create', data.field,function(rdata) {
+    $.post('/{[.admin_path]}/clusters/create', data.field,function(rdata) {
     
         console.log(rdata);
     },'json');

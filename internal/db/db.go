@@ -136,6 +136,7 @@ func Init(d *gorm.DB) {
 		new(model.Permission),
 		new(model.AdminRole),
 		new(model.RolePermission),
+		new(model.Cluster),
 	)
 	if err != nil {
 		log.Fatalf("failed migrate database: %s", err.Error())
