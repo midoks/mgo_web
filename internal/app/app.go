@@ -18,6 +18,7 @@ import (
 	backend "mgo/internal/app/handles/backend"
 	backend_admin "mgo/internal/app/handles/backend/admin"
 	backend_cluster "mgo/internal/app/handles/backend/cluster"
+	backend_log "mgo/internal/app/handles/backend/log"
 	backend_server "mgo/internal/app/handles/backend/server"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
@@ -70,6 +71,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("", backend.HomePage)
 	backstage_admin.GET("/index", handles.Home)
 	backstage_admin.GET("/admin/index", backend_admin.Home)
+	backstage_admin.GET("/admin/recipients", backend_admin.Recipients)
 	backstage_admin.GET("/admin/edit", middleware.PermissionRequired("admin.edit"), backend_admin.Edit)
 	backstage_admin.POST("/admin/edit", middleware.PermissionRequired("admin.edit"), backend_admin.PostEdit)
 	backstage_admin.GET("/admin/list", middleware.PermissionRequired("admin.view"), backend_admin.List)
@@ -84,10 +86,16 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 
 	backstage_admin.GET("/clusters/cluster/boards", backend_cluster.ClusterBoards)
+	backstage_admin.GET("/clusters/cluster/list", backend_cluster.ClusterList)
 
+	//服务器
 	backstage_admin.GET("/server/index", backend_server.Home)
 	backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)
 	backstage_admin.GET("/server/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
+
+	// 日志审计
+	backstage_admin.GET("/log", backend_log.Home)
+	backstage_admin.GET("/log/list", backend_log.List)
 
 	backstage_admin.GET("/tag/index", backend_server.Home)
 	backstage_admin.GET("/tag/list", middleware.PermissionRequired("server.view"), backend_server.List)

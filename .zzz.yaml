@@ -1,6 +1,6 @@
 dev: false
 title: zzz
-frequency: 3
+frequency: 5
 dirfilter:
 - tmp
 - .git

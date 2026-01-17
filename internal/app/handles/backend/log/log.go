@@ -1,4 +1,4 @@
-package cluster
+package log
 
 import (
 	"errors"
@@ -9,35 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
-	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
 	utils "mgo/internal/utils"
+	// "mgo/internal/op"
 )
 
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/index.tmpl", data)
-}
 
-func Create(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
-}
-
-func Node(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
-}
-
-func ClusterBoards(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/cluster_boards.tmpl", data)
-}
-
-func ClusterList(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/cluster_list.tmpl", data)
+	c.HTML(http.StatusOK, "backend/log/index.tmpl", data)
 }
 
 func Edit(c *gin.Context) {
@@ -48,11 +29,11 @@ func Edit(c *gin.Context) {
 
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/cluster/edit.tmpl", data)
+	c.HTML(http.StatusOK, "backend/server/edit.tmpl", data)
 }
 
 func List(c *gin.Context) {
-	result, count, _ := db.GetClusterList(1, 10)
+	result, count, _ := db.GetLogList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
@@ -108,27 +89,6 @@ func PostEdit(c *gin.Context) {
 	}
 
 	common.ErrorResp(c, err, 0)
-}
-
-func PostCreate(c *gin.Context) {
-	var field form.ClusterCreate
-	if err := c.ShouldBind(&field); err != nil {
-		common.ErrorResp(c, err, -1)
-		return
-	}
-
-	cluster := &model.Cluster{
-		Name:       field.Name,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
-	}
-
-	if err := db.GetDb().Create(cluster).Error; err != nil {
-		common.ErrorResp(c, err, -1)
-		return
-	}
-
-	common.SuccessResp(c)
 }
 
 func Delete(c *gin.Context) {

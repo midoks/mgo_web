@@ -10,5 +10,4 @@ type Log struct {
 	Ip         string    `json:"ip"`                   // ip
 	Content    string    `json:"content"`              // content
 	CreateTime time.Time `json:"create_time"`          // create_time
-	UpdateTime time.Time `json:"update_time"`          // update_time
 }

@@ -15,9 +15,9 @@ type Admin struct {
 	Username   string    `json:"username" gorm:"unique" binding:"required"` // username
 	Password   string    `json:"password"`                                  // password
 	Salt       string    `json:"salt"`                                      // salt
-	Status     int       `json:"status"`                                    // status
 	Tel        string    `json:"tel"`                                       // tel
 	Email      string    `json:"email"`                                     // email
+	Status     int       `json:"status"`                                    // status
 	CreateTime time.Time `json:"create_time"`                               // create_time
 	UpdateTime time.Time `json:"update_time"`                               // update_time
 }

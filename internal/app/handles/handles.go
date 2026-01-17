@@ -7,6 +7,8 @@ import (
 
 	"mgo/internal/app/common"
 	"mgo/internal/conf"
+
+	"mgo/internal/op"
 )
 
 func AdminPage(c *gin.Context) {
@@ -18,6 +20,7 @@ func AdminPage(c *gin.Context) {
 }
 
 func Home(c *gin.Context) {
+	op.AddLog(1, "测试")
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }
