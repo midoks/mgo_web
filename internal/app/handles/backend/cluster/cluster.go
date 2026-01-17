@@ -45,6 +45,26 @@ func ClusterCreate(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_create.tmpl", data)
 }
 
+func ClusterGroups(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_groups.tmpl", data)
+}
+
+func ClusterSettings(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_settings.tmpl", data)
+}
+
+func ClusterInstall(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_install.tmpl", data)
+}
+
+func ClusterDelete(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_delete.tmpl", data)
+}
+
 func Edit(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)

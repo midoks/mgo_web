@@ -42,6 +42,26 @@
                     {
                         "code":"clusters",
                         "path": "/clusters/cluster/create"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/install"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/settings"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/delete"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/groups"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/settings"
                     }
                     
                 ]
