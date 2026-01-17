@@ -18,8 +18,13 @@
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                    <button type="button" class="layui-btn layui-bg-red">删除当前集群</button>
+
+                    <button type="button" class="layui-btn layui-btn-sm ">
+                        <i class="layui-icon layui-icon-add-circle"></i> 添加
+                    </button>
                 </div>
+
+                <div id="list"></div>
             </div>
         </div>
     </div>
@@ -34,7 +39,18 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
+table.render({
+    elem: '#list',
+    url: '/{[.admin_path]}/clusters/list',
+    title: '数据表',
+    cols: [[
+        {field:'name', title:'集群名称', toolbar: '#nameTpl',},
+        {field:'num', title:'节点数'},
+        {field:'num_online', title:'在线节点数'},
+        {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
+     ]],
+    page: true
+});
 
 ///
 });

@@ -137,6 +137,7 @@ func Init(d *gorm.DB) {
 		new(model.AdminRole),
 		new(model.RolePermission),
 		new(model.Cluster),
+		new(model.ClusterGroup),
 		new(model.Log),
 	)
 	if err != nil {
