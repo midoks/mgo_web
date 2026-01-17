@@ -8,13 +8,13 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         {[range $menu := .submenu]}
-                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}?id={[$.id]}">{[$menu.Name]}</a></li>
+                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}?cluster_id={[$.cluster_id]}">{[$menu.Name]}</a></li>
                         {[end]}
                     </ul>
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                    <button type="button" class="layui-btn layui-btn-sm" onclick="Admin.open('添加','{:url('novel/edit')}?id=0',1200,480)">
+                    <button type="button" class="layui-btn layui-btn-sm" onclick="Admin.open('添加','/{[$.admin_path]}/clusters/cluster/groups_add?id={[$.id]}',500,220)">
                         <i class="layui-icon layui-icon-add-circle"></i> 添加
                     </button>
                 </div>
