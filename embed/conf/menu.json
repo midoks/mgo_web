@@ -24,13 +24,18 @@
                         "path": "/clusters/create"
                     },
                     {
-                        "code":"cluster",
+                        "code":"clusters",
                         "path": "/clusters/node"
                     },
                     {
-                        "code":"cluster",
+                        "code":"clusters",
                         "path": "/clusters/update"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/boards"
                     }
+                    
                 ]
             },
             {

@@ -30,6 +30,11 @@ func Node(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
 
+func ClusterBoards(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_boards.tmpl", data)
+}
+
 func Edit(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)

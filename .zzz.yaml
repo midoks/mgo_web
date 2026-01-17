@@ -8,9 +8,9 @@ dirfilter:
 - scripts
 - vendor
 - logs
-- templates
 ext:
 - go
+- tmpl
 lang: go
 enablerun: true
 action:
