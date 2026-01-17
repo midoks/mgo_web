@@ -7,19 +7,14 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
-                        <li data-status="1"><a href="/{[.admin_path]}/clusters/cluster/boards">集群看板</a></li>
-                        <li data-status="2"><a href="/{[.admin_path]}/clusters/cluster/list">节点列表</a></li>
-                        <li data-status="3"><a href="/{[.admin_path]}/clusters/cluster/create">创建节点</a></li>
-                        <li data-status="4"><a href="/{[.admin_path]}/clusters/cluster/install">安装升级</a></li>
-                        <li data-status="5" class="layui-this">节点分组</li>
-                        <li data-status="6"><a href="/{[.admin_path]}/clusters/cluster/settings">集群设置</a></li>
-                        <li data-status="7"><a href="/{[.admin_path]}/clusters/cluster/delete">其它操作</a></li>
+                        {[range $menu := .submenu]}
+                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}">{[$menu.Name]}</a></li>
+                        {[end]}
                     </ul>
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-
-                    <button type="button" class="layui-btn layui-btn-sm ">
+                    <button type="button" class="layui-btn layui-btn-sm" onclick="Admin.open('添加','{:url('novel/edit')}?id=0',1200,480)">
                         <i class="layui-icon layui-icon-add-circle"></i> 添加
                     </button>
                 </div>
@@ -44,16 +39,21 @@ table.render({
     url: '/{[.admin_path]}/clusters/list',
     title: '数据表',
     cols: [[
-        {field:'name', title:'集群名称', toolbar: '#nameTpl',},
+        {field:'name', title:'分组名称', toolbar: '#nameTpl',},
         {field:'num', title:'节点数'},
-        {field:'num_online', title:'在线节点数'},
         {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
-     ]],
+    ]],
     page: true
 });
 
 ///
 });
+</script>
+
+
+<script type="text/html" id="cmdTpl">
+<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">详情</a>
+<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">设置</a>
 </script>
 
 {[template "backend/common/footer.tmpl" .]}

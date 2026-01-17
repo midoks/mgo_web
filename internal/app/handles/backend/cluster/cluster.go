@@ -15,6 +15,47 @@ import (
 	utils "mgo/internal/utils"
 )
 
+func GetSubMenu() []form.ClusterSubMenu {
+	menu := []form.ClusterSubMenu{
+		{
+			Number: 1,
+			Name:   "集群看板",
+			Link:   "clusters/cluster/boards",
+		},
+		{
+			Number: 2,
+			Name:   "节点列表",
+			Link:   "clusters/cluster/list",
+		},
+		{
+			Number: 3,
+			Name:   "创建节点",
+			Link:   "clusters/cluster/create",
+		},
+		{
+			Number: 4,
+			Name:   "安装升级",
+			Link:   "clusters/cluster/install",
+		},
+		{
+			Number: 5,
+			Name:   "节点分组",
+			Link:   "clusters/cluster/groups",
+		},
+		{
+			Number: 6,
+			Name:   "集群设置",
+			Link:   "clusters/cluster/settings",
+		},
+		{
+			Number: 7,
+			Name:   "其它操作",
+			Link:   "clusters/cluster/delete",
+		},
+	}
+	return menu
+}
+
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/cluster/index.tmpl", data)
@@ -32,36 +73,43 @@ func Node(c *gin.Context) {
 
 func ClusterBoards(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_boards.tmpl", data)
 }
 
 func ClusterList(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_list.tmpl", data)
 }
 
 func ClusterCreate(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_create.tmpl", data)
 }
 
 func ClusterGroups(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_groups.tmpl", data)
 }
 
 func ClusterSettings(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_settings.tmpl", data)
 }
 
 func ClusterInstall(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_install.tmpl", data)
 }
 
 func ClusterDelete(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/cluster_delete.tmpl", data)
 }
 
