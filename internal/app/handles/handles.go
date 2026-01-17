@@ -1,13 +1,13 @@
 package handles
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/conf"
-
 	"mgo/internal/op"
 )
 
@@ -20,7 +20,8 @@ func AdminPage(c *gin.Context) {
 }
 
 func Home(c *gin.Context) {
-	op.AddLog(1, "测试")
+	err := op.AddLog(1, "测试")
+	fmt.Println(err)
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }
