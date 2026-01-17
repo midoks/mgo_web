@@ -56,7 +56,7 @@
 <!-- start -->
 
 <div class="layui-fluid">
-    <form class="layui-form layui-form-pane" action="edit">
+    <form class="layui-form layui-form-pane" action="/{[$.admin_path]}/clusters/cluster/groups_add?cluster_id={[$.cluster_id]}">
         <div class="layui-tab layui-tab-brief">
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -64,13 +64,13 @@
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label">分组名称</label>
                             <div class="layui-input-block">
-                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="">
                             </div>
                         </div>
                     </div>
                     <!-- ---- -->
                     <div class="layui-form-item" style="text-align: center;">
-                        <input type="hidden" name="id" value="{[if .gid]}{[.gid]}{[end]}">
+                        <input type="hidden" name="id" value="{[if .id]}{[.id]}{[end]}">
                         <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
                     </div>
                 </div>

@@ -92,20 +92,6 @@ func ClusterCreate(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_create.tmpl", data)
 }
 
-func ClusterGroups(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetSubMenu()
-	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_groups.tmpl", data)
-}
-
-func ClusterGroupsAdd(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetSubMenu()
-	data["id"] = c.Query("id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_groups_add.tmpl", data)
-}
-
 func ClusterSettings(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()

@@ -9,3 +9,9 @@ type ClusterSubMenu struct {
 	Name   string `form:"name"`
 	Link   string `form:"link"`
 }
+
+type ClusterGroupAdd struct {
+	ID        string `form:"id"`
+	Name      string `form:"name"`
+	ClusterId int64  `form:"cluster_id"`
+}
