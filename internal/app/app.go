@@ -83,10 +83,11 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
 
-	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
-
 	backstage_admin.GET("/clusters/cluster/boards", backend_cluster.ClusterBoards)
 	backstage_admin.GET("/clusters/cluster/list", backend_cluster.ClusterList)
+	backstage_admin.GET("/clusters/cluster/create", backend_cluster.ClusterCreate)
+
+	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 
 	//服务器
 	backstage_admin.GET("/server/index", backend_server.Home)

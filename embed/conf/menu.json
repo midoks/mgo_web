@@ -38,6 +38,10 @@
                     {
                         "code":"clusters",
                         "path": "/clusters/cluster/list"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/cluster/create"
                     }
                     
                 ]

@@ -40,6 +40,11 @@ func ClusterList(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_list.tmpl", data)
 }
 
+func ClusterCreate(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_create.tmpl", data)
+}
+
 func Edit(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
