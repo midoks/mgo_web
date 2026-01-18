@@ -85,6 +85,9 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/cluster/boards", backend_cluster.ClusterBoards)
 	backstage_admin.GET("/clusters/cluster/list", backend_cluster.ClusterList)
 
+	//边缘节点 - 认证
+	backstage_admin.GET("/clusters/grants", backend_cluster.ClusterGrants)
+
 	// 边缘节点 - 节点
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)

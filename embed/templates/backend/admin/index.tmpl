@@ -4,10 +4,28 @@
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             <div class="layui-card-body">
+
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title" id="status">
+                        <li data-status="1" class="layui-this">管理员列表</li>
+                        <li data-status="2"><a href="/{[.admin_path]}/clusters/regions/nodes">创建管理员</a></li>
+                    </ul>
+                </div>
+
+
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
-                    <div class="layui-inline mr0" >
-                        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="Admin.open('添加','edit?id=0',500,400)">添加</button>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="用户名、全名 ..." autocomplete="off" class="layui-input h30" value="">
+                        </div>
+                    </div>
+                
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
                     </div>
                 </form>
                 </div>

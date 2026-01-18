@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func GetLogList(page, size int) ([]model.Log, int64, error) {
+func GetLogList(page, size int64) ([]model.Log, int64, error) {
 	serverM := db.Model(&model.Log{})
 	var count int64
 	if err := serverM.Count(&count).Error; err != nil {
@@ -25,13 +25,13 @@ func GetLogList(page, size int) ([]model.Log, int64, error) {
 func GetLogById(id int64) (*model.Log, error) {
 	var u model.Log
 	if err := db.First(&u, id).Error; err != nil {
-		return nil, errors.Wrapf(err, "failed get admin")
+		return nil, errors.Wrapf(err, "failed get log")
 	}
 	return &u, nil
 }
 
 func LogDeleteById(id int64) error {
-	var d model.Admin
+	var d model.Log
 	return db.Where("id = ?", id).Delete(&d).Error
 }
 

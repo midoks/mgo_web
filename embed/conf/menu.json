@@ -81,7 +81,7 @@
             {
                 "code": "grants",
                 "name": "节点SSH",
-                "path": "/server/index",
+                "path": "/clusters/grants",
                 "perm": "server.view"
             },
             {
@@ -131,6 +131,12 @@
                 "code": "system_base",
                 "name": "基础设置",
                 "path": "/system/base",
+                "perm": "server.view"
+            },
+            {
+                "code": "system_base",
+                "name": "高级设置",
+                "path": "/system/database",
                 "perm": "server.view"
             }
         ]
