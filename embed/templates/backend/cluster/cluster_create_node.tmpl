@@ -15,20 +15,42 @@
 
                 <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form layui-form-pane" onclick="return false;">
+                    <table class="layui-table">
+                        <colgroup><col width="150"><col></colgroup>
+                        <tbody>
+                            <tr>
+                                <td>节点名称</td>
+                                <td><input type="text" name="name" autocomplete="off" placeholder="" lay-verify="required" class="layui-input"></td>
+                            </tr>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">节点名称</label>
-                        <div class="layui-input-block">
-                          <input type="text" name="name" autocomplete="off" placeholder="" lay-verify="required" class="layui-input">
-                        </div>
-                    </div>
+                            <tr>
+                                <td>IP地址</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-radius" onclick="Admin.open('添加','/{[$.admin_path]}/clusters/cluster/groups_add?cluster_id={[$.cluster_id]}',500,250)">
+                                    <i class="layui-icon layui-icon-add-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">集群名称</label>
-                        <div class="layui-input-block">
-                          <input type="text" name="name" lay-verify="required" placeholder="请输入集群名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
+                            <tr>
+                                <td>所属分组</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-radius" onclick="Admin.open('添加','/{[$.admin_path]}/clusters/cluster/groups_add?cluster_id={[$.cluster_id]}',500,250)">
+                                    <i class="layui-icon layui-icon-add-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>所属区域</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-radius" onclick="Admin.open('添加','/{[$.admin_path]}/clusters/cluster/groups_add?cluster_id={[$.cluster_id]}',500,250)">
+                                    <i class="layui-icon layui-icon-add-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
