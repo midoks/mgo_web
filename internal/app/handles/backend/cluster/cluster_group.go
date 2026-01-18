@@ -3,6 +3,7 @@ package cluster
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -23,6 +24,22 @@ func ClusterGroupsAdd(c *gin.Context) {
 	data["id"] = c.Query("id")
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
+
+	if data["id"] != "" {
+		qid, err := strconv.ParseInt(data["id"].(string), 10, 64)
+		if err != nil {
+
+		}
+
+		cg_data, err := db.GetClusterGroupById(qid)
+		fmt.Println(qid, cg_data, err)
+		if err != nil {
+
+		}
+		data["data"] = cg_data
+
+		fmt.Println(cg_data)
+	}
 	c.HTML(http.StatusOK, "backend/cluster/cluster_groups_add.tmpl", data)
 }
 
@@ -34,6 +51,17 @@ func ClusterGroupsList(c *gin.Context) {
 func PostClusterGroupsAdd(c *gin.Context) {
 	var field form.ClusterGroupAdd
 	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, 0)
+		return
+	}
+
+	if field.ID != "" {
+		id, _ := strconv.ParseInt(field.ID, 10, 64)
+		err := db.UpdateClusterGroup(field.Name, id)
+		if err == nil {
+			common.SuccessResp(c)
+			return
+		}
 		common.ErrorResp(c, err, 0)
 		return
 	}
@@ -53,7 +81,6 @@ func ClusterGroupsDelete(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(field.ID)
 	err := db.ClusterGroupDeleteById(field.ID)
 	if err == nil {
 		common.SuccessResp(c)

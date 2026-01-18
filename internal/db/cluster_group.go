@@ -14,7 +14,7 @@ func GetClusterGroupList(page, size int) ([]model.ClusterGroup, int64, error) {
 	cluster := db.Model(&model.ClusterGroup{})
 	var count int64
 	if err := cluster.Count(&count).Error; err != nil {
-		return nil, 0, errors.Wrapf(err, "failed get server count")
+		return nil, 0, errors.Wrapf(err, "failed get cluster group")
 	}
 
 	var list []model.ClusterGroup
@@ -38,12 +38,26 @@ func AddClusterGroup(name string, clusterId int64) error {
 	return nil
 }
 
-func GetClusterGroupById(id int64) (*model.ClusterGroup, error) {
-	var u model.ClusterGroup
-	if err := db.First(&u, id).Error; err != nil {
-		return nil, errors.Wrapf(err, "failed get admin")
+func UpdateClusterGroup(name string, id int64) error {
+	data := &model.ClusterGroup{
+		Name: name,
 	}
-	return &u, nil
+
+	data.UpdateTime = time.Now()
+	if err := db.Model(&model.ClusterGroup{}).
+		Where("id = ?", id).
+		Updates(&data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetClusterGroupById(id int64) (*model.ClusterGroup, error) {
+	var data model.ClusterGroup
+	if err := db.First(&data, id).Error; err != nil {
+		return nil, errors.Wrapf(err, "failed get cluster group")
+	}
+	return &data, nil
 }
 
 func ClusterGroupDeleteById(id int64) error {

@@ -73,6 +73,12 @@
                 "perm": "server.view"
             },
             {
+                "code": "server_regions",
+                "name": "区域设置",
+                "path": "/clusters/regions",
+                "perm": "server.view"
+            },
+            {
                 "code": "grants",
                 "name": "节点SSH",
                 "path": "/server/index",

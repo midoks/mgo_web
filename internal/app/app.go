@@ -97,6 +97,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/cluster/settings", backend_cluster.ClusterSettings)
 	backstage_admin.GET("/clusters/cluster/delete", backend_cluster.ClusterDelete)
 
+	backstage_admin.GET("/clusters/regions", backend_cluster.ClusterRegions)
+
 	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 
 	//服务器

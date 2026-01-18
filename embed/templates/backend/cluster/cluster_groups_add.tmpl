@@ -64,13 +64,13 @@
                         <div class="layui-col-xs12 layui-col-md4">
                             <label class="layui-form-label">分组名称</label>
                             <div class="layui-input-block">
-                                <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="">
+                                <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .data]}{[.data.Name]}{[end]}" placeholder="">
                             </div>
                         </div>
                     </div>
                     <!-- ---- -->
                     <div class="layui-form-item" style="text-align: center;">
-                        <input type="hidden" name="id" value="{[if .id]}{[.id]}{[end]}">
+                        <input type="hidden" name="id" value="{[if .data.ID]}{[.data.ID]}{[end]}">
                         <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
                     </div>
                 </div>
