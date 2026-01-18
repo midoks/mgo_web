@@ -22,23 +22,15 @@ func GetClusterList(page, size int) ([]model.Cluster, int64, error) {
 	return list, count, nil
 }
 
-func GetClusterById(id int64) (*model.Server, error) {
-	var u model.Server
+func GetClusterById(id int64) (*model.Cluster, error) {
+	var u model.Cluster
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get admin")
 	}
 	return &u, nil
 }
 
-func GetClusterByIp(ip string) (*model.Server, error) {
-	info := model.Server{Ip: ip}
-	if err := db.Where(info).First(&info).Error; err != nil {
-		return nil, errors.Wrapf(err, "failed find admin")
-	}
-	return &info, nil
-}
-
 func ClusterDeleteById(id int64) error {
-	var d model.Admin
+	var d model.Cluster
 	return db.Where("id = ?", id).Delete(&d).Error
 }

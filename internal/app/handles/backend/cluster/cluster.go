@@ -1,7 +1,6 @@
 package cluster
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -205,21 +204,13 @@ func PostCreate(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var f struct {
-		Id int64 `form:"id"`
-	}
-
-	if err := c.ShouldBind(&f); err != nil {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
 
-	if f.Id == 1 {
-		common.ErrorResp(c, errors.New("the admin cannot delete!"), -1)
-		return
-	}
-
-	err := db.AdminDeleteById(f.Id)
+	err := db.ClusterDeleteById(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
