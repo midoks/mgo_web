@@ -29,7 +29,7 @@ func GetSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 3,
 			Name:   "创建节点",
-			Link:   "clusters/cluster/create",
+			Link:   "clusters/cluster/create_node",
 		},
 		{
 			Number: 4,
@@ -60,16 +60,6 @@ func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/index.tmpl", data)
 }
 
-func Create(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
-}
-
-func Node(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
-}
-
 func ClusterBoards(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
@@ -82,13 +72,6 @@ func ClusterList(c *gin.Context) {
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/cluster_list.tmpl", data)
-}
-
-func ClusterCreate(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetSubMenu()
-	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_create.tmpl", data)
 }
 
 func ClusterSettings(c *gin.Context) {

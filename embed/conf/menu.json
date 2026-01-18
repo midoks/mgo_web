@@ -41,7 +41,7 @@
                     },
                     {
                         "code":"clusters",
-                        "path": "/clusters/cluster/create"
+                        "path": "/clusters/cluster/create_node"
                     },
                     {
                         "code":"clusters",

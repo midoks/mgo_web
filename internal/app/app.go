@@ -80,14 +80,17 @@ func initRuoteAdmin(r *gin.Engine) {
 	// 边缘节点
 	backstage_admin.GET("/clusters", backend_cluster.Home)
 	backstage_admin.GET("/clusters/list", backend_cluster.List)
-	backstage_admin.GET("/clusters/create", backend_cluster.Create)
 	backstage_admin.POST("/clusters/delete", backend_cluster.Delete)
-	backstage_admin.GET("/clusters/node", backend_cluster.Node)
 
 	backstage_admin.GET("/clusters/cluster/boards", backend_cluster.ClusterBoards)
 	backstage_admin.GET("/clusters/cluster/list", backend_cluster.ClusterList)
-	backstage_admin.GET("/clusters/cluster/create", backend_cluster.ClusterCreate)
 
+	// 边缘节点 - 节点
+	backstage_admin.GET("/clusters/node", backend_cluster.Node)
+	backstage_admin.GET("/clusters/create_node", backend_cluster.CreateNode)
+	backstage_admin.GET("/clusters/cluster/create_node", backend_cluster.ClusterCreateNode)
+
+	// 边缘节点 - 分组
 	backstage_admin.GET("/clusters/cluster/groups", backend_cluster.ClusterGroups)
 	backstage_admin.GET("/clusters/cluster/groups_add", backend_cluster.ClusterGroupsAdd)
 	backstage_admin.GET("/clusters/cluster/groups_list", backend_cluster.ClusterGroupsList)
