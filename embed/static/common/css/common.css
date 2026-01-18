@@ -2,6 +2,10 @@
     height: 32px;
 }
 
+.layui-tab-content {
+    padding: 10px;
+}
+
 .mlink {
     color: #20a53a;
 }
