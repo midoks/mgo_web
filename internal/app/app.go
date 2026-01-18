@@ -20,6 +20,7 @@ import (
 	backend_cluster "mgo/internal/app/handles/backend/cluster"
 	backend_log "mgo/internal/app/handles/backend/log"
 	backend_server "mgo/internal/app/handles/backend/server"
+	backend_system "mgo/internal/app/handles/backend/system"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
 	"mgo/internal/conf"
@@ -122,6 +123,9 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/tag/index", backend_server.Home)
 	backstage_admin.GET("/tag/list", middleware.PermissionRequired("server.view"), backend_server.List)
 	backstage_admin.GET("/tag/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
+
+	// 系统设置
+	backstage_admin.GET("/system", backend_system.Home)
 
 }
 

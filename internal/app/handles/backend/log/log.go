@@ -1,18 +1,18 @@
 package log
 
 import (
-	"errors"
+	// "errors"
 	"net/http"
-	"strconv"
-	"time"
+	// "strconv"
+	// "time"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
-	"mgo/internal/model"
-	utils "mgo/internal/utils"
+	// "mgo/internal/model"
+	// utils "mgo/internal/utils"
 	// "mgo/internal/op"
 )
 
@@ -22,20 +22,9 @@ func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/log/index.tmpl", data)
 }
 
-func Edit(c *gin.Context) {
-	id := c.Query("id")
-	idInt, _ := strconv.ParseInt(id, 10, 64)
-
-	admin_data, _ := db.GetAdminById(idInt)
-
-	data := common.CommonVer(c)
-	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/server/edit.tmpl", data)
-}
-
 func List(c *gin.Context) {
 	var field form.Page
-	if err := c.ShouldBind(&f); err != nil {
+	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
