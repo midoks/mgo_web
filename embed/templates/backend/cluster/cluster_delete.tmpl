@@ -14,7 +14,9 @@
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                    <button type="button" class="layui-btn layui-bg-red">删除当前集群</button>
+                    <form class="layui-form" onclick="return false;">
+                    <button type="button" class="layui-btn layui-bg-red" lay-filter="delete">删除当前集群</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -30,6 +32,20 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+form.on('submit(delete)', function(data){
+    layer.confirm('确定要删除吗?【谨慎操作】', { title:'删除提示', btn: ['确定', '取消'],shade:0.001}, function(index) {
+        $.post('/{[.admin_path]}/clusters/delete', {id:"{[$.cluster_id]}"}, function(rdata) {
+            showMsg(rdata.msg, function(){
+                if(rdata.code > -1){
+                    location.href = "/{[.admin_path]}/clusters";
+                }
+            },{icon: rdata.code > -1 ? 1 : 2,shift:rdata.code ? 0 : 6});
+        },'json');
+    }, function(index) {
+        layer.close(index);
+    });
+    return false;
+});
 
 
 ///

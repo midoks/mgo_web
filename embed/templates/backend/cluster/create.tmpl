@@ -25,8 +25,7 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button type="submit" class="layui-btn" lay-submit lay-filter="submit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            <button type="submit" class="layui-btn" lay-submit lay-filter="submit">保存</button>
                         </div>
                     </div>
                 </form>
@@ -46,20 +45,16 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
-//监听全局表单提交
 form.on('submit(submit)', function(data){
-    console.log(data);
-
     $.post('/{[.admin_path]}/clusters/create', data.field,function(rdata) {
-    
-        console.log(rdata);
+        showMsg(rdata.msg, function(){
+            if(rdata.code > -1){
+                location.href = "/{[.admin_path]}/clusters";
+            }
+        },{icon: rdata.code > -1 ? 1 : 2,shift:rdata.code ? 0 : 6});
     },'json');
-
-
     return false;
 });
-
 
 ///
 });
