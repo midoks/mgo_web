@@ -1,8 +1,8 @@
 package form
 
 type Page struct {
-	Page  int64 `form:"page"`
-	Limit int64 `form:"limit"`
+	Page  int `form:"page"`
+	Limit int `form:"limit"`
 }
 
 type ID struct {

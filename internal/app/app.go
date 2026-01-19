@@ -107,6 +107,7 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点 - 区域设置
 	backstage_admin.GET("/clusters/regions", backend_cluster.ClusterRegions)
+	backstage_admin.GET("/clusters/regions/list", backend_cluster.ClusterRegionsList)
 	backstage_admin.GET("/clusters/regions/add", backend_cluster.ClusterRegionsAdd)
 	backstage_admin.GET("/clusters/regions/nodes", backend_cluster.ClusterRegionsNodes)
 	backstage_admin.POST("/clusters/regions/add", backend_cluster.PostClusterRegionsNodesAdd)

@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func GetLogList(page, size int64) ([]model.Log, int64, error) {
+func GetLogList(page, size int) ([]model.Log, int64, error) {
 	serverM := db.Model(&model.Log{})
 	var count int64
 	if err := serverM.Count(&count).Error; err != nil {
@@ -16,7 +16,7 @@ func GetLogList(page, size int64) ([]model.Log, int64, error) {
 	}
 
 	var list []model.Log
-	if err := db.Order(columnName("id")).Offset(int((page - 1) * size)).Limit(int(size)).Find(&list).Error; err != nil {
+	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
 	return list, count, nil

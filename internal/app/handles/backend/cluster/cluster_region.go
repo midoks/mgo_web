@@ -26,6 +26,17 @@ func ClusterRegionsNodes(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/regions_nodes.tmpl", data)
 }
 
+func ClusterRegionsList(c *gin.Context) {
+	var field form.Page
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, _ := db.GetClusterRegionList(field.Page, field.Limit)
+	common.SuccessLayuiResp(c, count, "ok", result)
+}
+
 func PostClusterRegionsNodesAdd(c *gin.Context) {
 	var field form.ClusterRegionAdd
 	if err := c.ShouldBind(&field); err != nil {
