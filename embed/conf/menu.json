@@ -134,7 +134,7 @@
                 "perm": "server.view"
             },
             {
-                "code": "system_base",
+                "code": "system_database",
                 "name": "高级设置",
                 "path": "/system/database",
                 "perm": "server.view"

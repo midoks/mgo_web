@@ -125,7 +125,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/tag/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
 
 	// 系统设置
-	backstage_admin.GET("/system", backend_system.Home)
+	backstage_admin.GET("/system/base", backend_system.Home)
+	backstage_admin.GET("/system/database", backend_system.Home)
 
 }
 
