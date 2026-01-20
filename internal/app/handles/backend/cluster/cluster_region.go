@@ -1,7 +1,7 @@
 package cluster
 
 import (
-	"fmt"
+	// "fmt"
 
 	"net/http"
 	"strconv"
