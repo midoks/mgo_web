@@ -1,6 +1,8 @@
 package cluster
 
 import (
+	"fmt"
+
 	"net/http"
 	"strconv"
 
@@ -18,6 +20,20 @@ func ClusterRegions(c *gin.Context) {
 
 func ClusterRegionsAdd(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["id"] = c.Query("id")
+	if data["id"] != "" {
+		qid, err := strconv.ParseInt(data["id"].(string), 10, 64)
+		if err != nil {
+
+		}
+
+		cg_data, err := db.GetClusterRegionById(qid)
+		if err != nil {
+
+		}
+		data["data"] = cg_data
+	}
+
 	c.HTML(http.StatusOK, "backend/cluster/regions_add.tmpl", data)
 }
 
@@ -61,4 +77,34 @@ func PostClusterRegionsNodesAdd(c *gin.Context) {
 		return
 	}
 	common.ErrorResp(c, err, 0)
+}
+
+func ClusterRegionsDelete(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	err := db.ClusterRegionDeleteById(field.ID)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
+}
+
+func ClusterRegionsTriggerStatus(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	err := db.ClusterRegionsTriggerStatus(field.ID)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
 }

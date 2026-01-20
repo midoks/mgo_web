@@ -111,6 +111,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/regions/add", backend_cluster.ClusterRegionsAdd)
 	backstage_admin.GET("/clusters/regions/nodes", backend_cluster.ClusterRegionsNodes)
 	backstage_admin.POST("/clusters/regions/add", backend_cluster.PostClusterRegionsNodesAdd)
+	backstage_admin.POST("/clusters/regions/delete", backend_cluster.ClusterRegionsDelete)
+	backstage_admin.POST("/clusters/regions/trigger_status", backend_cluster.ClusterRegionsTriggerStatus)
 
 	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 

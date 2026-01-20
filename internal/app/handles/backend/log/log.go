@@ -1,19 +1,13 @@
 package log
 
 import (
-	// "errors"
 	"net/http"
-	// "strconv"
-	// "time"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
-	// "mgo/internal/model"
-	// utils "mgo/internal/utils"
-	// "mgo/internal/op"
 )
 
 func Home(c *gin.Context) {
