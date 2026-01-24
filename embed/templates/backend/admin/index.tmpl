@@ -8,7 +8,7 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         <li data-status="1" class="layui-this">管理员列表</li>
-                        <li data-status="2"><a href="/{[.admin_path]}/clusters/regions/nodes">创建管理员</a></li>
+                        <li data-status="2"><a>创建管理员</a></li>
                     </ul>
                 </div>
 
@@ -76,7 +76,7 @@ table.on('toolbar', function(obj){
 
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">编辑</a>
+<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">详情</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
 </script>
 
