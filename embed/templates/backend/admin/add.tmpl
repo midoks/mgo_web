@@ -108,8 +108,9 @@
                 <tr>
                     <td>权限</td>
                     <td>
-                        <input type="checkbox" name="auth[]" lay-text="数据看板" checked>
-                        <input type="checkbox" name="auth[]" lay-text="网站列表" checked>
+                        {[range $menu := .Menus]}
+                            <input type="checkbox" name="auth[]" lay-text="{[$menu.Name]}">
+                        {[end]}
                     </td>
                 </tr>
             </tbody>
