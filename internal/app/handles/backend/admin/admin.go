@@ -25,6 +25,17 @@ func Recipients(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
 }
 
+func Add(c *gin.Context) {
+	id := c.Query("id")
+	idInt, _ := strconv.ParseInt(id, 10, 64)
+
+	admin_data, _ := db.GetAdminById(idInt)
+
+	data := common.CommonVer(c)
+	data["Data"] = admin_data
+	c.HTML(http.StatusOK, "backend/admin/add.tmpl", data)
+}
+
 func Edit(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
