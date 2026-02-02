@@ -74,6 +74,25 @@ func UpdateAdmin(u *model.Admin) error {
 	return nil
 }
 
+func AddAdmin(username string, password string, full_name string, super_admin bool) error {
+	salt := utils.RandString(16)
+
+	pass := model.TwoHashPwd(password, salt)
+
+	data := &model.Admin{
+		Username: username,
+		Password: pass,
+		FullName: full_name,
+	}
+
+	data.CreateTime = time.Now()
+	data.UpdateTime = time.Now()
+	if err := errors.WithStack(db.Create(data).Error); err != nil {
+		return err
+	}
+	return nil
+}
+
 func InitAdmin(user string, pass string) error {
 	_, err := GetAdminById(1)
 	if err != nil {

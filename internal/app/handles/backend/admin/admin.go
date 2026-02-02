@@ -39,13 +39,21 @@ func Add(c *gin.Context) {
 }
 
 func PostAdd(c *gin.Context) {
-	var field form.AdminAdd
-	if err := c.ShouldBind(&field); err != nil {
+	var f form.AdminAdd
+	if err := c.ShouldBind(&f); err != nil {
 		common.ErrorResp(c, err, 0)
 		return
 	}
 
-	fmt.Println("field:", field)
+	super_admin = false
+	if f.SuperAdmin == "on" {
+		super_admin = true
+	}
+
+	db.AddAdmin(f.Username, f.Password, f.FullName, super_admin)
+	fmt.Println("field:", f)
+
+	common.SuccessResp(c)
 }
 
 func Edit(c *gin.Context) {

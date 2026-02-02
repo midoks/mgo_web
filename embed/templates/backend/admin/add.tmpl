@@ -57,7 +57,6 @@
 
 <div class="layui-fluid">
 
-
     <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
     <form class="layui-form layui-form-pane" onclick="return false;">
         <table class="layui-table">
@@ -65,7 +64,7 @@
             <tbody>
                 <tr>
                     <td>登录用户名</td>
-                    <td><input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="登录用户名"></td>
+                    <td><input type="text" name="username" autocomplete="off" class="layui-input" value="" placeholder="登录用户名"></td>
                 </tr>
 
                 <tr>
@@ -109,7 +108,7 @@
                     <td>权限</td>
                     <td>
                         {[range $menu := .Menus]}
-                            <input type="checkbox" name="auth[{[$menu.Name]}]" lay-text="{[$menu.Name]}">
+                            <input type="checkbox" name="auth[{[$menu.Code]}]" lay-text="{[$menu.Name]}">
                         {[end]}
                     </td>
                 </tr>
