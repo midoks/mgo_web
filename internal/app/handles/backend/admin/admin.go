@@ -45,7 +45,7 @@ func PostAdd(c *gin.Context) {
 		return
 	}
 
-	super_admin = false
+	super_admin := false
 	if f.SuperAdmin == "on" {
 		super_admin = true
 	}
