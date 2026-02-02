@@ -109,7 +109,7 @@
                     <td>权限</td>
                     <td>
                         {[range $menu := .Menus]}
-                            <input type="checkbox" name="auth[]" lay-text="{[$menu.Name]}">
+                            <input type="checkbox" name="auth[{[$menu.Name]}]" lay-text="{[$menu.Name]}">
                         {[end]}
                     </td>
                 </tr>

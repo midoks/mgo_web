@@ -16,6 +16,7 @@ type Admin struct {
 	Password   string    `json:"password"`                                  // password
 	Salt       string    `json:"salt"`                                      // salt
 	SuperAdmin bool      `json:"super_admin"`                               // super_admin
+	FullName   string    `json:"full_name"`                                 // full_name
 	Tel        string    `json:"tel"`                                       // tel
 	Email      string    `json:"email"`                                     // email
 	Status     int       `json:"status"`                                    // status

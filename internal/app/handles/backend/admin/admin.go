@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
+	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
 	utils "mgo/internal/utils"
@@ -34,6 +36,16 @@ func Add(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
 	c.HTML(http.StatusOK, "backend/admin/add.tmpl", data)
+}
+
+func PostAdd(c *gin.Context) {
+	var field form.AdminAdd
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, 0)
+		return
+	}
+
+	fmt.Println("field:", field)
 }
 
 func Edit(c *gin.Context) {
