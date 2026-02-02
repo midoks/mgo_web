@@ -52,8 +52,8 @@ table.render({
     cols: [[
         {field:'username', title:'用户名'},
         {field:'full_name', title:'全名'},
-        {field:'tel', title:'手机号'},
-        {field:'email', title:'邮件地址'},
+        {field:'full_name', title:'允许登录', toolbar:"allow_login"},
+        {field:'status', title:'状态'},
         {title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right'}
      ]],
     page: true
@@ -73,6 +73,10 @@ table.on('toolbar', function(obj){
 
 ///
 });
+</script>
+
+
+<script type="text/html" id="allow_login">
 </script>
 
 
