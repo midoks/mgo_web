@@ -74,15 +74,17 @@ func UpdateAdmin(u *model.Admin) error {
 	return nil
 }
 
-func AddAdmin(username string, password string, full_name string, super_admin bool) error {
+func AddAdmin(username string, password string, full_name string, allow_login bool, super_admin bool) error {
 	salt := utils.RandString(16)
 
 	pass := model.TwoHashPwd(password, salt)
 
 	data := &model.Admin{
-		Username: username,
-		Password: pass,
-		FullName: full_name,
+		Username:   username,
+		Password:   pass,
+		Salt:       salt,
+		FullName:   full_name,
+		AllowLogin: allow_login,
 	}
 
 	data.CreateTime = time.Now()

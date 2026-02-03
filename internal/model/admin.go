@@ -20,7 +20,7 @@ type Admin struct {
 	FullName   string    `json:"full_name"`                                 // full_name
 	Tel        string    `json:"tel"`                                       // tel
 	Email      string    `json:"email"`                                     // email
-	Status     int       `json:"status"`                                    // status
+	Status     bool      `json:"status"`                                    // status
 	CreateTime time.Time `json:"create_time"`                               // create_time
 	UpdateTime time.Time `json:"update_time"`                               // update_time
 }

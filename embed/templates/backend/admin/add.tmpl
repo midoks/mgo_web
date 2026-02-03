@@ -64,7 +64,7 @@
             <tbody>
                 <tr>
                     <td>登录用户名</td>
-                    <td><input type="text" name="username" autocomplete="off" class="layui-input" value="" placeholder="登录用户名"></td>
+                    <td><input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="登录用户名"></td>
                 </tr>
 
                 <tr>
@@ -84,7 +84,7 @@
                 <tr>
                     <td>全名</td>
                     <td>
-                        <input type="text" name="full_name" autocomplete="off" class="layui-input" value="" placeholder="全名">
+                        <input type="text" name="full_name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="全名">
                     </td>
                 </tr>
 

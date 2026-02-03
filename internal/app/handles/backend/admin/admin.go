@@ -50,9 +50,18 @@ func PostAdd(c *gin.Context) {
 		super_admin = true
 	}
 
-	db.AddAdmin(f.Username, f.Password, f.FullName, super_admin)
+	allow_login := false
+	if f.AllowLogin == "on" {
+		allow_login = true
+	}
+
 	fmt.Println("field:", f)
 
+	if f.ID > 0 {
+
+	} else {
+		db.AddAdmin(f.Username, f.Password, f.FullName, allow_login, super_admin)
+	}
 	common.SuccessResp(c)
 }
 
