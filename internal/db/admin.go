@@ -58,10 +58,14 @@ func AdminUpdatePass(id int64, password string) error {
 		u.Salt = salt
 	}
 	u.UpdateTime = time.Now()
-	return UpdateAdmin(&u)
+	return db.Model(&u).Updates(map[string]interface{}{
+		"password":    u.Password,
+		"salt":        u.Salt,
+		"update_time": u.UpdateTime,
+	}).Error
 }
 
-func UpdateAdmin(u *model.Admin) error {
+func UpdateAdminModel(u *model.Admin) error {
 	if u.Password == "" {
 		if err := db.Model(u).Updates(map[string]interface{}{"password": u.Password, "update_time": u.UpdateTime}).Error; err != nil {
 			return errors.WithStack(err)
@@ -70,6 +74,30 @@ func UpdateAdmin(u *model.Admin) error {
 		if err := db.Model(u).Updates(u).Error; err != nil {
 			return errors.WithStack(err)
 		}
+	}
+	return nil
+}
+
+func UpdateAdmin(id int64, username string, password string, full_name string, allow_login bool, super_admin bool) error {
+	data := &model.Admin{}
+	if err := db.First(data, id).Error; err != nil {
+		return errors.WithStack(err)
+	}
+
+	data.Username = username
+	data.FullName = full_name
+	data.AllowLogin = allow_login
+	data.SuperAdmin = super_admin
+
+	if password != "" {
+		salt := utils.RandString(16)
+		data.Password = model.TwoHashPwd(password, salt)
+		data.Salt = salt
+	}
+
+	data.UpdateTime = time.Now()
+	if err := errors.WithStack(db.Save(data).Error); err != nil {
+		return err
 	}
 	return nil
 }

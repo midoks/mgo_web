@@ -56,9 +56,8 @@ func PostAdd(c *gin.Context) {
 	}
 
 	fmt.Println("field:", f)
-
 	if f.ID > 0 {
-
+		db.UpdateAdmin(f.ID, f.Username, f.Password, f.FullName, allow_login, super_admin)
 	} else {
 		db.AddAdmin(f.Username, f.Password, f.FullName, allow_login, super_admin)
 	}
