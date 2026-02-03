@@ -77,8 +77,10 @@ table.on('toolbar', function(obj){
 
 
 <script type="text/html" id="allow_login">
-{{# if (d.allow_login){ }}Y
+{{# if (d.allow_login){ }}
+<span style="color:#16b777;">Y</span>
 {{# } else { }}N
+<span style="color:#e2e2e2;">N</span>
 {{# } }}
 </script>
 
