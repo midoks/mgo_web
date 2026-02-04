@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -45,6 +46,8 @@ func PostAdd(c *gin.Context) {
 		return
 	}
 
+	f.Auth = c.PostFormMap("auth")
+
 	super_admin := false
 	if f.SuperAdmin == "on" {
 		super_admin = true
@@ -55,7 +58,9 @@ func PostAdd(c *gin.Context) {
 		allow_login = true
 	}
 
-	fmt.Println("field:", f)
+	b, _ := json.Marshal(f)
+	fmt.Println("field:", string(b))
+	fmt.Println("auth:", f.Auth)
 	if f.ID > 0 {
 		db.UpdateAdmin(f.ID, f.Username, f.Password, f.FullName, allow_login, super_admin)
 	} else {
