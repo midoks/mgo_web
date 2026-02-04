@@ -78,7 +78,7 @@ func UpdateAdminModel(u *model.Admin) error {
 	return nil
 }
 
-func UpdateAdmin(id int64, username string, password string, full_name string, allow_login bool, super_admin bool) error {
+func UpdateAdmin(id int64, username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
 	data := &model.Admin{}
 	if err := db.First(data, id).Error; err != nil {
 		return errors.WithStack(err)
@@ -88,6 +88,7 @@ func UpdateAdmin(id int64, username string, password string, full_name string, a
 	data.FullName = full_name
 	data.AllowLogin = allow_login
 	data.SuperAdmin = super_admin
+	data.Auth = auth
 
 	if password != "" {
 		salt := utils.RandString(16)
@@ -102,7 +103,7 @@ func UpdateAdmin(id int64, username string, password string, full_name string, a
 	return nil
 }
 
-func AddAdmin(username string, password string, full_name string, allow_login bool, super_admin bool) error {
+func AddAdmin(username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
 	salt := utils.RandString(16)
 
 	pass := model.TwoHashPwd(password, salt)
@@ -114,6 +115,7 @@ func AddAdmin(username string, password string, full_name string, allow_login bo
 		FullName:   full_name,
 		AllowLogin: allow_login,
 		SuperAdmin: super_admin,
+		Auth:       auth,
 	}
 
 	data.CreateTime = time.Now()

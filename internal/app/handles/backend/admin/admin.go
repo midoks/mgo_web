@@ -1,11 +1,12 @@
 package admin
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"errors"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -45,7 +46,6 @@ func PostAdd(c *gin.Context) {
 		common.ErrorResp(c, err, 0)
 		return
 	}
-
 	f.Auth = c.PostFormMap("auth")
 
 	super_admin := false
@@ -58,13 +58,17 @@ func PostAdd(c *gin.Context) {
 		allow_login = true
 	}
 
-	b, _ := json.Marshal(f)
-	fmt.Println("field:", string(b))
-	fmt.Println("auth:", f.Auth)
+	codes := []string{}
+	for k, v := range f.Auth {
+		if v == "on" {
+			codes = append(codes, k)
+		}
+	}
+	codesStr := strings.Join(codes, ",")
 	if f.ID > 0 {
-		db.UpdateAdmin(f.ID, f.Username, f.Password, f.FullName, allow_login, super_admin)
+		db.UpdateAdmin(f.ID, f.Username, f.Password, f.FullName, codesStr, allow_login, super_admin)
 	} else {
-		db.AddAdmin(f.Username, f.Password, f.FullName, allow_login, super_admin)
+		db.AddAdmin(f.Username, f.Password, f.FullName, codesStr, allow_login, super_admin)
 	}
 	common.SuccessResp(c)
 }
