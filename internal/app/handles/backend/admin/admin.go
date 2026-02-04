@@ -3,7 +3,7 @@ package admin
 import (
 	// "encoding/json"
 	"errors"
-	// "fmt"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -34,9 +34,19 @@ func Add(c *gin.Context) {
 	idInt, _ := strconv.ParseInt(id, 10, 64)
 
 	admin_data, _ := db.GetAdminById(idInt)
+	if admin_data == nil {
+		admin_data = &model.Admin{}
+	}
+	auth := []string{}
+	if admin_data.Auth != "" {
+		auth = strings.Split(admin_data.Auth, ",")
+	}
 
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
+	data["Auth"] = auth
+
+	fmt.Println(auth)
 	c.HTML(http.StatusOK, "backend/admin/add.tmpl", data)
 }
 
