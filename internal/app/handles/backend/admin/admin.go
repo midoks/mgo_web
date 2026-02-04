@@ -134,6 +134,21 @@ func PostEdit(c *gin.Context) {
 	common.ErrorResp(c, err, 0)
 }
 
+func AdminTriggerStatus(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	err := db.AdminTriggerStatus(field.ID)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
+}
+
 func Delete(c *gin.Context) {
 	var f struct {
 		Id int64 `form:"id"`

@@ -52,23 +52,36 @@ table.render({
     cols: [[
         {field:'username', title:'用户名'},
         {field:'full_name', title:'全名'},
-        {field:'allow_login', title:'允许登录', toolbar:"#allow_login"},
-        {field:'status', title:'状态'},
+        {field:'allow_login', title:'允许登录', toolbar:"#allowLoginTpl"},
+        {field:'status', title:'状态', toolbar:"#statusTpl",width:100},
         {title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right'}
      ]],
     page: true
 });
 
 
-table.on('tool(list)', function(obj){
-    switch(obj.event){
-    };
-});
-
 table.on('toolbar', function(obj){
     switch(obj.event){
     };
 });
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+        case 'status':opStatus(obj);break;
+    };
+});
+
+function opStatus(obj){
+    layer.confirm('你真的更改状态吗?', { closeBtn: 2, icon: 3 }, function() {
+        $.post('/{[.admin_path]}/admin/trigger_status', {'id':obj.data.id}, function(data) {
+            showMsg(data.msg,function(){
+                if (data.code>-1){
+                    location.reload();
+                }
+            },{icon:data.code>-1?1:2});
+        },'json');
+    });
+}
 
 
 ///
@@ -76,7 +89,7 @@ table.on('toolbar', function(obj){
 </script>
 
 
-<script type="text/html" id="allow_login">
+<script type="text/html" id="allowLoginTpl">
 {{# if (d.allow_login){ }}
 <span style="color:#16b777;">Y</span>
 {{# } else { }}N
@@ -84,6 +97,13 @@ table.on('toolbar', function(obj){
 {{# } }}
 </script>
 
+<script type="text/html" id="statusTpl">
+{{# if (d.status == 1){ }}
+<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="status">已启用</a>
+{{# } else if (d.status == 0) { }}
+<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">已暂停</a>
+{{# } }}
+</script>
 
 <script type="text/html" id="cmdTpl">
 <a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('创建管理员','/{[$.admin_path]}/admin/add?id={{d.id}}',700,630)">修改</a>

@@ -113,11 +113,36 @@ func AddAdmin(username string, password string, full_name string, allow_login bo
 		Salt:       salt,
 		FullName:   full_name,
 		AllowLogin: allow_login,
+		SuperAdmin: super_admin,
 	}
 
 	data.CreateTime = time.Now()
 	data.UpdateTime = time.Now()
 	if err := errors.WithStack(db.Create(data).Error); err != nil {
+		return err
+	}
+	return nil
+}
+
+func AdminTriggerStatus(id int64) error {
+	var data model.Admin
+	if err := db.First(&data, id).Error; err != nil {
+		return errors.Wrapf(err, "failed get cluster region")
+	}
+
+	var status bool
+	if data.Status {
+		status = false
+	} else {
+		status = true
+	}
+
+	data.UpdateTime = time.Now()
+	data.Status = status
+
+	if err := db.Model(&model.Admin{}).
+		Where("id = ?", id).
+		Updates(&data).Error; err != nil {
 		return err
 	}
 	return nil

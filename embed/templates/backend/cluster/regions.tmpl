@@ -57,11 +57,11 @@ table.render({
 
 table.on('tool(list)', function(obj){
     switch(obj.event){
-        case 'status':menuStatus(obj);break;
+        case 'status':opStatus(obj);break;
     };
 });
 
-function menuStatus(obj){
+function opStatus(obj){
     layer.confirm('你真的更改状态吗?', { closeBtn: 2, icon: 3 }, function() {
         $.post('/{[$.admin_path]}/clusters/regions/trigger_status', {'id':obj.data.id}, function(data) {
             showMsg(data.msg,function(){
