@@ -38,15 +38,17 @@ func Add(c *gin.Context) {
 		admin_data = &model.Admin{}
 	}
 	auth := []string{}
+	authMap := map[string]bool{}
 	if admin_data.Auth != "" {
 		auth = strings.Split(admin_data.Auth, ",")
+		for _, code := range auth {
+			authMap[code] = true
+		}
 	}
 
 	data := common.CommonVer(c)
 	data["Data"] = admin_data
-	data["Auth"] = auth
-
-	fmt.Println(auth)
+	data["AuthMap"] = authMap
 	c.HTML(http.StatusOK, "backend/admin/add.tmpl", data)
 }
 

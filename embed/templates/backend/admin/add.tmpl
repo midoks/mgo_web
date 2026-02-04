@@ -108,7 +108,11 @@
                     <td>权限</td>
                     <td>
                         {[range $menu := .Menus]}
-                            <input type="checkbox" name="auth[{[$menu.Code]}]" lay-text="{[$menu.Name]}">
+                            {[if (index $.AuthMap $menu.Code)]}
+                                <input type="checkbox" name="auth[{[$menu.Code]}]" lay-text="{[$menu.Name]}" checked>
+                            {[else]}
+                                <input type="checkbox" name="auth[{[$menu.Code]}]" lay-text="{[$menu.Name]}">
+                            {[end]}
                         {[end]}
                     </td>
                 </tr>
