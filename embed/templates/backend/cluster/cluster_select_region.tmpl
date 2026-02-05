@@ -52,6 +52,7 @@
         margin-bottom: 10px; 
     }
 }
+
 </style>
 <!-- start -->
 
@@ -65,7 +66,11 @@
                 <tr>
                     <td>选择区域</td>
                     <td>
-                        <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">测试</button>
+                        <div id="select_btn">
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试</button>
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试3</button>
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试4</button>
+                        </div>
                         <p style="margin-top: .5rem;margin-bottom: .5rem;">点击可已选中要使用的区域。</p>
                     </td>
                 </tr>
@@ -80,5 +85,45 @@
     </div>
 
 </div>
+
+
+
+<script type="text/javascript">
+
+layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+$('#select_btn button').click(function(){
+    $('#select_btn button').removeClass("layui-border-green");
+    $(this).addClass("layui-border-green");
+});
+
+
+//监听全局表单提交
+form.on('submit(select)', function(data){
+    var val = $('#select_btn .layui-border-green').text();
+    console.log(val);
+
+    var regionHtml = parent.$('#region').html();
+    console.log('region html:', regionHtml);
+
+    if (val && parent && parent.$) {
+        parent.$('#region').html('<div><span id="region-selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+        parent.$('#region-remove').off('click').on('click', function(){ parent.$('#region').empty(); });
+        var idx = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(idx);
+    }
+    return false;
+});
+
+
+
+///
+});
+</script>
 
 {[template "backend/common/footer.tmpl" .]}
