@@ -43,7 +43,7 @@
                             <tr>
                                 <td>所属区域</td>
                                 <td>
-                                    <a class="mlink" class="layui-btn" lay-on="select_region">[选择区域]</a>
+                                    <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择区域]</a>
                                     <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加区域]</a>
                                 </td>
                             </tr>
@@ -91,6 +91,7 @@ util.on({
                 </table>\
             </div>',
             success: function (layero) {
+
                 // 鼠标滑动 layer 内部滚动条时移除下拉框，以规避错位
                 // 若 layer 内部不存在滚动条，以下代码可删除
                 var selectElem = layero.find('.layui-form-select');

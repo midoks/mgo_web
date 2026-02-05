@@ -13,6 +13,11 @@ func Create(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
 }
 
+func SelectRegion(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/cluster_select_region.tmpl", data)
+}
+
 func ClusterCreateNode(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
