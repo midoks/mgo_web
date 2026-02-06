@@ -23,6 +23,13 @@ func SelectRegion(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_select_region.tmpl", data)
 }
 
+func SelectGroups(c *gin.Context) {
+	data := common.CommonVer(c)
+	region_list, _, _ := db.GetClusterGroupList(1, 100)
+	data["groups_list"] = region_list
+	c.HTML(http.StatusOK, "backend/cluster/cluster_select_groups.tmpl", data)
+}
+
 func ClusterCreateNode(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()

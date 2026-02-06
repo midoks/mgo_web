@@ -33,18 +33,25 @@
                             </tr>
 
                             <tr>
-                                <td>所属分组</td>
-                                <td>
-                                    <a class="mlink">[选择分组]</a>
-                                    <a class="mlink">[添加分组]</a>
+                                <td>所属分组</td><td>
+                                <div id="group">
+                                    <span id="group_btn"></span>
+                                    <span id="group_origin">
+                                        <a class="mlink" onclick="Admin.open('选择分组','/{[$.admin_path]}/clusters/select/groups',500,330)">[选择分组]</a>
+                                        <a class="mlink" onclick="Admin.open('添加分组','/{[$.admin_path]}/clusters/cluster/groups_add',500,330)">[添加分组]</a>
+                                    </span>
+                                <div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>所属区域</td><td>
                                 <div id="region">
-                                    <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择区域]</a>
-                                    <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加区域]</a>
+                                    <span id="region_btn"></span>
+                                    <span id="region_origin">
+                                        <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择区域]</a>
+                                        <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加区域]</a>
+                                    </span>
                                 <div>
                                 </td>
                             </tr>
@@ -70,40 +77,19 @@ var admin = layui.admin
 ,table = layui.table;
 var util = layui.util;
 
+window.loadRegionBtn = function(){
+    $('#region_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#region_origin').show();
+    });
+}
 
-// 事件
-util.on({
-    "select_region": function() {
-        layer.open({
-            type: 1,
-            area: ['500px', '240px'],
-            title: '选择所属区域',
-            shadeClose: true,
-            btn: ['确定', '取消'],
-            content: '<div class="layui-padding-3">\
-                <table class="layui-table">\
-                    <tr>\
-                        <td>选择区域</td>\
-                        <td>\
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">测试</button>\
-                            <p style="margin-top: .5rem;margin-bottom: .5rem;">点击可已选中要使用的区域。</p>\
-                        </td>\
-                    </tr>\
-                </table>\
-            </div>',
-            success: function (layero) {
-
-                // 鼠标滑动 layer 内部滚动条时移除下拉框，以规避错位
-                // 若 layer 内部不存在滚动条，以下代码可删除
-                var selectElem = layero.find('.layui-form-select');
-                layero.find('.layui-layer-content').on('scroll', function() {
-                    selectElem.removeClass('layui-form-selected');
-                    layui.$('.layui-select-panel-wrap').detach();
-                });
-            },
-        });
-    }
-});
+window.loadGroupBtn = function(){
+    $('#group_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#group_origin').show();
+    });
+}
 
 ///
 });

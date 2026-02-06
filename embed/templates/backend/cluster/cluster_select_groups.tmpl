@@ -64,14 +64,14 @@
             <colgroup><col width="150"><col></colgroup>
             <tbody>
                 <tr>
-                    <td>选择区域</td>
+                    <td>选择分组</td>
                     <td>
                         <div id="select_btn">
-                            {[range $region_data := .region_list]}
-                                <button data_id="{[$region_data.ID]}" type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">{[$region_data.Name]}</button>
+                            {[range $g_data := .groups_list]}
+                                <button data_id="{[$g_data.ID]}" type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">{[$g_data.Name]}</button>
                             {[end]}
                         </div>
-                        <p style="margin-top: .5rem;margin-bottom: .5rem;">点击可已选中要使用的区域。</p>
+                        <p style="margin-top: .5rem;margin-bottom: .5rem;">点击可已选中要使用的分组。</p>
                     </td>
                 </tr>
             </tbody>
@@ -110,10 +110,10 @@ form.on('submit(select)', function(data){
     // var regionHtml = parent.$('#region').html();
 
     if (val && parent && parent.$) {
-        parent.$('#region_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+        parent.$('#group_btn').html('<div><span id="group_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
 
-        parent.$('#region_origin').hide();
-        parent.window.loadRegionBtn();
+        parent.$('#group_origin').hide();
+        parent.window.loadGroupBtn();
         var idx = parent.layer.getFrameIndex(window.name);
         parent.layer.close(idx);
     }
