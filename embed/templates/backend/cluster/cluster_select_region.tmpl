@@ -67,9 +67,9 @@
                     <td>选择区域</td>
                     <td>
                         <div id="select_btn">
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试</button>
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试3</button>
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">测试4</button>
+                            {[range $region_data := .region_list]}
+                                <button data_id="{[$region_data.ID]}" type="button" class="layui-btn layui-btn-primary layui-btn-xs layui-border">{[$region_data.Name]}</button>
+                            {[end]}
                         </div>
                         <p style="margin-top: .5rem;margin-bottom: .5rem;">点击可已选中要使用的区域。</p>
                     </td>
