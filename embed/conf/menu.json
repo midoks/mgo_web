@@ -83,12 +83,6 @@
                 "name": "节点SSH",
                 "path": "/clusters/grants",
                 "perm": "server.view"
-            },
-            {
-                "code": "tag_list",
-                "name": "标签",
-                "path": "/tag/index",
-                "perm": "server.view"
             }
         ]
     },
