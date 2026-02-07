@@ -77,11 +77,11 @@
                     <td>媒介类型 *</td>
                     <td>
                         <div class="layui-input-inline">
-                            <select name="modules" lay-verify="required" lay-search>
+                            <select name="media" lay-verify="required" lay-search lay-filter="media">
                                 <option value="">[选择媒介类型]</option>
-                                <option value="1">Telegram</option>
-                                <option value="2">邮件</option>
-                                <option value="3">WebHook</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="email">邮件</option>
+                                <option value="webhook">WebHook</option>
                             </select>
                         </div>
                         <br/>
@@ -102,7 +102,7 @@
                 </div>
 
                 <div id="id_webhook">
-                    <tr class="id_webhook">
+                    <tr class="id_webhook" style="display:none;">
                         <td>URL *</td>
                         <td>
                             <div class="layui-input-line">
@@ -112,7 +112,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_webhook">
+                    <tr class="id_webhook" style="display:none;">
                         <td>请求方法 *</td>
                         <td>
                             <div class="layui-input-inline">
@@ -126,7 +126,7 @@
                 </div>
 
                 <div id="id_email">
-                    <tr class="id_email">
+                    <tr class="id_email" style="display:none;">
                         <td>SMTP *</td>
                         <td>
                             <div class="layui-input-line">
@@ -136,7 +136,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email">
+                    <tr class="id_email" style="display:none;">
                         <td>账号 *</td>
                         <td>
                             <div class="layui-input-line">
@@ -146,7 +146,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email">
+                    <tr class="id_email" style="display:none;">
                         <td>密码 *</td>
                         <td>
                             <div class="layui-input-line">
@@ -156,7 +156,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email">
+                    <tr class="id_email" style="display:none;">
                         <td>发送者Email</td>
                         <td>
                             <div class="layui-input-line">
@@ -221,5 +221,33 @@
     </div>
 
 </div>
+
+
+<script type="text/javascript">
+
+layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+
+form.on('select(media)', function(data){
+    // console.log('dddd', data.value);
+    $('.id_telegram,.id_webhook,.id_email').hide();
+    if (data.value === 'telegram') {
+        $('.id_telegram').show();
+    } else if (data.value === 'webhook') {
+        $('.id_webhook').show();
+    } else if (data.value === 'email') {
+        $('.id_email').show();
+    }
+});
+
+
+///
+});
+</script>
 
 {[template "backend/common/footer.tmpl" .]}
