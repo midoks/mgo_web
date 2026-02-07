@@ -234,7 +234,6 @@ var admin = layui.admin
 
 
 form.on('select(media)', function(data){
-    // console.log('dddd', data.value);
     $('.id_telegram,.id_webhook,.id_email').hide();
     if (data.value === 'telegram') {
         $('.id_telegram').show();
