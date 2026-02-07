@@ -1,0 +1,111 @@
+{[template "backend/common/header_head.tmpl" .]}
+
+
+<style type="text/css">
+.layui-form-item .layui-input-inline{
+    width: auto;
+    margin-left: 5px;
+}
+.type-input{
+    height:70px;
+    overflow-y: auto;
+}
+.type-input::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+.type-input::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #666;
+}
+.type-input::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background   : #ededed;
+}
+.layui-form-radio{
+    margin: 0; 
+    padding-right: 0;
+}
+
+.layui-form-pane .layui-form-checkbox {
+    margin: 4px 0 4px 1px;
+}
+.layui-form-checkbox[lay-skin=primary] span {
+    padding-right: 4px;
+}
+.layui-form-checkbox[lay-skin=primary] i {
+    left: 6px;
+}
+.layui-form-item .layui-col-xs12{
+    margin-top: 10px;
+}
+@media screen and (max-width: 990px){
+    .layui-form-item .layui-col-xs12:first-child{
+        margin-top: 0px;
+    }
+    .layui-form-item{
+        margin-bottom: 10px; 
+    }
+}
+</style>
+<!-- start -->
+
+<div class="layui-fluid">
+
+    <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
+    <form class="layui-form layui-form-pane" onclick="return false;">
+        <table class="layui-table">
+            <colgroup><col width="150"><col></colgroup>
+            <tbody>
+                <tr>
+                    <td>IP地址 *</td>
+                    <td>
+                        <div class="layui-input-inline">
+                            <input type="text" name="ip" autocomplete="off" class="layui-input" value="" placeholder="">
+                        </div>
+                        <br/>
+                        <p class="layui-font-12">支持单个IP、CIDR格式的一组IP（位数不能小于24）、IP范围（类似于x.x.x.x-x.x.x.x ，最多只取256个）等。</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>允许公开访问</td>
+                    <td>
+                        <input type="checkbox" name="allow_public" lay-text="" checked> 
+                        <p class="layui-font-12">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>允许健康检查</td>
+                    <td>
+                        <input type="checkbox" name="allow_public" lay-text="" checked> 
+                        <p class="layui-font-12">选中后，表示可以在集群的“健康检查”当中对当前IP进行健康检查。</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>备注</td>
+                    <td>
+                        <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;"></textarea>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+        <div class="layui-form-item" style="text-align: center;">
+            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+        </div>
+    </form>
+    </div>
+
+</div>
+
+{[template "backend/common/footer.tmpl" .]}

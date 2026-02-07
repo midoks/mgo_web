@@ -15,9 +15,15 @@ func Create(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
 }
 
+func SelectIp(c *gin.Context) {
+	data := common.CommonVer(c)
+	region_list, _, _ := db.GetClusterRegionList(1, 100)
+	data["region_list"] = region_list
+	c.HTML(http.StatusOK, "backend/cluster/cluster_select_ip.tmpl", data)
+}
+
 func SelectRegion(c *gin.Context) {
 	data := common.CommonVer(c)
-
 	region_list, _, _ := db.GetClusterRegionList(1, 100)
 	data["region_list"] = region_list
 	c.HTML(http.StatusOK, "backend/cluster/cluster_select_region.tmpl", data)
