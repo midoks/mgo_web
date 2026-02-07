@@ -108,6 +108,10 @@
                     {
                         "code":"admin_recipients",
                         "path": "/admin/recipients/instances"
+                    },
+                    {
+                        "code":"admin_recipients",
+                        "path": "/admin/recipients/groups"
                     }
                 ]
             }
