@@ -63,14 +63,20 @@
             <colgroup><col width="150"><col></colgroup>
             <tbody>
                 <tr>
-                    <td>登录用户名</td>
-                    <td><input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="登录用户名"></td>
+                    <td>媒介名称 *</td>
+                    <td>
+                        <input type="text" name="username" autocomplete="off" class="layui-input" value="" placeholder="媒介名称">
+                        <br/>
+                        <p class="layui-font-12">给当前媒介填写一个容易识别的名称。</p>
+                    </td>
                 </tr>
 
                 <tr>
-                    <td>登录密码</td>
+                    <td>媒介类型 *</td>
                     <td>
-                        <input type="password" name="password" autocomplete="off" class="layui-input" value="" placeholder="登录密码">
+                        <input type="text" name="username" autocomplete="off" class="layui-input" value="" placeholder="媒介类型">
+                        <br/>
+                        <p class="layui-font-12">通过HTTP请求发送通知。</p>
                     </td>
                 </tr>
 
