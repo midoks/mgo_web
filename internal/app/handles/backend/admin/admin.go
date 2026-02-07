@@ -24,6 +24,7 @@ func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/index.tmpl", data)
 }
 
+// 通知媒介 -- S
 func Recipients(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
@@ -33,6 +34,13 @@ func RecipientsInstances(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
 }
+
+func RecipientsInstancesAdd(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/admin/recipients_instances_add.tmpl", data)
+}
+
+// 通知媒介 -- E
 
 func Add(c *gin.Context) {
 	id := c.Query("id")
