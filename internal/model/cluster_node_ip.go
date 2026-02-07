@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type ClusterIp struct {
+type ClusterNodeIp struct {
 	ID               int64     `json:"id" gorm:"primaryKey"`                  // unique key
 	Ip               string    `json:"ip" gorm:"unique" binding:"required"`   // ip
 	AllowPublic      bool      `json:"allow_public" binding:"required"`       // allow_public

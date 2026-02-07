@@ -139,7 +139,7 @@ func Init(d *gorm.DB) {
 		new(model.Cluster),
 		new(model.ClusterGroup),
 		new(model.ClusterRegion),
-		new(model.ClusterIp),
+		new(model.ClusterNodeIp),
 		new(model.Log),
 	)
 	if err != nil {
