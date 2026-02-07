@@ -103,7 +103,13 @@
                 "code": "admin_recipients",
                 "name": "通知媒介",
                 "path": "/admin/recipients",
-                "perm": "admin.view"
+                "perm": "admin.view",
+                "children":[
+                    {
+                        "code":"admin_recipients",
+                        "path": "/admin/recipients/instances"
+                    }
+                ]
             }
         ]
     },

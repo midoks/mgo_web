@@ -29,6 +29,11 @@ func Recipients(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
 }
 
+func RecipientsInstances(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
+}
+
 func Add(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
