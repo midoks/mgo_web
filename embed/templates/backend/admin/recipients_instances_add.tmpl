@@ -74,7 +74,14 @@
                 <tr>
                     <td>媒介类型 *</td>
                     <td>
-                        <input type="text" name="username" autocomplete="off" class="layui-input" value="" placeholder="媒介类型">
+                        <div class="layui-input-inline">
+                            <select name="modules" lay-verify="required" lay-search>
+                                <option value="">直接选择或搜索选择</option>
+                                <option value="1">Telegram</option>
+                                <option value="2">邮件</option>
+                                <option value="3">WebHook</option>
+                            </select>
+                        </div>
                         <br/>
                         <p class="layui-font-12">通过HTTP请求发送通知。</p>
                     </td>
