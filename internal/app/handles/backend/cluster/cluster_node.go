@@ -47,3 +47,24 @@ func Node(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
+
+func PostCreateNode(c *gin.Context) {
+	var field form.CreateNode
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	cluster := &model.Cluster{
+		Name:       field.Name,
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+	}
+
+	if err := db.GetDb().Create(cluster).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	common.SuccessResp(c)
+}
