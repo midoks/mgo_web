@@ -48,20 +48,19 @@ func Node(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
 
-func PostCreateNode(c *gin.Context) {
-	var field form.CreateNode
+func PostClusterCreateNode(c *gin.Context) {
+	var field form.ClusterCreateNode
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
 
-	cluster := &model.Cluster{
+	nodeip := &model.ClusterNodeIp{
 		Name:       field.Name,
 		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
 	}
 
-	if err := db.GetDb().Create(cluster).Error; err != nil {
+	if err := db.GetDb().Create(nodeip).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}

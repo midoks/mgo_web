@@ -105,6 +105,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/select/region", backend_cluster.SelectRegion)
 	backstage_admin.GET("/clusters/select/groups", backend_cluster.SelectGroups)
 	backstage_admin.GET("/clusters/cluster/create_node", backend_cluster.ClusterCreateNode)
+	backstage_admin.POST("/clusters/cluster/create_node", backend_cluster.PostClusterCreateNode)
 
 	// 边缘节点 - 分组
 	backstage_admin.GET("/clusters/cluster/groups", backend_cluster.ClusterGroups)
