@@ -92,7 +92,7 @@
                 <tr>
                     <td>备注</td>
                     <td>
-                        <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;"></textarea>
+                        <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder=""></textarea>
                     </td>
                 </tr>
 
@@ -101,11 +101,44 @@
 
 
         <div class="layui-form-item" style="text-align: center;">
-            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button class="layui-btn" lay-filter="select" lay-submit>保存</button>
         </div>
     </form>
     </div>
 
 </div>
+
+
+<script type="text/javascript">
+
+layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+//监听全局表单提交
+form.on('submit(select)', function(data){
+
+    console.log(data);
+    var val = $('input[name=ip]').val();
+
+    if (val && parent && parent.$) {
+        parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+
+        parent.$('#ip_origin').hide();
+        parent.window.loadRegionBtn();
+        var idx = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(idx);
+    }
+    return false;
+});
+
+
+
+///
+});
+</script>
 
 {[template "backend/common/footer.tmpl" .]}
