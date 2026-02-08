@@ -26,7 +26,6 @@
                             <tr>
                                 <td>IP地址</td>
                                 <td>
-
                                     <div id="ip">
                                         <span id="ip_btn"></span>
                                         <span id="ip_origin">
@@ -35,8 +34,6 @@
                                             </button>
                                         </span>
                                     <div>
-
-                                    
                                 </td>
                             </tr>
 
@@ -66,7 +63,7 @@
                         </tbody>
                     </table>
 
-                    <button type="submit" class="layui-btn" lay-submit lay-filter="submit">保存</button>
+                    <button type="submit" class="layui-btn" lay-submit lay-filter="submit_node">保存</button>
                 </form>
                 </div>
             <!--  end  -->
@@ -107,7 +104,7 @@ window.loadIpBtn = function(){
 }
 
 //监听全局表单提交
-form.on('submit(submit_save)', function(data){
+form.on('submit(submit_node)', function(data){
     var index = layer.load();
     $.post(data.form.action, data.field, function(res) {
         showMsg(res.msg, function(){
