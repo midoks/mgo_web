@@ -128,7 +128,7 @@ form.on('submit(select)', function(data){
         parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
 
         parent.$('#ip_origin').hide();
-        parent.window.loadRegionBtn();
+        parent.window.loadIpBtn();
         var idx = parent.layer.getFrameIndex(window.name);
         parent.layer.close(idx);
     }

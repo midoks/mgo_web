@@ -99,6 +99,13 @@ window.loadGroupBtn = function(){
     });
 }
 
+window.loadIpBtn = function(){
+    $('#ip_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#ip_origin').show();
+    });
+}
+
 ///
 });
 </script>
