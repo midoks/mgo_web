@@ -1,13 +1,17 @@
 package cluster
 
 import (
-	// "fmt"
+	"errors"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
+	"mgo/internal/app/form"
 	"mgo/internal/db"
+	"mgo/internal/model"
 )
 
 func Create(c *gin.Context) {
@@ -54,10 +58,18 @@ func PostClusterCreateNode(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
+	fmt.Println("field1:", field.Ip)
+	if field.Ip == "" {
+		common.ErrorResp(c, errors.New("IP不能为空!"), 0)
+		return
+	}
+
+	fmt.Println("field2:", field.Ip)
 
 	nodeip := &model.ClusterNodeIp{
-		Name:       field.Name,
+		Ip:         field.Ip,
 		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
 	}
 
 	if err := db.GetDb().Create(nodeip).Error; err != nil {
