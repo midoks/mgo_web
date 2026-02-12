@@ -106,11 +106,15 @@ window.loadIpBtn = function(){
 //监听全局表单提交
 form.on('submit(submit_node)', function(data){
     var index = layer.load();
+    var field = data.field;
+    var ip = $('#ip_btn .ip').text();
+    field['ip'] = ip;
+
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
-                parent.location.reload();
+                // parent.location.reload();
             }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');

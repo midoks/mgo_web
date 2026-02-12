@@ -120,12 +120,10 @@ var admin = layui.admin
 
 //监听全局表单提交
 form.on('submit(select)', function(data){
-
-    console.log(data);
+    // console.log(data);
     var val = $('input[name=ip]').val();
-
     if (val && parent && parent.$) {
-        parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+        parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;"><span class="ip">'+ val +'</span><a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
 
         parent.$('#ip_origin').hide();
         parent.window.loadIpBtn();

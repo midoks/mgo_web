@@ -60,7 +60,7 @@ func PostClusterCreateNode(c *gin.Context) {
 	}
 	fmt.Println("field1:", field.Ip)
 	if field.Ip == "" {
-		common.ErrorResp(c, errors.New("IP不能为空!"), 0)
+		common.ErrorResp(c, errors.New("IP不能为空!"), -1)
 		return
 	}
 
