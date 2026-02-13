@@ -17,6 +17,7 @@ type ClusterGroupAdd struct {
 }
 
 type ClusterCreateNode struct {
-	Name string `form:"name"`
-	Ip   string `form:"ip"`
+	Name      string `form:"name"`
+	ClusterId int64  `form:"cluster_id"`
+	Ip        string `form:"ip"`
 }
