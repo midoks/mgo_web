@@ -68,7 +68,7 @@ func PostClusterCreateNode(c *gin.Context) {
 
 	nodeip := &model.ClusterNodeIp{
 		Ip:         field.Ip,
-		ClusterId:  field.ClusterId,
+		ClusterID:  field.ClusterId,
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 	}
