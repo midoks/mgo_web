@@ -40,7 +40,7 @@ func SelectGroups(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_select_groups.tmpl", data)
 }
 
-func ClusterCreateNode(c *gin.Context) {
+func CreateNode(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
@@ -52,7 +52,11 @@ func Node(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
 
-func PostClusterCreateNode(c *gin.Context) {
+func NodeList(c *gin.Context) {
+
+}
+
+func PostCreateNode(c *gin.Context) {
 	var field form.ClusterCreateNode
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
