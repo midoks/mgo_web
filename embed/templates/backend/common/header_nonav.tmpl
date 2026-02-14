@@ -104,17 +104,6 @@
 
             <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
                 <div class="layui-breadcrumb" lay-filter="breadcrumb">
-                    {[range $menu := .Menus]}
-                        {[if eq $menu.Code $.ActiveMenu]}
-                            <a><cite>{[$menu.Name]}</cite></a>
-                        {[end]}
-                        {[range $child := $menu.Children]}
-                            {[if eq $child.Code $.ActiveMenu]}
-                                <a><cite>{[$menu.Name]}</cite></a>
-                                <a><cite>{[$child.Name]}</cite></a>
-                            {[end]}
-                        {[end]}
-                    {[end]}
                 </div>
             </div>
         </div>

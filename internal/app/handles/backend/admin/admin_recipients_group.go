@@ -1,0 +1,94 @@
+package admin
+
+import (
+	// "encoding/json"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"mgo/internal/app/common"
+	"mgo/internal/app/form"
+	"mgo/internal/db"
+	"mgo/internal/model"
+)
+
+func RecipientsGroups(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/admin/recipients_groups.tmpl", data)
+}
+
+func RecipientsGroupsAdd(c *gin.Context) {
+
+	id := c.Query("id")
+	idInt, _ := strconv.ParseInt(id, 10, 64)
+
+	data := common.CommonVer(c)
+	ga_data, err := db.GetAdminRecipientsGroupById(idInt)
+	if err == nil {
+		data["Data"] = ga_data
+	}
+	c.HTML(http.StatusOK, "backend/admin/recipients_groups_add.tmpl", data)
+}
+
+func RecipientsGroupsList(c *gin.Context) {
+	var field form.Page
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, _ := db.GetAdminRecipientsGroupList(field.Page, field.Limit)
+	common.SuccessLayuiResp(c, count, "ok", result)
+}
+
+func PostRecipientsGroupsAdd(c *gin.Context) {
+	var field form.AdminRecipientsGroup
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if field.ID > 0 {
+		update_data := &model.AdminMediaGroup{
+			Name:       field.Name,
+			Status:     field.Status,
+			UpdateTime: time.Now(),
+		}
+
+		if err := db.GetDb().Model(&model.AdminMediaGroup{}).Where("id = ?", field.ID).Updates(update_data).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		common.SuccessResp(c)
+		return
+	}
+
+	add_data := &model.AdminMediaGroup{
+		Name:       field.Name,
+		Status:     field.Status,
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+	}
+
+	if err := db.GetDb().Create(add_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
+}
+
+func PostRecipientsGroupsDelete(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if err := db.AdminRecipientsGroupDelete(field.ID); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
+}

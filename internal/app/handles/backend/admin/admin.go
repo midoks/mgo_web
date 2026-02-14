@@ -105,7 +105,7 @@ func PostEdit(c *gin.Context) {
 		return
 	}
 
-	d := &model.Admin{
+	add_data := &model.Admin{
 		Username: field.Username,
 		Password: field.Password,
 	}
@@ -128,15 +128,15 @@ func PostEdit(c *gin.Context) {
 		return
 	}
 
-	if d.Password != "" {
+	if add_data.Password != "" {
 		salt := utils.RandString(16)
-		d.Salt = salt
-		d.Password = model.TwoHashPwd(d.Password, salt)
+		add_data.Salt = salt
+		add_data.Password = model.TwoHashPwd(add_data.Password, salt)
 	}
-	d.CreateTime = time.Now()
-	d.UpdateTime = time.Now()
+	add_data.CreateTime = time.Now()
+	add_data.UpdateTime = time.Now()
 
-	err := db.CreateAdmin(d)
+	err := db.CreateAdmin(add_data)
 	if err == nil {
 		common.SuccessResp(c)
 		return
@@ -172,10 +172,9 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminDeleteById(field.ID)
-	if err == nil {
-		common.SuccessResp(c)
+	if err := db.AdminDeleteById(field.ID); err != nil {
+		common.ErrorResp(c, err, -1)
 		return
 	}
-	common.ErrorResp(c, err, -1)
+	common.SuccessResp(c)
 }

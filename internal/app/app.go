@@ -84,6 +84,10 @@ func initRuoteAdmin(r *gin.Engine) {
 	// 管理员 - 通知
 	backstage_admin.GET("/admin/recipients", backend_admin.Recipients)
 	backstage_admin.GET("/admin/recipients/groups", backend_admin.RecipientsGroups)
+	backstage_admin.GET("/admin/recipients/groups/list", backend_admin.RecipientsGroupsList)
+	backstage_admin.GET("/admin/recipients/groups/add", backend_admin.RecipientsGroupsAdd)
+	backstage_admin.POST("/admin/recipients/groups/add", backend_admin.PostRecipientsGroupsAdd)
+	backstage_admin.POST("/admin/recipients/groups/delete", backend_admin.PostRecipientsGroupsDelete)
 	backstage_admin.GET("/admin/recipients/instances", backend_admin.RecipientsInstances)
 	backstage_admin.GET("/admin/recipients/instances/add", backend_admin.RecipientsInstancesAdd)
 	backstage_admin.POST("/admin/recipients/instances/add", backend_admin.PostRecipientsInstancesAdd)
