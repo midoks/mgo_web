@@ -37,34 +37,39 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/admin/recipients',
+    url: '/{[.admin_path]}/admin/recipients/list',
     title: '数据表',
     cols: [[
-        {field:'username', title:'用户名'},
-        {field:'tel', title:'手机号'},
-        {field:'email', title:'邮件地址'},
+        {field:'name', title:'媒介名称'},
+        {field:'media_type', title:'媒介类型'},
+        {field:'mark', title:'备注', toolbar:"#markTpl"},
+        {field:'status', title:'状态', width:80, toolbar:"#statusTpl"},
         {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
      ]],
     page: true
 });
 
-
-table.on('tool(list)', function(obj){
-    switch(obj.event){
-    };
-});
-
-table.on('toolbar', function(obj){
-    switch(obj.event){
-    };
-});
-
-
 ///
 });
+</script>
+
+
+<script type="text/html" id="markTpl">
+{{# if (d.mark){ }}
+{{d.mark}}
+{{# } else { }}
+<span style="color:#e2e2e2;">-</span>
+{{# } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+{{# if (d.status){ }}
+<span style="color:#16b777;">已启用</span>
+{{# } else { }}
+<span style="color:#ff5722;">已停用</span>
+{{# } }}
 </script>
 
 

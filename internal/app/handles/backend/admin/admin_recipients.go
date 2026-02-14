@@ -36,6 +36,11 @@ func RecipientsInstancesAdd(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_add.tmpl", data)
 }
 
+func RecipientsList(c *gin.Context) {
+	result, count, _ := db.GetAdminRecipientsList(1, 10)
+	common.SuccessLayuiResp(c, count, "ok", result)
+}
+
 func PostRecipientsInstancesAdd(c *gin.Context) {
 	var field form.AdminRecipients
 	if err := c.ShouldBind(&field); err != nil {
@@ -61,4 +66,19 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 
 	fmt.Println("field:", field)
 	common.SuccessResp(c)
+}
+
+func RecipientsDelete(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	err := db.AdminRecipientsDeleteById(field.ID)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
 }

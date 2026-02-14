@@ -99,36 +99,29 @@ func List(c *gin.Context) {
 }
 
 func PostEdit(c *gin.Context) {
-	var f struct {
-		Id       int64  `form:"id"`
-		Username string `form:"username"`
-		Tel      string `form:"Tel"`
-		Email    string `form:"email"`
-		Password string `form:"password"`
-	}
-
-	if err := c.ShouldBind(&f); err != nil {
+	var field form.AdminEdit
+	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, 0)
 		return
 	}
 
 	d := &model.Admin{
-		Username: f.Username,
-		Password: f.Password,
+		Username: field.Username,
+		Password: field.Password,
 	}
 
-	if f.Id > 0 {
+	if field.ID > 0 {
 
-		if f.Password != "" {
-			db.AdminUpdatePass(f.Id, f.Password)
+		if field.Password != "" {
+			db.AdminUpdatePass(field.ID, field.Password)
 		}
 
-		if f.Tel != "" {
-			db.AdminUpdateTel(f.Id, f.Tel)
+		if field.Tel != "" {
+			db.AdminUpdateTel(field.ID, field.Tel)
 		}
 
-		if f.Email != "" {
-			db.AdminUpdateEmail(f.Id, f.Email)
+		if field.Email != "" {
+			db.AdminUpdateEmail(field.ID, field.Email)
 		}
 
 		common.SuccessResp(c)
@@ -168,21 +161,18 @@ func AdminTriggerStatus(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var f struct {
-		Id int64 `form:"id"`
-	}
-
-	if err := c.ShouldBind(&f); err != nil {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
 
-	if f.Id == 1 {
+	if field.ID == 1 {
 		common.ErrorResp(c, errors.New("the admin cannot delete!"), -1)
 		return
 	}
 
-	err := db.AdminDeleteById(f.Id)
+	err := db.AdminDeleteById(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

@@ -34,3 +34,8 @@ func AddAdminRecipients(name string) error {
 	}
 	return nil
 }
+
+func AdminRecipientsDeleteById(id int64) error {
+	var d model.AdminMediaInstance
+	return db.Where("id = ?", id).Delete(&d).Error
+}

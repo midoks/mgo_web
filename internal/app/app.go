@@ -87,6 +87,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/admin/recipients/instances", backend_admin.RecipientsInstances)
 	backstage_admin.GET("/admin/recipients/instances/add", backend_admin.RecipientsInstancesAdd)
 	backstage_admin.POST("/admin/recipients/instances/add", backend_admin.PostRecipientsInstancesAdd)
+	backstage_admin.GET("/admin/recipients/list", backend_admin.RecipientsList)
+	backstage_admin.POST("/admin/recipients/delete", backend_admin.RecipientsDelete)
 
 	// 边缘节点
 	backstage_admin.GET("/clusters", backend_cluster.Home)
