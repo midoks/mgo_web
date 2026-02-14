@@ -1,8 +1,7 @@
 package admin
 
 import (
-	// "encoding/json"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"time"
 
@@ -12,7 +11,6 @@ import (
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
-	// "mgo/internal/op"
 )
 
 // 通知媒介
@@ -31,6 +29,24 @@ func RecipientsInstancesAdd(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_add.tmpl", data)
 }
 
+func RecipientsInstancesDetails(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["id"] = c.Query("id")
+	c.HTML(http.StatusOK, "backend/admin/recipients_instances_details.tmpl", data)
+}
+
+func RecipientsInstancesUpdate(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["id"] = c.Query("id")
+	c.HTML(http.StatusOK, "backend/admin/recipients_instances_update.tmpl", data)
+}
+
+func RecipientsInstancesTest(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["id"] = c.Query("id")
+	c.HTML(http.StatusOK, "backend/admin/recipients_instances_test.tmpl", data)
+}
+
 func RecipientsList(c *gin.Context) {
 	result, count, _ := db.GetAdminRecipientsList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
@@ -39,27 +55,22 @@ func RecipientsList(c *gin.Context) {
 func PostRecipientsInstancesAdd(c *gin.Context) {
 	var field form.AdminRecipients
 	if err := c.ShouldBind(&field); err != nil {
-		fmt.Println("ccccc")
 		common.ErrorResp(c, err, -1)
 		return
 	}
 
-	fmt.Println("123123")
-
 	admin_recipicents := &model.AdminMediaInstance{
 		Name:       field.Name,
 		MediaType:  field.MediaType,
+		State:      true,
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 	}
 
 	if err := db.GetDb().Create(admin_recipicents).Error; err != nil {
-		fmt.Println("err:", err)
 		common.ErrorResp(c, err, -1)
 		return
 	}
-
-	fmt.Println("field:", field)
 	common.SuccessResp(c)
 }
 

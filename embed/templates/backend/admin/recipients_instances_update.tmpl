@@ -1,17 +1,17 @@
 {[template "backend/common/header_nonav.tmpl" .]}
 
 <div class="layui-fluid">
+
+
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             <div class="layui-card-body">
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
-                        <li data-status="1"><a href="/{[.admin_path]}/admin/recipients">接收人</a></li>
-                        <li data-status="2"><a href="/{[.admin_path]}/admin/recipients/groups">接收人分组</a></li>
-                        <li data-status="3" class="layui-this">媒介</li>
-                        <li data-status="4"><a href="/{[.admin_path]}/clusters/regions/nodes">发送记录</a></li>
-                        <li data-status="5"><a href="/{[.admin_path]}/clusters/regions/nodes">任务队列</a></li>
+                        <li data-status="1"><a href="/{[.admin_path]}/admin/recipients/instances/details?id={[.id]}">概览</a></li>
+                        <li data-status="2" class="layui-this">修改</li>
+                        <li data-status="3"><a href="/{[.admin_path]}/admin/recipients/instances/test?id={[.id]}">测试</a></li>
                     </ul>
                 </div>
 
@@ -74,7 +74,7 @@ table.render({
 
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/admin/recipients/instances/details?id={{d.id}}">详情</a>
+<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">详情</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
 </script>
 
