@@ -3,6 +3,7 @@ package admin
 import (
 	// "fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -36,14 +37,20 @@ func RecipientsInstancesDetails(c *gin.Context) {
 }
 
 func RecipientsInstancesUpdate(c *gin.Context) {
+	id := c.Query("id")
+	idInt, _ := strconv.ParseInt(id, 10, 64)
+	recipient_data, _ := db.GetAdminRecipientById(idInt)
+
 	data := common.CommonVer(c)
-	data["id"] = c.Query("id")
+	data["id"] = id
+	data["Data"] = recipient_data
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_update.tmpl", data)
 }
 
 func RecipientsInstancesTest(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = c.Query("id")
+
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_test.tmpl", data)
 }
 

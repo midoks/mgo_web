@@ -1,8 +1,6 @@
 package db
 
 import (
-	"time"
-
 	"github.com/pkg/errors"
 
 	"mgo/internal/model"
@@ -12,7 +10,7 @@ func GetAdminRecipientsList(page, size int) ([]model.AdminMediaInstance, int64, 
 	adminM := db.Model(&model.AdminMediaInstance{})
 	var count int64
 	if err := adminM.Count(&count).Error; err != nil {
-		return nil, 0, errors.Wrapf(err, "failed get server count")
+		return nil, 0, errors.Wrapf(err, "failed get recipients data list")
 	}
 
 	var list []model.AdminMediaInstance
@@ -22,17 +20,12 @@ func GetAdminRecipientsList(page, size int) ([]model.AdminMediaInstance, int64, 
 	return list, count, nil
 }
 
-func AddAdminRecipients(name string) error {
-	data := &model.AdminMediaInstance{
-		Name: name,
+func GetAdminRecipientById(id int64) (*model.AdminMediaInstance, error) {
+	var u model.AdminMediaInstance
+	if err := db.First(&u, id).Error; err != nil {
+		return nil, errors.Wrapf(err, "failed get recipients data")
 	}
-
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Create(data).Error); err != nil {
-		return err
-	}
-	return nil
+	return &u, nil
 }
 
 func AdminRecipientsDeleteById(id int64) error {
