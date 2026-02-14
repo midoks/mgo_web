@@ -10,14 +10,28 @@ import (
 	// utils "mgo/internal/utils"
 )
 
-func GetClusterNodeIpList(page, size int) ([]model.ClusterGroup, int64, error) {
-	cluster := db.Model(&model.ClusterGroup{})
+func GetClusterNodeIpList(page, size int) ([]model.ClusterNodeIp, int64, error) {
+	cluster := db.Model(&model.ClusterNodeIp{})
 	var count int64
 	if err := cluster.Count(&count).Error; err != nil {
 		return nil, 0, errors.Wrapf(err, "failed get cluster group")
 	}
 
-	var list []model.ClusterGroup
+	var list []model.ClusterNodeIp
+	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
+		return nil, 0, errors.WithStack(err)
+	}
+	return list, count, nil
+}
+
+func GetClusterNodeIpListByClusterID(cluster_id int64, page, size int) ([]model.ClusterNodeIp, int64, error) {
+	cluster := db.Model(&model.ClusterNodeIp{})
+	var count int64
+	if err := cluster.Count(&count).Error; err != nil {
+		return nil, 0, errors.Wrapf(err, "failed get cluster group")
+	}
+
+	var list []model.ClusterNodeIp
 	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
@@ -60,7 +74,7 @@ func GetClusterNodeIpGroupById(id int64) (*model.ClusterGroup, error) {
 	return &data, nil
 }
 
-func ClusterNodeIpGroupDeleteById(id int64) error {
-	var d model.ClusterGroup
+func ClusterNodeIpDeleteById(id int64) error {
+	var d model.ClusterNodeIp
 	return db.Where("id = ?", id).Delete(&d).Error
 }

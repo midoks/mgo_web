@@ -13,11 +13,19 @@ type ClusterSubMenu struct {
 type ClusterGroupAdd struct {
 	ID        string `form:"id"`
 	Name      string `form:"name"`
-	ClusterId int64  `form:"cluster_id"`
+	ClusterID int64  `form:"cluster_id"`
 }
 
 type ClusterCreateNode struct {
 	Name      string `form:"name"`
-	ClusterId int64  `form:"cluster_id"`
+	ClusterID int64  `form:"cluster_id"`
 	Ip        string `form:"ip"`
+}
+
+type ClusterNodeDelete struct {
+	NodeID int64 `form:"node_id"`
+}
+
+type ClusterNodeList struct {
+	ClusterID int64 `form:"cluster_id"`
 }

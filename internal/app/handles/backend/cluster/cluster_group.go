@@ -66,7 +66,7 @@ func PostClusterGroupsAdd(c *gin.Context) {
 		return
 	}
 
-	err := db.AddClusterGroup(field.Name, field.ClusterId)
+	err := db.AddClusterGroup(field.Name, field.ClusterID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

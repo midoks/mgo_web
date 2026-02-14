@@ -86,6 +86,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/admin/recipients/groups", backend_admin.RecipientsGroups)
 	backstage_admin.GET("/admin/recipients/instances", backend_admin.RecipientsInstances)
 	backstage_admin.GET("/admin/recipients/instances/add", backend_admin.RecipientsInstancesAdd)
+	backstage_admin.POST("/admin/recipients/instances/add", backend_admin.PostRecipientsInstancesAdd)
 
 	// 边缘节点
 	backstage_admin.GET("/clusters", backend_cluster.Home)
@@ -106,6 +107,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/select/groups", backend_cluster.SelectGroups)
 	backstage_admin.GET("/clusters/cluster/create_node", backend_cluster.CreateNode)
 	backstage_admin.POST("/clusters/cluster/create_node", backend_cluster.PostCreateNode)
+	backstage_admin.POST("/clusters/cluster/delete_node", backend_cluster.PostDeleteNode)
 	backstage_admin.GET("/clusters/cluster/node_list", backend_cluster.NodeList)
 
 	// 边缘节点 - 分组

@@ -53,7 +53,18 @@ func Node(c *gin.Context) {
 }
 
 func NodeList(c *gin.Context) {
+	var field form.ClusterNodeList
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
 
+	result, count, err := db.GetClusterNodeIpListByClusterID(field.ClusterID, 1, 10)
+	if err != nil {
+		common.ErrorResp(c, err, -2)
+		return
+	}
+	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
 func PostCreateNode(c *gin.Context) {
@@ -71,8 +82,9 @@ func PostCreateNode(c *gin.Context) {
 	fmt.Println("field2:", field.Ip)
 
 	nodeip := &model.ClusterNodeIp{
+		Name:       field.Name,
 		Ip:         field.Ip,
-		ClusterID:  field.ClusterId,
+		ClusterID:  field.ClusterID,
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 	}
@@ -83,4 +95,20 @@ func PostCreateNode(c *gin.Context) {
 	}
 
 	common.SuccessResp(c)
+}
+
+func PostDeleteNode(c *gin.Context) {
+	var field form.ID
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	err := db.ClusterNodeIpDeleteById(field.ID)
+	if err == nil {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, err, -1)
+
 }
