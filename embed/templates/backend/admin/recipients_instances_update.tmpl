@@ -1,11 +1,22 @@
 {[template "backend/common/header_nonav.tmpl" .]}
 
 <div class="layui-fluid">
-
-
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             <div class="layui-card-body">
+
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom: 1rem;">
+                    <a href="/{[.admin_path]}/admin/recipients/instances/details?id={[.id]}" style="display:flex;align-items:center;">
+                        <i class="layui-icon layui-icon-return"></i>  
+                    </a>
+
+                    <span style="margin:0;font-size:18px;">
+                        {[if .Data]}
+                            {[if eq .Data.MediaType "telegram" ]}telegram机器人{[else]}{[if eq .Data.MediaType "email" ]}邮件{[else]}{[if eq .Data.MediaType "webhook" ]}Webhook{[end]}{[end]}{[end]}
+                        {[end]}
+                    </span>
+                </div>
+
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
@@ -24,7 +35,7 @@
                                 <td>媒介名称 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="" placeholder="媒介名称">
+                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="媒介名称">
                                     </div>
                                     <br/>
                                     <p class="layui-font-12">给当前媒介填写一个容易识别的名称。</p>
@@ -37,9 +48,9 @@
                                     <div class="layui-input-inline">
                                         <select name="media_type" lay-verify="required" lay-search lay-filter="media">
                                             <option value="">[选择媒介类型]</option>
-                                            <option value="telegram">Telegram</option>
-                                            <option value="email">邮件</option>
-                                            <option value="webhook">WebHook</option>
+                                            <option value="telegram" {[if .Data]}{[if eq .Data.MediaType "telegram" ]}selected{[end]}{[end]}>Telegram</option>
+                                            <option value="email" {[if .Data]}{[if eq .Data.MediaType "email" ]}selected{[end]}{[end]}>邮件</option>
+                                            <option value="webhook" {[if .Data]}{[if eq .Data.MediaType "webhook" ]}selected{[end]}{[end]}>WebHook</option>
                                         </select>
                                     </div>
                                     <br/>
@@ -152,7 +163,7 @@
                                 <td>
                                     <div class="layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="text" name="number" autocomplete="off" class="layui-input" value="60">
+                                            <input type="text" name="hash_life" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.HashLife]}{[end]}">
                                         </div>
                                         <label class="layui-form-label" style="float: right;">秒</label>
                                     </div>
@@ -163,15 +174,28 @@
 
                             <tr>
                                 <td>备注</td>
-                                <td><textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;"></textarea></td>
+                                <td><textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder="">{[if .Data]}{[.Data.Mark]}{[end]}</textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td>启用当前媒介</td>
+                                <td>
+                                    <input type="checkbox" name="status"
+                                    {[if .Data]}{[if .Data.Status]}checked{[end]}
+                                    {[else]}checked
+                                    {[end]}> 
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td colspan="2" >
+                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                    <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-
-
-                    <div class="layui-form-item" style="text-align: center;">
-                        <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
-                    </div>
                 </form>
                 </div>
             </div>
@@ -187,6 +211,39 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+
+form.on('select(media)', function(data){
+    $('.id_telegram,.id_webhook,.id_email').hide();
+    if (data.value === 'telegram') {
+        $('.id_telegram').show();
+    } else if (data.value === 'webhook') {
+        $('.id_webhook').show();
+    } else if (data.value === 'email') {
+        $('.id_email').show();
+    }
+});
+
+
+form.on("submit(submit_recipients)", function(data){
+    var index = layer.load();
+    var field = data.field;
+
+    if (field['status'] == "on"){
+        field['status'] = 1;
+    } else {
+        field['status'] = 0;
+    }
+
+    $.post("/{[$.admin_path]}/admin/recipients/instances/add", field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
 
 ///
 });

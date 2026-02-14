@@ -24,5 +24,5 @@ action:
   - ./mgo_web web &
   exit:
   - ps -ef|grep 'mgo_web web'| grep -v grep | awk '{print $2}' | xargs kill -9
-  # - rm -rf ./mgo_web
+  - rm -rf ./mgo_web
 link: https://github.com/midoks/zzz

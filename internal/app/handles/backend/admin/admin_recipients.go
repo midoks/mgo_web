@@ -66,15 +66,34 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		return
 	}
 
-	admin_recipicents := &model.AdminMediaInstance{
+	if field.ID > 0 {
+		update_data := &model.AdminMediaInstance{
+			Name:       field.Name,
+			Status:     field.Status,
+			Mark:       field.Mark,
+			HashLife:   field.HashLife,
+			UpdateTime: time.Now(),
+		}
+
+		if err := db.GetDb().Model(&model.AdminMediaInstance{}).Where("id = ?", field.ID).Updates(update_data).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		common.SuccessResp(c)
+		return
+	}
+
+	add_data := &model.AdminMediaInstance{
 		Name:       field.Name,
 		MediaType:  field.MediaType,
-		State:      true,
+		Mark:       field.Mark,
+		HashLife:   field.HashLife,
+		Status:     true,
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 	}
 
-	if err := db.GetDb().Create(admin_recipicents).Error; err != nil {
+	if err := db.GetDb().Create(add_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
