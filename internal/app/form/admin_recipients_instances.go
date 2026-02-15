@@ -21,7 +21,7 @@ type AdminRecipientsInstances struct {
 	Status              bool   `form:"status"`
 }
 
-type AdminRecipientsTest struct {
+type AdminRecipientsInstancesTest struct {
 	ID            int64  `form:"id"`
 	MediaType     string `form:"media_type" binding:"required"`
 	Title         string `form:"title"`

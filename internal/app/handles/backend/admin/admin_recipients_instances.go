@@ -62,7 +62,7 @@ func RecipientsInstancesTest(c *gin.Context) {
 }
 
 func PostRecipientsInstancesTest(c *gin.Context) {
-	var field form.AdminRecipientsTest
+	var field form.AdminRecipientsInstancesTest
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
