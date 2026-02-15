@@ -23,6 +23,22 @@ func Recipients(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
 }
 
+// 通知媒介
+func RecipientsAdd(c *gin.Context) {
+	data := common.CommonVer(c)
+
+	cluster_list, _, _ := db.GetClusterList(1, 100)
+	data["ClusterList"] = cluster_list
+
+	admin_list, _, _ := db.GetAdminList(1, 100)
+	data["AdminList"] = admin_list
+
+	recipients_list, _, _ := db.GetAdminRecipientsList(1, 100)
+	data["RecipientsList"] = recipients_list
+
+	c.HTML(http.StatusOK, "backend/admin/recipients_add.tmpl", data)
+}
+
 func RecipientsInstances(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
