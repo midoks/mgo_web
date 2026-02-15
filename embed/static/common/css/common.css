@@ -10,3 +10,12 @@
     color: #20a53a;
     cursor: pointer;
 }
+
+.bls{
+    border-left: 2px solid rgb(22, 183, 119);
+}
+
+.bls_hover{}
+.bls_hover :hover{
+    border-left: 2px solid rgb(22, 183, 119);
+}

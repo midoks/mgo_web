@@ -6,7 +6,7 @@
             <div class="layui-card-body">
 
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom: 1rem;">
-                    <a href="/{[.admin_path]}/admin/recipients/instances/details?id={[.id]}" style="display:flex;align-items:center;">
+                    <a href="/{[.admin_path]}/admin/recipients/instances" style="display:flex;align-items:center;">
                         <i class="layui-icon layui-icon-return"></i>  
                     </a>
 
@@ -26,7 +26,7 @@
                     </ul>
                 </div>
 
-                <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form layui-form-pane" onclick="return false;">
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
@@ -59,7 +59,7 @@
                             </tr>
 
                             <div id="id_telegram">
-                                <tr class="id_telegram" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_telegram bls" style="display:none;">
                                     <td>机器人Token *</td>
                                     <td>
                                         <div class="layui-input-line">
@@ -71,7 +71,7 @@
                             </div>
 
                             <div id="id_webhook">
-                                <tr class="id_webhook" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_webhook bls" style="display:none;">
                                     <td>URL *</td>
                                     <td>
                                         <div class="layui-input-line">
@@ -81,7 +81,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="id_webhook" style="display:none;">
+                                <tr class="id_webhook bls" style="display:none;">
                                     <td>请求方法 *</td>
                                     <td>
                                         <div class="layui-input-inline">
@@ -95,7 +95,7 @@
                             </div>
 
                             <div id="id_email">
-                                <tr class="id_email" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_email bls" style="display:none;">
                                     <td>SMTP *</td>
                                     <td>
                                         <div class="layui-input-line">
@@ -105,7 +105,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="id_email" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_email bls" style="display:none;">
                                     <td>账号 *</td>
                                     <td>
                                         <div class="layui-input-line">
@@ -115,7 +115,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="id_email" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_email bls" style="display:none;">
                                     <td>密码 *</td>
                                     <td>
                                         <div class="layui-input-line">
@@ -125,7 +125,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="id_email" style="display:none;border-left: 2px solid rgb(22, 183, 119);">
+                                <tr class="id_email bls" style="display:none;">
                                     <td>发送者Email</td>
                                     <td>
                                         <div class="layui-input-line">
