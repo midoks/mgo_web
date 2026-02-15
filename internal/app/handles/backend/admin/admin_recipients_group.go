@@ -19,6 +19,14 @@ func RecipientsGroups(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients_groups.tmpl", data)
 }
 
+func RecipientsGroupsSelect(c *gin.Context) {
+	data := common.CommonVer(c)
+
+	group_list, _, _ := db.GetAdminRecipientsGroupList(1, 100)
+	data["groups_list"] = group_list
+	c.HTML(http.StatusOK, "backend/admin/recipients_groups_select.tmpl", data)
+}
+
 func RecipientsGroupsAdd(c *gin.Context) {
 
 	id := c.Query("id")

@@ -86,6 +86,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/admin/recipients/add", backend_admin.RecipientsAdd)
 	backstage_admin.GET("/admin/recipients/groups", backend_admin.RecipientsGroups)
 	backstage_admin.GET("/admin/recipients/groups/list", backend_admin.RecipientsGroupsList)
+	backstage_admin.GET("/admin/recipients/groups/select", backend_admin.RecipientsGroupsSelect)
 	backstage_admin.GET("/admin/recipients/groups/add", backend_admin.RecipientsGroupsAdd)
 	backstage_admin.POST("/admin/recipients/groups/add", backend_admin.PostRecipientsGroupsAdd)
 	backstage_admin.POST("/admin/recipients/groups/delete", backend_admin.PostRecipientsGroupsDelete)

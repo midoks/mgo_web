@@ -101,10 +101,10 @@
                 <tr>
                     <td>分组</td>
                     <td>
-                        <div id="ip">
-                            <span id="ip_btn"></span>
-                            <span id="ip_origin">
-                                <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('添加IP地址','/{[$.admin_path]}/clusters/select/ip',700,550)">
+                        <div id="groups">
+                            <span id="groups_btn"></span>
+                            <span id="groups_origin">
+                                <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('选择分组','/{[$.admin_path]}/admin/recipients/groups/select',600,450)">
                                 <i class="layui-icon layui-icon-add-circle"></i>
                                 </button>
                             </span>
@@ -150,6 +150,14 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+
+
+window.loadGroupBtn = function(){
+    $('#groups_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#groups_origin').show();
+    });
+}
 
 
 form.on("submit(submit_recipients)", function(data){
