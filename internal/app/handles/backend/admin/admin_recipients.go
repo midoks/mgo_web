@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -12,6 +13,7 @@ import (
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
+	"mgo/internal/notify"
 )
 
 // 通知媒介
@@ -71,7 +73,25 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		return
 	}
 
+	if field.ID < 1 {
+		common.ErrorResp(c, errors.New("请求异常!"), -1)
+		return
+	}
+
+	recipient_data, _ := db.GetAdminRecipientById(idInt)
+	if recipient_data.MediaType == "telegram" {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		notify_test, err := notify.NewNotification(field.Token, field.SendID, true)
+		if err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		notify_test.Send(ctx, field.Tittle, field.Content)
+	}
+
 	fmt.Println(field)
+	common.SuccessResp(c)
 }
 
 func RecipientsList(c *gin.Context) {
