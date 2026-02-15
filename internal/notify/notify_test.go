@@ -39,7 +39,7 @@ func TestNotification_Send(t *testing.T) {
 	}
 
 	// 测试真实发送
-	n, err := NewNotification(token, chatID, true)
+	n, err := NewNotification(token, chatID, "", true)
 	if err != nil {
 		t.Fatalf("Failed to create notification: %v", err)
 	}

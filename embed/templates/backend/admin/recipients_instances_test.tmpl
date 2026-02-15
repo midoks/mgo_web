@@ -98,7 +98,7 @@ form.on("submit(submit_recipients_test)", function(data){
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
-                parent.location.reload();
+                // parent.location.reload();
             }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');
