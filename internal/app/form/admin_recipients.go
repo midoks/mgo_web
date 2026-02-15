@@ -2,8 +2,8 @@ package form
 
 type AdminRecipients struct {
 	ID            int64  `form:"id"`
-	Name          string `form:"name"`
-	MediaType     string `form:"media_type"`
+	Name          string `form:"name" binding:"required"`
+	MediaType     string `form:"media_type" binding:"required"`
 	Mark          string `form:"mark"`
 	HashLife      int64  `form:"hash_life"`
 	Token         string `form:"token"`
@@ -13,6 +13,8 @@ type AdminRecipients struct {
 	EmailFrom     string `form:"email_from"`
 	WebhookUrl    string `form:"webhook_url"`
 	WebhookMethod string `form:"webhook_method"`
+	Count         int64  `form:"count" binding:"required"`
+	Minutes       int64  `form:"minutes" binding:"required"`
 	Status        bool   `form:"status"`
 }
 

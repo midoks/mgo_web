@@ -63,7 +63,7 @@
                                     <td>机器人Token *</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="token" autocomplete="off" class="layui-input" placeholder="请输入Token">
+                                            <input type="text" name="token" autocomplete="off" class="layui-input" placeholder="请输入Token" value="{[if .Data]}{[.Data.GetTelegramParams.Token]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">创建机器人的时候可以获得，类似于 123456:AAAA-BBBB ，可以向 @BotFather 发送 /newbot 指令创建新的机器人。</p>
                                     </td>
@@ -75,7 +75,7 @@
                                     <td>URL *</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="webhook_url" autocomplete="off" class="layui-input" placeholder="http://">
+                                            <input type="text" name="webhook_url" autocomplete="off" class="layui-input" placeholder="http://" value="{[if .Data.GetWebhookParams]}{[.Data.GetWebhookParams.Url]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">可以在URL中使用 ${MessageUser} 、 ${MessageSubject} 和 ${MessageBody} 来代表接收人标识、标题和内容。</p>
                                     </td>
@@ -99,7 +99,7 @@
                                     <td>SMTP *</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="email_smtp" autocomplete="off" class="layui-input" placeholder="类似于 smtp.example.com:465">
+                                            <input type="text" name="email_smtp" autocomplete="off" class="layui-input" placeholder="类似于 smtp.example.com:465" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Smtp]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">只支持SSL（或TLS）连接，端口通常为：465或587。</p>
                                     </td>
@@ -109,7 +109,7 @@
                                     <td>账号 *</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="email_username" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com">
+                                            <input type="text" name="email_username" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Username]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">邮箱账号，比如 123456@qq.com。</p>
                                     </td>
@@ -119,7 +119,7 @@
                                     <td>密码 *</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="email_password" autocomplete="off" class="layui-input" placeholder="">
+                                            <input type="password" name="email_password" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Password]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">账号对应的密码或者授权码（比如QQ邮箱就需要授权码）。</p>
                                     </td>
@@ -129,7 +129,7 @@
                                     <td>发送者Email</td>
                                     <td>
                                         <div class="layui-input-line">
-                                            <input type="text" name="email_from" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com">
+                                            <input type="text" name="email_from" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.From]}{[end]}">
                                         </div>
                                         <p class="layui-font-12">默认和账号一致</p>
                                     </td>
@@ -142,14 +142,14 @@
                                     <div>
                                         <div class="layui-inline">
                                             <div class="layui-input-inline">
-                                                <input style="width: 60px;" type="number" name="freq_rate" autocomplete="off" class="layui-input" value="100">
+                                                <input style="width: 60px;" type="number" name="count" autocomplete="off" class="layui-input" value="{[if .Data.GetRate]}{[.Data.GetRate.Count]}{[end]}" placeholder="">
                                             </div>
                                             <label class="layui-form-label" style="width: 50px;float: right;">次</label>
                                         </div>
                                         <span>/</span>
                                         <div class="layui-inline">
                                             <div class="layui-input-inline">
-                                                <input style="width: 60px;" type="number" name="freq_minute" autocomplete="off" class="layui-input" value="1">
+                                                <input style="width: 60px;" type="number" name="minutes" autocomplete="off" class="layui-input" value="{[if .Data.GetRate]}{[.Data.GetRate.Minutes]}{[end]}" placeholder="">
                                             </div>
                                             <label class="layui-form-label" style="width: 70px;float: right;">分钟</label>
                                         </div>

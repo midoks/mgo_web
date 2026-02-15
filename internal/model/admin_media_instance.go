@@ -34,6 +34,11 @@ type AdminMediaEmailParams struct {
 	From     string `json:"from"`
 }
 
+type AdminMediaRateParams struct {
+	Count   int64 `json:"count"`
+	Minutes int64 `json:"minutes"`
+}
+
 func (a *AdminMediaInstance) SetParamsFromMap(m map[string]interface{}) error {
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -105,5 +110,23 @@ func (a *AdminMediaInstance) GetEmailParams() (AdminMediaEmailParams, error) {
 		return p, nil
 	}
 	err := json.Unmarshal([]byte(a.Params), &p)
+	return p, err
+}
+
+func (a *AdminMediaInstance) SetRate(p AdminMediaRateParams) error {
+	b, err := json.Marshal(p)
+	if err != nil {
+		return err
+	}
+	a.Rate = string(b)
+	return nil
+}
+
+func (a *AdminMediaInstance) GetRate() (AdminMediaRateParams, error) {
+	var p AdminMediaRateParams
+	if a.Rate == "" {
+		return p, nil
+	}
+	err := json.Unmarshal([]byte(a.Rate), &p)
 	return p, err
 }

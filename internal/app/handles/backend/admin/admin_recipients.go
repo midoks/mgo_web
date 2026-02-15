@@ -97,6 +97,11 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		})
 	}
 
+	common_data.SetRate(model.AdminMediaRateParams{
+		Count:   field.Count,
+		Minutes: field.Minutes,
+	})
+
 	if field.ID > 0 {
 		if err := db.GetDb().Model(&model.AdminMediaInstance{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
 			common.ErrorResp(c, err, -1)
