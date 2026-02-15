@@ -84,14 +84,12 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		tp, _ := recipient_data.GetTelegramParams()
-		notify_test, err := notify.NewNotification(tp.Token, field.SendID, false)
-		fmt.Println("send ss", err, tp.Token, field.SendID)
+		notify_test, err := notify.NewNotification(tp.Token, field.SendID, "http://127.0.0.1:10001", true)
 		if err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
 		err = notify_test.Send(ctx, field.Title, field.Content)
-		fmt.Println("send cc", err)
 		if err != nil {
 			common.ErrorResp(c, err, -2)
 			return
