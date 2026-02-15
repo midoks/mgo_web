@@ -83,6 +83,8 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 管理员 - 通知
 	backstage_admin.GET("/admin/recipients", backend_admin.Recipients)
+	backstage_admin.GET("/admin/recipients/list", backend_admin.RecipientsList)
+	backstage_admin.POST("/admin/recipients/delete", backend_admin.RecipientsDelete)
 	backstage_admin.GET("/admin/recipients/add", backend_admin.RecipientsAdd)
 	backstage_admin.POST("/admin/recipients/add", backend_admin.PostRecipientsAdd)
 	backstage_admin.GET("/admin/recipients/groups", backend_admin.RecipientsGroups)
@@ -92,15 +94,14 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/admin/recipients/groups/add", backend_admin.PostRecipientsGroupsAdd)
 	backstage_admin.POST("/admin/recipients/groups/delete", backend_admin.PostRecipientsGroupsDelete)
 	backstage_admin.GET("/admin/recipients/instances", backend_admin.RecipientsInstances)
+	backstage_admin.GET("/admin/recipients/instances/list", backend_admin.RecipientsInstancesList)
 	backstage_admin.GET("/admin/recipients/instances/add", backend_admin.RecipientsInstancesAdd)
+	backstage_admin.POST("/admin/recipients/instances/add", backend_admin.PostRecipientsInstancesAdd)
 	backstage_admin.GET("/admin/recipients/instances/details", backend_admin.RecipientsInstancesDetails)
 	backstage_admin.GET("/admin/recipients/instances/update", backend_admin.RecipientsInstancesUpdate)
 	backstage_admin.GET("/admin/recipients/instances/test", backend_admin.RecipientsInstancesTest)
 	backstage_admin.POST("/admin/recipients/instances/test", backend_admin.PostRecipientsInstancesTest)
-
-	backstage_admin.POST("/admin/recipients/instances/add", backend_admin.PostRecipientsInstancesAdd)
-	backstage_admin.GET("/admin/recipients/list", backend_admin.RecipientsList)
-	backstage_admin.POST("/admin/recipients/delete", backend_admin.RecipientsDelete)
+	backstage_admin.POST("/admin/recipients/instances/delete", backend_admin.RecipientsInstancesDelete)
 
 	// 边缘节点
 	backstage_admin.GET("/clusters", backend_cluster.Home)

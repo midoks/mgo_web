@@ -39,7 +39,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/admin/recipients/list',
+    url: '/{[.admin_path]}/admin/recipients/instances/list',
     title: '数据表',
     cols: [[
         {field:'name', title:'媒介名称'},
@@ -75,7 +75,7 @@ table.render({
 
 <script type="text/html" id="cmdTpl">
 <a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/admin/recipients/instances/details?id={{d.id}}">详情</a>
-<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
+<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'instances/delete','{{d.id}}')">删除</a>
 </script>
 
 {[template "backend/common/footer.tmpl" .]}
