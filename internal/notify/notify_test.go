@@ -26,7 +26,7 @@ func TestNotification_Send(t *testing.T) {
 			t.Fatalf("Failed to create disabled notification: %v", err)
 		}
 
-		err = n.Send(context.Background(), "Test Title", "Test Content", "info")
+		err = n.Send(context.Background(), "Test Title", "Test Content")
 		if err != nil {
 			t.Errorf("Send() failed in disabled mode: %v", err)
 		}
@@ -47,7 +47,7 @@ func TestNotification_Send(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	err = n.Send(ctx, "Test Title", "This is a test message from automated test.", "info")
+	err = n.Send(ctx, "Test Title", "This is a test message from automated test.")
 	if err != nil {
 		t.Errorf("Send() failed: %v", err)
 	} else {

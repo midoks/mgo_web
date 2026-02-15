@@ -1,11 +1,8 @@
-//go:build telegram
-
 package notify
 
 import (
-	"fmt"
-	// "log"
 	"context"
+	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -39,7 +36,6 @@ func (n *Notification) Send(ctx context.Context, title, content string) error {
 	}
 
 	message := fmt.Sprintf("%s\n\n%s", title, content)
-
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
