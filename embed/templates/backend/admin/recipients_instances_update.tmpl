@@ -68,6 +68,16 @@
                                         <p class="layui-font-12">创建机器人的时候可以获得，类似于 123456:AAAA-BBBB ，可以向 @BotFather 发送 /newbot 指令创建新的机器人。</p>
                                     </td>
                                 </tr>
+
+                                <tr class="id_telegram bls" style="display:none;">
+                                    <td>接收人标识</td>
+                                    <td>
+                                        <div class="layui-input-line">
+                                            <input type="text" name="send_id" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetTelegramParams.SendID]}{[end]}">
+                                        </div>
+                                        <p class="layui-font-12">群或用户的Chat ID,通常是一个数字,可以通过和@get_id_bot[/my_id]建立对话并发送任意消息获得。</p>
+                                    </td>
+                                </tr>
                             </div>
 
                             <div id="id_webhook">

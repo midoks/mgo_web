@@ -19,7 +19,8 @@ type AdminMediaInstance struct {
 	UpdateTime time.Time `json:"update_time"`                           // update_time
 }
 type AdminMediaTelegramParams struct {
-	Token string `json:"token"`
+	Token  string `json:"token"`
+	SendID string `json:"send_id"`
 }
 
 type AdminMediaWebhookParams struct {
