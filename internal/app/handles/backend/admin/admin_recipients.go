@@ -31,8 +31,13 @@ func RecipientsInstancesAdd(c *gin.Context) {
 }
 
 func RecipientsInstancesDetails(c *gin.Context) {
+	id := c.Query("id")
+	idInt, _ := strconv.ParseInt(id, 10, 64)
+	recipient_data, _ := db.GetAdminRecipientById(idInt)
+
 	data := common.CommonVer(c)
-	data["id"] = c.Query("id")
+	data["id"] = id
+	data["Data"] = recipient_data
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_details.tmpl", data)
 }
 
@@ -48,8 +53,13 @@ func RecipientsInstancesUpdate(c *gin.Context) {
 }
 
 func RecipientsInstancesTest(c *gin.Context) {
+	id := c.Query("id")
+	idInt, _ := strconv.ParseInt(id, 10, 64)
+	recipient_data, _ := db.GetAdminRecipientById(idInt)
+
 	data := common.CommonVer(c)
-	data["id"] = c.Query("id")
+	data["id"] = id
+	data["Data"] = recipient_data
 
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_test.tmpl", data)
 }
