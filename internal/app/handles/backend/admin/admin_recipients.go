@@ -32,7 +32,7 @@ func RecipientsAdd(c *gin.Context) {
 	admin_list, _, _ := db.GetAdminList(1, 100)
 	data["AdminList"] = admin_list
 
-	recipients_list, _, _ := db.GetAdminRecipientsList(1, 100)
+	recipients_list, _, _ := db.GetAdminRecipientsInstancesList(1, 100)
 	data["RecipientsList"] = recipients_list
 
 	c.HTML(http.StatusOK, "backend/admin/recipients_add.tmpl", data)
@@ -84,7 +84,7 @@ func RecipientsInstancesAdd(c *gin.Context) {
 func RecipientsInstancesDetails(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -95,7 +95,7 @@ func RecipientsInstancesDetails(c *gin.Context) {
 func RecipientsInstancesUpdate(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -106,7 +106,7 @@ func RecipientsInstancesUpdate(c *gin.Context) {
 func RecipientsInstancesTest(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -127,7 +127,7 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		return
 	}
 
-	recipient_data, _ := db.GetAdminRecipientById(field.ID)
+	recipient_data, _ := db.GetAdminRecipientsInstancesById(field.ID)
 	if recipient_data.MediaType == "telegram" {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -147,7 +147,7 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 }
 
 func RecipientsList(c *gin.Context) {
-	result, count, _ := db.GetAdminRecipientsList(1, 10)
+	result, count, _ := db.GetAdminRecipientsInstancesList(1, 10)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
@@ -221,7 +221,7 @@ func RecipientsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminRecipientsDeleteById(field.ID)
+	err := db.AdminRecipientsInstancesDeleteById(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
