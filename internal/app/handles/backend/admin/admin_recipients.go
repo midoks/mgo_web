@@ -66,16 +66,39 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		return
 	}
 
-	if field.ID > 0 {
-		update_data := &model.AdminMediaInstance{
-			Name:       field.Name,
-			Status:     field.Status,
-			Mark:       field.Mark,
-			HashLife:   field.HashLife,
-			UpdateTime: time.Now(),
-		}
+	common_data := &model.AdminMediaInstance{
+		Name:       field.Name,
+		MediaType:  field.MediaType,
+		Status:     field.Status,
+		Mark:       field.Mark,
+		HashLife:   field.HashLife,
+		UpdateTime: time.Now(),
+	}
 
-		if err := db.GetDb().Model(&model.AdminMediaInstance{}).Where("id = ?", field.ID).Updates(update_data).Error; err != nil {
+	if field.MediaType == "telegram" {
+		common_data.SetTelegramParams(model.AdminMediaTelegramParams{
+			Token: field.Token,
+		})
+	}
+
+	if field.MediaType == "email" {
+		common_data.SetEmailParams(model.AdminMediaEmailParams{
+			Smtp:     field.EmailSmtp,
+			Username: field.EmailUsername,
+			Password: field.EmailPassword,
+			From:     field.EmailFrom,
+		})
+	}
+
+	if field.MediaType == "webhook" {
+		common_data.SetWebhookParams(model.AdminMediaWebhookParams{
+			Url:    field.WebhookUrl,
+			Method: field.WebhookMethod,
+		})
+	}
+
+	if field.ID > 0 {
+		if err := db.GetDb().Model(&model.AdminMediaInstance{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
@@ -83,17 +106,8 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		return
 	}
 
-	add_data := &model.AdminMediaInstance{
-		Name:       field.Name,
-		MediaType:  field.MediaType,
-		Mark:       field.Mark,
-		HashLife:   field.HashLife,
-		Status:     true,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
-	}
-
-	if err := db.GetDb().Create(add_data).Error; err != nil {
+	common_data.CreateTime = time.Now()
+	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
