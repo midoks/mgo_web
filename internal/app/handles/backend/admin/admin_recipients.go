@@ -84,7 +84,7 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		tp, _ := recipient_data.GetTelegramParams()
-		notify_test, err := notify.NewNotification(tp.Token, field.SendID, "http://127.0.0.1:10001", true)
+		notify_test, err := notify.NewNotification(tp.Token, field.SendID, recipient_data.GetTelegramProxy(), true)
 		if err != nil {
 			common.ErrorResp(c, err, -1)
 			return
@@ -121,8 +121,10 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 
 	if field.MediaType == "telegram" {
 		common_data.SetTelegramParams(model.AdminMediaTelegramParams{
-			Token:  field.Token,
-			SendID: fmt.Sprintf("%d", field.SendID),
+			Token:               field.Token,
+			SendID:              fmt.Sprintf("%d", field.SendID),
+			TelegramProxyScheme: field.TelegramProxyScheme,
+			TelegramProxyValue:  field.TelegramProxyValue,
 		})
 	}
 

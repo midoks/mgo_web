@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -19,8 +20,10 @@ type AdminMediaInstance struct {
 	UpdateTime time.Time `json:"update_time"`                           // update_time
 }
 type AdminMediaTelegramParams struct {
-	Token  string `json:"token"`
-	SendID string `json:"send_id"`
+	Token               string `json:"token"`
+	SendID              string `json:"send_id"`
+	TelegramProxyScheme string `form:"telegram_proxy_scheme"`
+	TelegramProxyValue  string `form:"telegram_proxy_value"`
 }
 
 type AdminMediaWebhookParams struct {
@@ -130,4 +133,21 @@ func (a *AdminMediaInstance) GetRate() (AdminMediaRateParams, error) {
 	}
 	err := json.Unmarshal([]byte(a.Rate), &p)
 	return p, err
+}
+
+func (a *AdminMediaInstance) GetTelegramProxy() string {
+	if a.MediaType == "telegram" {
+		var p AdminMediaTelegramParams
+		err := json.Unmarshal([]byte(a.Params), &p)
+		if err == nil {
+			if p.TelegramProxyScheme == "socket5" {
+				return fmt.Sprintf("socket5://%s", p.TelegramProxyValue)
+			} else if p.TelegramProxyScheme == "https" {
+				return fmt.Sprintf("https://%s", p.TelegramProxyValue)
+			} else if p.TelegramProxyScheme == "http" {
+				return fmt.Sprintf("http://%s", p.TelegramProxyValue)
+			}
+		}
+	}
+	return ""
 }
