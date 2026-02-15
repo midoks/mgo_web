@@ -62,13 +62,15 @@
                             <tr>
                                 <td>接收人标识</td>
                                 <td>
-                                    <input type="text" name="user" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data.GetTelegramParams]}{[.Data.GetTelegramParams.SendID]}{[end]}">
+                                    <input type="text" name="send_id" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data.GetTelegramParams]}{[.Data.GetTelegramParams.SendID]}{[end]}">
                                     <p class="layui-font-12">群或用户的Chat ID，通常是一个数字，可以通过和 @get_id_bot 建立对话并发送任意消息获得。</p>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td colspan="2" >
+                                <td colspan="2">
+                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                    <input type="hidden" name="media_type" value="{[if .Data]}{[.Data.MediaType]}{[end]}">
                                     <button class="layui-btn" lay-filter="submit_recipients_test" lay-submit>提交测试</button>
                                 </td>
                             </tr>
@@ -95,13 +97,7 @@ form.on("submit(submit_recipients_test)", function(data){
     var index = layer.load();
     var field = data.field;
 
-    if (field['status'] == "on"){
-        field['status'] = 1;
-    } else {
-        field['status'] = 0;
-    }
-
-    $.post("/{[$.admin_path]}/admin/recipients/instances/add", field, function(res) {
+    $.post("/{[$.admin_path]}/admin/recipients/instances/test", field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){

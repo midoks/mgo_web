@@ -19,6 +19,20 @@ type AdminRecipients struct {
 	Status        bool   `form:"status"`
 }
 
+type AdminRecipientsTest struct {
+	ID            int64  `form:"id"`
+	MediaType     string `form:"media_type" binding:"required"`
+	Title         string `form:"title"`
+	Content       string `form:"content"`
+	SendID        string `form:"send_id"`
+	EmailSmtp     string `form:"email_smtp"`
+	EmailUsername string `form:"email_username"`
+	EmailPassword string `form:"email_password"`
+	EmailFrom     string `form:"email_from"`
+	WebhookUrl    string `form:"webhook_url"`
+	WebhookMethod string `form:"webhook_method"`
+}
+
 type AdminRecipientsGroup struct {
 	ID     int64  `form:"id"`
 	Name   string `form:"name"`

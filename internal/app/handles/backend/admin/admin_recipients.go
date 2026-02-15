@@ -1,7 +1,7 @@
 package admin
 
 import (
-	// "fmt"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -62,6 +62,16 @@ func RecipientsInstancesTest(c *gin.Context) {
 	data["Data"] = recipient_data
 
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances_test.tmpl", data)
+}
+
+func PostRecipientsInstancesTest(c *gin.Context) {
+	var field form.AdminRecipientsTest
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	fmt.Println(field)
 }
 
 func RecipientsList(c *gin.Context) {
