@@ -120,7 +120,7 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		common.SuccessResp(c)
 		return
 	}
-
+	common_data.Status = true
 	common_data.CreateTime = time.Now()
 	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)

@@ -86,8 +86,8 @@
                                     <td>
                                         <div class="layui-input-inline">
                                             <select name="webhook_method" lay-verify="required" lay-search>
-                                                <option value="get">GET</option>
-                                                <option value="post">POST</option>
+                                                <option value="get" {[if eq .Data.GetWebhookParams.Method "get" ]}selected{[end]}>GET</option>
+                                                <option value="post" {[if eq .Data.GetWebhookParams.Method "post" ]}selected{[end]}>POST</option>
                                             </select>
                                         </div>
                                     </td>

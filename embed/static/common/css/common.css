@@ -18,15 +18,35 @@
 .bls_hover{
     padding: 7px;
 }
-.bls_hover:hover{
-    border-left: 1px solid rgb(22, 183, 119);
+
+.cluster-boards{
+    border: 1px solid rgb(238, 238, 238);
+    border-radius: 3px;
+    word-break: break-word;
+}
+
+/* 仅显示左侧高亮，不改变布局，避免影响其他元素 */
+.bls_hover{
+    position: relative;
+}
+.bls_hover::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgb(22, 183, 119);
+    opacity: 0;
+}
+.bls_hover:hover::before{
+    opacity: 1;
 }
 
 .ccc_hover{
     padding: 12px 16px;
 }
+/* 背景色变化不影响布局 */
 .ccc_hover:hover{
     background: #f9fafb;
-    opacity: 1;
-    border-left-color:transparent;
 }
