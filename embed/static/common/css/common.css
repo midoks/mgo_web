@@ -15,7 +15,18 @@
     border-left: 2px solid rgb(22, 183, 119);
 }
 
-.bls_hover{}
-.bls_hover :hover{
-    border-left: 2px solid rgb(22, 183, 119);
+.bls_hover{
+    padding: 7px;
+}
+.bls_hover:hover{
+    border-left: 1px solid rgb(22, 183, 119);
+}
+
+.ccc_hover{
+    padding: 12px 16px;
+}
+.ccc_hover:hover{
+    background: #f9fafb;
+    opacity: 1;
+    border-left-color:transparent;
 }
