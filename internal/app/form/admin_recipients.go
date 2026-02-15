@@ -7,7 +7,7 @@ type AdminRecipients struct {
 	Mark          string `form:"mark"`
 	HashLife      int64  `form:"hash_life"`
 	Token         string `form:"token"`
-	SendID        string `form:"send_id"`
+	SendID        int64  `form:"send_id"`
 	EmailSmtp     string `form:"email_smtp"`
 	EmailUsername string `form:"email_username"`
 	EmailPassword string `form:"email_password"`
@@ -24,7 +24,7 @@ type AdminRecipientsTest struct {
 	MediaType     string `form:"media_type" binding:"required"`
 	Title         string `form:"title"`
 	Content       string `form:"content"`
-	SendID        string `form:"send_id"`
+	SendID        int64  `form:"send_id"`
 	EmailSmtp     string `form:"email_smtp"`
 	EmailUsername string `form:"email_username"`
 	EmailPassword string `form:"email_password"`

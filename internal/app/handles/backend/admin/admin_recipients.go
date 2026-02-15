@@ -2,6 +2,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -78,16 +79,21 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		return
 	}
 
-	recipient_data, _ := db.GetAdminRecipientById(idInt)
+	recipient_data, _ := db.GetAdminRecipientById(field.ID)
 	if recipient_data.MediaType == "telegram" {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
-		notify_test, err := notify.NewNotification(field.Token, field.SendID, true)
+		tp, _ := recipient_data.GetTelegramParams()
+		notify_test, err := notify.NewNotification(tp.Token, field.SendID, true)
 		if err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
-		notify_test.Send(ctx, field.Tittle, field.Content)
+		err := notify_test.Send(ctx, field.Title, field.Content)
+		if err != nil {
+			common.ErrorResp(c, err, -2)
+			return
+		}
 	}
 
 	fmt.Println(field)
@@ -116,9 +122,10 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 	}
 
 	if field.MediaType == "telegram" {
+		chatID, _ := strconv.ParseInt(field.SendID, 10, 64)
 		common_data.SetTelegramParams(model.AdminMediaTelegramParams{
 			Token:  field.Token,
-			SendID: field.SendID,
+			SendID: fmt.Sprintf("%d", chatID),
 		})
 	}
 
