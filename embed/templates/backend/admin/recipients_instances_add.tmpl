@@ -90,7 +90,7 @@
                 </tr>
 
                 <div id="id_telegram">
-                    <tr class="id_telegram" style="display:none;">
+                    <tr class="id_telegram bls" style="display:none;">
                         <td>机器人Token *</td>
                         <td>
                             <div class="layui-input-line">
@@ -99,10 +99,41 @@
                             <p class="layui-font-12">创建机器人的时候可以获得，类似于 123456:AAAA-BBBB ，可以向 @BotFather 发送 /newbot 指令创建新的机器人。</p>
                         </td>
                     </tr>
+
+                    <tr class="id_telegram bls" style="display:none;">
+                        <td>接收人标识</td>
+                        <td>
+                            <div class="layui-input-line">
+                                <input type="text" name="send_id" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetTelegramParams.SendID]}{[end]}">
+                            </div>
+                            <p class="layui-font-12">群或用户的Chat ID,通常是一个数字,可以通过和@get_id_bot[/my_id]建立对话并发送任意消息获得。</p>
+                        </td>
+                    </tr>
+
+                    <tr class="id_telegram bls" style="display:none;">
+                        <td>代理服务</td>
+                        <td>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" style="float: left;">
+                                    <select name="telegram_proxy_scheme" lay-verify="required" lay-search lay-filter="telegram_proxy_scheme">
+                                        <option value="socket5" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "socket5" ]}selected{[end]}{[end]}>socket5://</option>
+                                        <option value="https" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "https" ]}selected{[end]}{[end]}>https://</option>
+                                        <option value="http" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "http" ]}selected{[end]}{[end]}>http://</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="float: left;">
+                                    <input type="text" name="telegram_proxy_value" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetTelegramParams.TelegramProxyValue]}{[end]}">
+                                </div>
+                            </div>
+                            <p class="layui-font-12">可选项，仅当API节点所在服务器无法直接连接Telegram API时填写；测试是否能够连接Telegram API的方法： 
+curl https://api.telegram.org 出现2XX、3XX、4XX之类提示时说明能够直接连接；如果你设置了代理，请使用 
+curl -x "你的代理服务地址" https://api.telegram.org 来测试你的代理是否可用。</p>
+                        </td>
+                    </tr>
                 </div>
 
                 <div id="id_webhook">
-                    <tr class="id_webhook" style="display:none;">
+                    <tr class="id_webhook bls" style="display:none;">
                         <td>URL *</td>
                         <td>
                             <div class="layui-input-line">
@@ -112,7 +143,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_webhook" style="display:none;">
+                    <tr class="id_webhook bls" style="display:none;">
                         <td>请求方法 *</td>
                         <td>
                             <div class="layui-input-inline">
@@ -126,7 +157,7 @@
                 </div>
 
                 <div id="id_email">
-                    <tr class="id_email" style="display:none;">
+                    <tr class="id_email bls" style="display:none;">
                         <td>SMTP *</td>
                         <td>
                             <div class="layui-input-line">
@@ -136,7 +167,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email" style="display:none;">
+                    <tr class="id_email bls" style="display:none;">
                         <td>账号 *</td>
                         <td>
                             <div class="layui-input-line">
@@ -146,7 +177,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email" style="display:none;">
+                    <tr class="id_email bls" style="display:none;">
                         <td>密码 *</td>
                         <td>
                             <div class="layui-input-line">
@@ -156,7 +187,7 @@
                         </td>
                     </tr>
 
-                    <tr class="id_email" style="display:none;">
+                    <tr class="id_email bls" style="display:none;">
                         <td>发送者Email</td>
                         <td>
                             <div class="layui-input-line">
