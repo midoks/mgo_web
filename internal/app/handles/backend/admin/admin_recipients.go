@@ -23,7 +23,6 @@ func Recipients(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
 }
 
-// 通知媒介
 func RecipientsAdd(c *gin.Context) {
 	data := common.CommonVer(c)
 
@@ -39,6 +38,39 @@ func RecipientsAdd(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/admin/recipients_add.tmpl", data)
 }
 
+func PostRecipientsAdd(c *gin.Context) {
+	var field form.AdminRecipients
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	common_data := &model.AdminRecipients{
+		AdminID:     field.AdminID,
+		MediaID:     field.MediaID,
+		Status:      field.Status,
+		Mark:        field.Mark,
+		RecipientID: field.RecipientID,
+		ClusterID:   field.ClusterID,
+		UpdateTime:  time.Now(),
+	}
+
+	if field.ID > 0 {
+		if err := db.GetDb().Model(&model.AdminRecipients{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		common.SuccessResp(c)
+		return
+	}
+	common_data.Status = true
+	common_data.CreateTime = time.Now()
+	if err := db.GetDb().Create(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
+}
 func RecipientsInstances(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
@@ -120,7 +152,7 @@ func RecipientsList(c *gin.Context) {
 }
 
 func PostRecipientsInstancesAdd(c *gin.Context) {
-	var field form.AdminRecipients
+	var field form.AdminRecipientsInstances
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
