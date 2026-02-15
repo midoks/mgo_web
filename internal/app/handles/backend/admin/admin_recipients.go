@@ -89,14 +89,12 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 			common.ErrorResp(c, err, -1)
 			return
 		}
-		err := notify_test.Send(ctx, field.Title, field.Content)
+		err = notify_test.Send(ctx, field.Title, field.Content)
 		if err != nil {
 			common.ErrorResp(c, err, -2)
 			return
 		}
 	}
-
-	fmt.Println(field)
 	common.SuccessResp(c)
 }
 
@@ -122,10 +120,9 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 	}
 
 	if field.MediaType == "telegram" {
-		chatID, _ := strconv.ParseInt(field.SendID, 10, 64)
 		common_data.SetTelegramParams(model.AdminMediaTelegramParams{
 			Token:  field.Token,
-			SendID: fmt.Sprintf("%d", chatID),
+			SendID: fmt.Sprintf("%d", field.SendID),
 		})
 	}
 
