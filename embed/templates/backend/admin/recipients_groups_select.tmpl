@@ -106,13 +106,11 @@ $('#select_btn button').click(function(){
 //监听全局表单提交
 form.on('submit(select)', function(data){
     var val = $('#select_btn .layui-border-green').text();
-    // console.log(val);
-    // var regionHtml = parent.$('#region').html();
 
     if (val && parent && parent.$) {
-        parent.$('#group_btn').html('<div><span id="group_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+        parent.$('#groups_btn').html('<div><span id="group_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ val +'<a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
 
-        parent.$('#group_origin').hide();
+        parent.$('#groups_origin').hide();
         parent.window.loadGroupBtn();
         var idx = parent.layer.getFrameIndex(window.name);
         parent.layer.close(idx);
