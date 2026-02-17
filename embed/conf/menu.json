@@ -133,8 +133,29 @@
         "code": "log",
         "name": "日志审计",
         "icon": "layui-icon-refresh-3",
-        "path": "/log",
-        "perm": ""
+        "perm": "",
+        "children":[
+            {
+                "code": "log_list",
+                "name": "日志列表",
+                "path": "/log",
+                "perm": "admin.view",
+                "children":[
+                    {
+                        "code":"log_list",
+                        "path": "/log/clean"
+                    },
+                    {
+                        "code":"log_list",
+                        "path": "/log/settings"
+                    },
+                    {
+                        "code":"log_list",
+                        "path": "/log/list"
+                    }
+                ]
+            }
+        ]
     },
     {
         "code": "system",
