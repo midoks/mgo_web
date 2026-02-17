@@ -18,18 +18,7 @@
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
-                            <tr>
-                                <td>媒介名称 *</td>
-                                <td>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="媒介名称">
-                                    </div>
-                                    <br/>
-                                    <p class="layui-font-12">给当前媒介填写一个容易识别的名称。</p>
-                                </td>
-                            </tr>
 
-                
                             <tr>
                                 <td>允许手动删除日志</td>
                                 <td>
@@ -47,7 +36,9 @@
                             <tr>
                                 <td>日志保留天数</td>
                                 <td>
-                                    <input type="number" name="days" autocomplete="off" class="layui-input" value="2" placeholder="2">
+                                    <div class="layui-inline">
+                                        <input type="number" name="days" autocomplete="off" class="layui-input" value="2" placeholder="">
+                                    </div>
                                     <p class="layui-font-12">超过此天数的日志将会被自动清理，0表示不自动清理。</p>
                                 </td>
                             </tr>
@@ -59,7 +50,7 @@
                                     <p class="layui-font-12">超出此容量限制后将会发送提醒。</p>
                                 </td>
                             </tr>
-                            
+
                             <tr>
                                 <td>允许修改清除配置</td>
                                 <td>

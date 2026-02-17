@@ -14,27 +14,42 @@
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                <form class="layui-form" action="" id="log_form" onclick="return false;">
+                <form class="layui-form layui-form-pane" onclick="return false;">
+                    <table class="layui-table">
+                        <colgroup><col width="150"><col></colgroup>
+                        <tbody>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
-                        </div>
-                    </div>
+                            <tr class="bls">
+                                <td>清理方式</td>
+                                <td>
+                                    <input type="radio" name="clean" value="all" title="全部清除" checked>
+                                    <input type="radio" name="clean" value="day" title="按天数清除">
+                                </td>
+                            </tr>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
-                        </div>
-                    </div>
+                            <tr class="bls">
+                                <td>天数</td>
+                                <td>
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="day" autocomplete="off" class="layui-input" value="30" placeholder="">
+                                        </div>
+                                        <label class="layui-form-label" style="float: right;">天以外</label>
+                                    </div>
+                                    <br/>
+                                    <p class="layui-font-12">表示清除此天数以外的日志数据。</p>
+                                </td>
+                            </tr>
 
-                    <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>查询
-                        </button>
-                    </div>
+                            <tr>
+                                <td colspan="2" >
+                                    <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </form>
                 </div>
-                <div id="list"></div>
             </div>
         </div>
     </div>
@@ -48,20 +63,6 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
-
-
-table.render({
-    elem: '#list',
-    url: '/{[.admin_path]}/log/list',
-    title: '数据表',
-    cols: [[
-        {field:'content', title:'内容'},
-        {field:'uid', title:'用户ID'},
-        {field:'ip', title:'IP'},
-        {title:'操作', toolbar: '#cmdTpl', width:70, fixed: 'right'}
-     ]],
-    page: true
-});
 
 
 table.on('tool(list)', function(obj){
