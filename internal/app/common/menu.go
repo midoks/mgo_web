@@ -1,8 +1,6 @@
 package common
 
 import (
-	// "fmt"
-
 	"encoding/json"
 	"mgo/embed"
 	"sync"
@@ -15,6 +13,7 @@ type MenuConf struct {
 	Path     string     `json:"path"`
 	Perm     string     `json:"perm"`
 	Children []MenuConf `json:"children,omitempty"`
+	SubApi   []MenuConf `json:"subapi,omitempty"`
 }
 
 var (
@@ -59,6 +58,14 @@ func findMenuCodeRecursive(menus []MenuConf, requestPath string, adminPath strin
 		// Check exact match
 		if m.Path != "" && fullPath == requestPath {
 			return m.Code
+		}
+
+		// Recursive check subapi
+		if len(m.SubApi) > 0 {
+			code := findMenuCodeRecursive(m.SubApi, requestPath, adminPath)
+			if code != "" {
+				return code
+			}
 		}
 
 		// Recursive check children

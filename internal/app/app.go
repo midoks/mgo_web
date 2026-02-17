@@ -157,10 +157,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/log/list", backend_log.List)
 	backstage_admin.GET("/log/settings", backend_log.Settings)
 	backstage_admin.GET("/log/clean", backend_log.Clean)
-
-	backstage_admin.GET("/tag/index", backend_server.Home)
-	backstage_admin.GET("/tag/list", middleware.PermissionRequired("server.view"), backend_server.List)
-	backstage_admin.GET("/tag/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
+	backstage_admin.POST("/log/delete", backend_log.Delete)
 
 	// 系统设置
 	backstage_admin.GET("/system/base", backend_system.Home)
