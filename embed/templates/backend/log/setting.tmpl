@@ -14,27 +14,71 @@
                 </div>
 
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
-                <form class="layui-form" action="" id="log_form" onclick="return false;">
+                <form class="layui-form layui-form-pane" onclick="return false;">
+                    <table class="layui-table">
+                        <colgroup><col width="150"><col></colgroup>
+                        <tbody>
+                            <tr>
+                                <td>媒介名称 *</td>
+                                <td>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="媒介名称">
+                                    </div>
+                                    <br/>
+                                    <p class="layui-font-12">给当前媒介填写一个容易识别的名称。</p>
+                                </td>
+                            </tr>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input name="times" class="layui-input date-icon h30" type="text" placeholder="请选择日期范围" autocomplete="off" lay-key="1">
-                        </div>
-                    </div>
+                
+                            <tr>
+                                <td>允许手动删除日志</td>
+                                <td>
+                                    <input type="checkbox" name="can_delete"> 
+                                </td>
+                            </tr>
 
-                    <div class="layui-inline mr0">
-                        <div class="layui-input-inline mr0">
-                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input h30" value="">
-                        </div>
-                    </div>
+                            <tr>
+                                <td>允许手动清理</td>
+                                <td>
+                                    <input type="checkbox" name="can_clean"> 
+                                </td>
+                            </tr>
 
-                    <div class="layui-inline mr0">
-                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>查询
-                        </button>
-                    </div>
+                            <tr>
+                                <td>日志保留天数</td>
+                                <td>
+                                    <input type="number" name="days" autocomplete="off" class="layui-input" value="2" placeholder="2">
+                                    <p class="layui-font-12">超过此天数的日志将会被自动清理，0表示不自动清理。</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>最大容量限制</td>
+                                <td>
+                                    <input type="checkbox" name="can_clean">
+                                    <p class="layui-font-12">超出此容量限制后将会发送提醒。</p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>允许修改清除配置</td>
+                                <td>
+                                    <input type="checkbox" name="can_clean">
+                                    <p class="layui-font-12">选中后，不能再次修改删除、清理等相关设置，防止攻击者用来擦除日志。</p>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td colspan="2" >
+                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                    <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </form>
                 </div>
-                <div id="list"></div>
             </div>
         </div>
     </div>
