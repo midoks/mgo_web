@@ -161,7 +161,7 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 系统设置
 	backstage_admin.GET("/system/base", backend_system.Home)
-	backstage_admin.GET("/system/database", backend_system.Home)
+	backstage_admin.GET("/system/advanced", backend_system.Advanced)
 
 }
 

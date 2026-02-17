@@ -17,7 +17,7 @@ import (
 
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/system/index.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/advanced.tmpl", data)
 }
 
 func Edit(c *gin.Context) {
