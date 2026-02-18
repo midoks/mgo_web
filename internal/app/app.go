@@ -78,6 +78,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/admin/edit", backend_admin.Edit)
 	backstage_admin.POST("/admin/edit", backend_admin.PostEdit)
 	backstage_admin.GET("/admin/list", backend_admin.List)
+	backstage_admin.GET("/admin/details", backend_admin.Details)
 	backstage_admin.POST("/admin/delete", backend_admin.Delete)
 	backstage_admin.POST("/admin/trigger_status", backend_admin.AdminTriggerStatus)
 

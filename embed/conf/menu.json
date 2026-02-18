@@ -103,14 +103,20 @@
                 "code": "admin_list",
                 "name": "管理员列表",
                 "path": "/admin/index",
-                "perm": "admin.view"
+                "perm": "admin.view",
+                "subapi":[
+                    {
+                        "code":"admin_list",
+                        "path": "/admin/details"
+                    }
+                ]
             },
             {
                 "code": "admin_recipients",
                 "name": "通知媒介",
                 "path": "/admin/recipients",
                 "perm": "admin.view",
-                "children":[
+                "subapi":[
                     {
                         "code":"admin_recipients",
                         "path": "/admin/recipients/instances"
