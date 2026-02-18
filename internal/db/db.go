@@ -134,6 +134,7 @@ func Init(d *gorm.DB) {
 		new(model.AdminRecipients),
 		new(model.AdminMediaInstance),
 		new(model.AdminMediaGroup),
+		new(model.AdminRecipientsTasks),
 		new(model.User),
 		new(model.Role),
 		new(model.Permission),
