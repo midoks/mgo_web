@@ -32,7 +32,7 @@ func GetClusterNodeIpListByClusterID(cluster_id int64, page, size int) ([]model.
 	}
 
 	var list []model.ClusterNodeIp
-	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
+	if err := db.Order(columnName("id")).Where("cluster_id =?", cluster_id).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
 	return list, count, nil

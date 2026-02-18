@@ -27,5 +27,6 @@ type ClusterNodeDelete struct {
 }
 
 type ClusterNodeList struct {
+	Page
 	ClusterID int64 `form:"cluster_id"`
 }

@@ -58,8 +58,7 @@ func NodeList(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
-
-	result, count, err := db.GetClusterNodeIpListByClusterID(field.ClusterID, 1, 10)
+	result, count, err := db.GetClusterNodeIpListByClusterID(field.ClusterID, field.Page.Page, field.Page.Limit)
 	if err != nil {
 		common.ErrorResp(c, err, -2)
 		return

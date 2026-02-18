@@ -107,7 +107,13 @@ func Edit(c *gin.Context) {
 }
 
 func List(c *gin.Context) {
-	result, count, _ := db.GetClusterList(1, 10)
+	var field form.Page
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, _ := db.GetClusterList(field.Page, field.Limit)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
