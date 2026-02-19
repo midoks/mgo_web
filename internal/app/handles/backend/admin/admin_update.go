@@ -11,7 +11,7 @@ import (
 	// "mgo/internal/op"
 )
 
-func Details(c *gin.Context) {
+func Update(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
 	admin_data, _ := db.GetAdminById(idInt)
@@ -19,5 +19,5 @@ func Details(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/admin/admin_details.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/admin_update.tmpl", data)
 }
