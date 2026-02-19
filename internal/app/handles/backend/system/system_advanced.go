@@ -15,7 +15,7 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 1,
 			Name:   "数据库",
-			Link:   "clusters/cluster/boards",
+			Link:   "system/advanced",
 		},
 		{
 			Number: 2,

@@ -19,7 +19,7 @@ func GetSysBaseSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 1,
 			Name:   "用户界面设置",
-			Link:   "clusters/cluster/boards",
+			Link:   "system/base",
 		},
 		{
 			Number: 2,
