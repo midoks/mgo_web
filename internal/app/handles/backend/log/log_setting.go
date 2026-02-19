@@ -12,6 +12,6 @@ import (
 
 func Settings(c *gin.Context) {
 	data := common.CommonVer(c)
-
+	data["submenu"] = GetLogSubMenu()
 	c.HTML(http.StatusOK, "backend/log/setting.tmpl", data)
 }

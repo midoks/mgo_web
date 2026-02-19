@@ -10,9 +10,30 @@ import (
 	"mgo/internal/db"
 )
 
+func GetLogSubMenu() []form.SubMenu {
+	menu := []form.SubMenu{
+		{
+			Number: 1,
+			Name:   "查询",
+			Link:   "log",
+		},
+		{
+			Number: 2,
+			Name:   "清理",
+			Link:   "log/clean",
+		},
+		{
+			Number: 3,
+			Name:   "设置",
+			Link:   "log/settings",
+		},
+	}
+	return menu
+}
+
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
-
+	data["submenu"] = GetLogSubMenu()
 	c.HTML(http.StatusOK, "backend/log/index.tmpl", data)
 }
 
