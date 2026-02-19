@@ -3,32 +3,42 @@ package server
 import (
 	"errors"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
+	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
 	utils "mgo/internal/utils"
-	// "mgo/internal/op"
 )
+
+func GetSysBaseSubMenu() []form.ClusterSubMenu {
+	menu := []form.ClusterSubMenu{
+		{
+			Number: 1,
+			Name:   "用户界面设置",
+			Link:   "clusters/cluster/boards",
+		},
+		{
+			Number: 2,
+			Name:   "个人资料",
+			Link:   "clusters/cluster/list",
+		},
+		{
+			Number: 3,
+			Name:   "登录设置",
+			Link:   "clusters/cluster/create_node",
+		},
+	}
+	return menu
+}
 
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/system/advanced.tmpl", data)
-}
-
-func Edit(c *gin.Context) {
-	id := c.Query("id")
-	idInt, _ := strconv.ParseInt(id, 10, 64)
-
-	admin_data, _ := db.GetAdminById(idInt)
-
-	data := common.CommonVer(c)
-	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/system/edit.tmpl", data)
+	data["submenu"] = GetSysBaseSubMenu()
+	c.HTML(http.StatusOK, "backend/system/index.tmpl", data)
 }
 
 func List(c *gin.Context) {

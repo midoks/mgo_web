@@ -1,5 +1,11 @@
 package form
 
+type SubMenu struct {
+	Number int64  `form:"number"`
+	Name   string `form:"name"`
+	Link   string `form:"link"`
+}
+
 type Page struct {
 	Page  int `form:"page"`
 	Limit int `form:"limit"`

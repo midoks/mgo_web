@@ -1,15 +1,15 @@
 package admin
 
 import (
-// "encoding/json"
-// "net/http"
-// "strconv"
-// "time"
+	"net/http"
 
-// "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 
-// "mgo/internal/app/common"
-// "mgo/internal/app/form"
-// "mgo/internal/db"
-// "mgo/internal/model"
+	"mgo/internal/app/common"
 )
+
+func RecipientsTasks(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetRecipientsSubMenu()
+	c.HTML(http.StatusOK, "backend/admin/recipients_tasks.tmpl", data)
+}

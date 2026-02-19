@@ -19,6 +19,7 @@ import (
 
 func RecipientsInstances(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetRecipientsSubMenu()
 	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
 }
 

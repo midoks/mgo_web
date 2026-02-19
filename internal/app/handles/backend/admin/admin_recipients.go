@@ -12,9 +12,41 @@ import (
 	"mgo/internal/model"
 )
 
+func GetRecipientsSubMenu() []form.SubMenu {
+	menu := []form.SubMenu{
+		{
+			Number: 1,
+			Name:   "接收人",
+			Link:   "admin/recipients",
+		},
+		{
+			Number: 2,
+			Name:   "接收人分组",
+			Link:   "admin/recipients/groups",
+		},
+		{
+			Number: 3,
+			Name:   "媒介",
+			Link:   "admin/recipients/instances",
+		},
+		{
+			Number: 4,
+			Name:   "发送记录",
+			Link:   "admin/recipients/logs",
+		},
+		{
+			Number: 5,
+			Name:   "任务队列",
+			Link:   "admin/recipients/tasks",
+		},
+	}
+	return menu
+}
+
 // 通知媒介
 func Recipients(c *gin.Context) {
 	data := common.CommonVer(c)
+	data["submenu"] = GetRecipientsSubMenu()
 	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
 }
 

@@ -14,8 +14,8 @@ import (
 	utils "mgo/internal/utils"
 )
 
-func GetSubMenu() []form.ClusterSubMenu {
-	menu := []form.ClusterSubMenu{
+func GetSubMenu() []form.SubMenu {
+	menu := []form.SubMenu{
 		{
 			Number: 1,
 			Name:   "集群看板",

@@ -7,14 +7,12 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
-                        <li data-status="1"><a href="/{[.admin_path]}/admin/recipients">接收人</a></li>
-                        <li data-status="2"><a href="/{[.admin_path]}/admin/recipients/groups">接收人分组</a></li>
-                        <li data-status="3" class="layui-this">媒介</li>
-                        <li data-status="4"><a href="/{[.admin_path]}/admin/recipients/logs">发送记录</a></li>
-                        <li data-status="5"><a href="/{[.admin_path]}/admin/recipients/tasks">任务队列</a></li>
+                        {[range $menu := .submenu]}
+                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}">{[$menu.Name]}</a></li>
+                        {[end]}
                     </ul>
                 </div>
-
+                
                 <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
                 <form class="layui-form" action="" id="comic_form" onclick="return false;">
                     <div class="layui-inline mr0" >

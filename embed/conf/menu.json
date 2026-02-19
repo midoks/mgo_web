@@ -140,6 +140,14 @@
                     {
                         "code":"admin_recipients",
                         "path": "/admin/recipients/instances/update"
+                    },
+                    {
+                        "code":"admin_recipients",
+                        "path": "/admin/recipients/logs"
+                    },
+                    {
+                        "code":"admin_recipients",
+                        "path": "/admin/recipients/tasks"
                     }
                 ]
             }
