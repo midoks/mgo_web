@@ -22,12 +22,12 @@
                             <tr class="bls">
                                 <td>清理方式</td>
                                 <td>
-                                    <input type="radio" name="clean" value="all" title="全部清除" checked>
-                                    <input type="radio" name="clean" value="day" title="按天数清除">
+                                    <input type="radio" name="clean" value="all" title="全部清除" lay-filter="clean" checked>
+                                    <input type="radio" name="clean" value="day" title="按天数清除" lay-filter="clean">
                                 </td>
                             </tr>
 
-                            <tr class="bls">
+                            <tr class="bls day-row layui-hide">
                                 <td>天数</td>
                                 <td>
                                     <div class="layui-inline">
@@ -64,15 +64,12 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-
-table.on('tool(list)', function(obj){
-    switch(obj.event){
-    };
-});
-
-table.on('toolbar', function(obj){
-    switch(obj.event){
-    };
+form.on('radio(clean)', function(data){
+    if (data.value === 'day') {
+      document.querySelector('.day-row')?.classList.remove('layui-hide');
+    } else {
+      document.querySelector('.day-row')?.classList.add('layui-hide');
+    }
 });
 
 
