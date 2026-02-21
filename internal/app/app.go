@@ -150,8 +150,8 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	//边缘节点 - 认证
 	backstage_admin.GET("/clusters/ssh", backend_cluster.ClusterSsh)
-	backstage_admin.GET("/clusters/ssh", backend_cluster.ClusterSsh)
 	backstage_admin.GET("/clusters/ssh/list", backend_cluster.ClusterSshList)
+	backstage_admin.GET("/clusters/ssh/create", backend_cluster.ClusterSshCreate)
 	backstage_admin.POST("/clusters/ssh/create", backend_cluster.PostClusterSshCreate)
 
 	//服务器
