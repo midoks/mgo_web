@@ -43,3 +43,19 @@ func AddLog(uid int64, content string) error {
 
 	return errors.WithStack(db.Create(&u).Error)
 }
+
+// LogDeleteAll 删除全部日志
+func LogDeleteAll() error {
+	var d model.Log
+	return errors.WithStack(db.Where("1 = 1").Delete(&d).Error)
+}
+
+// LogDeleteBeforeDays 删除 N 天之前的日志
+func LogDeleteBeforeDays(days int) error {
+	if days <= 0 {
+		return nil
+	}
+	cutoff := time.Now().Add(-time.Duration(days) * 24 * time.Hour)
+	var d model.Log
+	return errors.WithStack(db.Where("create_time < ?", cutoff).Delete(&d).Error)
+}

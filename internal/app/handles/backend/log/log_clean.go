@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
-	// "mgo/internal/app/form"
-	// "mgo/internal/db"
+	"mgo/internal/app/form"
+	"mgo/internal/db"
 )
 
 func Clean(c *gin.Context) {
@@ -17,5 +17,21 @@ func Clean(c *gin.Context) {
 }
 
 func PostLogClean(c *gin.Context) {
-
+	var field form.LogClean
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, 0)
+		return
+	}
+	if field.Clean == "all" {
+		if err := db.LogDeleteAll(); err != nil {
+			common.ErrorResp(c, err, 0)
+			return
+		}
+	} else {
+		if err := db.LogDeleteBeforeDays(int(field.Day)); err != nil {
+			common.ErrorResp(c, err, 0)
+			return
+		}
+	}
+	common.SuccessResp(c)
 }
