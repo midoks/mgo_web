@@ -17,13 +17,10 @@ import (
 const LOGSYSNAME = "log_sys"
 
 func Settings(c *gin.Context) {
-
 	log_data, _ := db.GetSysSettingByCode(LOGSYSNAME)
 	data := common.CommonVer(c)
 	data["submenu"] = GetLogSubMenu()
 	data["Data"] = log_data
-	d, err := log_data.GetLogValue()
-	fmt.Println(d, err)
 	c.HTML(http.StatusOK, "backend/log/setting.tmpl", data)
 }
 
@@ -44,11 +41,12 @@ func PostSettting(c *gin.Context) {
 
 	common_data.Uid = 0
 	common_data.SetLogValue(model.SysSettingLogValue{
-		AllowedManualDelete: field.AllowedManualDelete,
-		AllowedManual:       field.AllowedManual,
-		SaveDay:             field.SaveDay,
-		MaxCapacityLimit:    field.MaxCapacityLimit,
-		MaxCapacityUnit:     field.MaxCapacityUnit,
+		AllowedManualDelete:   field.AllowedManualDelete,
+		AllowedManual:         field.AllowedManual,
+		SaveDay:               field.SaveDay,
+		MaxCapacityLimit:      field.MaxCapacityLimit,
+		MaxCapacityUnit:       field.MaxCapacityUnit,
+		AllowedModClearConfig: field.AllowedModClearConfig,
 	})
 
 	_, err := db.GetSysSettingByCode(LOGSYSNAME)
