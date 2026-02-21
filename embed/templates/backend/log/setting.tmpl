@@ -18,18 +18,23 @@
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
+                            <!-- <tr>
+                                <td colspan="2">
+                                    <button class="layui-btn" lay-filter="submit_log_setting" lay-submit>保存</button>
+                                </td>
+                            </tr> -->
 
                             <tr>
                                 <td>允许手动删除日志</td>
                                 <td>
-                                    <input type="checkbox" name="allowed_manual_delete"> 
+                                    <input type="checkbox" name="allowed_manual_delete" {[if .Data]}{[if .Data.GetLogValue.AllowedManualDelete]}checked{[end]}{[end]}> 
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>允许手动清理</td>
                                 <td>
-                                    <input type="checkbox" name="allowed_manual"> 
+                                    <input type="checkbox" name="allowed_manual" {[if .Data]}{[if .Data.GetLogValue.AllowedManual]}checked{[end]}{[end]}> 
                                 </td>
                             </tr>
 
@@ -37,7 +42,7 @@
                                 <td>日志保留天数</td>
                                 <td>
                                     <div class="layui-inline">
-                                        <input type="number" name="save_day" autocomplete="off" class="layui-input" value="2" placeholder="">
+                                        <input type="number" name="save_day" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.GetLogValue.SaveDay]}{[end]}" placeholder="">
                                     </div>
                                     <p class="layui-font-12">超过此天数的日志将会被自动清理，0表示不自动清理。</p>
                                 </td>
@@ -46,7 +51,20 @@
                             <tr>
                                 <td>最大容量限制</td>
                                 <td>
-                                    <input type="checkbox" name="can_clean">
+                                    <div class="layui-inline">
+
+                                        <div class="layui-input-inline" style="float: left;">
+                                            <input type="text" name="max_capacity_limit" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetLogValue.MaxCapacityLimit]}{[end]}">
+                                        </div>
+
+                                        <div class="layui-input-inline" style="float: left;">
+                                            <select name="max_capacity_unit" lay-verify="required">
+                                                <option value="byte">字节</option>
+                                                <option value="kib">KiB</option>
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
                                     <p class="layui-font-12">超出此容量限制后将会发送提醒。</p>
                                 </td>
                             </tr>
@@ -54,15 +72,14 @@
                             <tr>
                                 <td>允许修改清除配置</td>
                                 <td>
-                                    <input type="checkbox" name="allow_mod_clear_config">
+                                    <input type="checkbox" name="allow_mod_clear_config" {[if .Data]}{[if .Data.GetLogValue.AllowModClearConfig]}checked{[end]}{[end]}>
                                     <p class="layui-font-12">选中后，不能再次修改删除、清理等相关设置，防止攻击者用来擦除日志。</p>
                                 </td>
                             </tr>
 
 
                             <tr>
-                                <td colspan="2" >
-                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                <td colspan="2">
                                     <button class="layui-btn" lay-filter="submit_log_setting" lay-submit>保存</button>
                                 </td>
                             </tr>
@@ -89,15 +106,21 @@ form.on("submit(submit_log_setting)", function(data){
     var field = data.field;
 
     if (field['allowed_manual_delete'] == "on"){
-        field['allowed_manual_delete'] = 1;
+        field['allowed_manual_delete'] = true;
     } else {
-        field['allowed_manual_delete'] = 0;
+        field['allowed_manual_delete'] = false;
     }
 
     if (field['allowed_manual'] == "on"){
-        field['allowed_manual'] = 1;
+        field['allowed_manual'] = true;
     } else {
-        field['allowed_manual'] = 0;
+        field['allowed_manual'] = false;
+    }
+
+    if (field['allow_mod_clear_config'] == "on"){
+        field['allow_mod_clear_config'] = true;
+    } else {
+        field['allow_mod_clear_config'] = false;
     }
 
 

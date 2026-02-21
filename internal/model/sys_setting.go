@@ -18,11 +18,12 @@ type SysSettingLogValue struct {
 	AllowedManualDelete bool   `json:"allowed_manual_delete"`  // allowed manual delete
 	AllowedManual       bool   `json:"allowed_manual"`         // allowed manual
 	SaveDay             int64  `json:"save_day"`               // save day
-	MaxCapacityLimit    string `json:"max_capacity_limit"`     // max capacity limit
-	AllowModClearConfig string `json:"allow_mod_clear_config"` // allow mod clear config
+	MaxCapacityLimit    int64  `json:"max_capacity_limit"`     // max capacity limit
+	MaxCapacityUnit     string `json:"max_capacity_unit"`      // max capacity unit
+	AllowModClearConfig bool   `json:"allow_mod_clear_config"` // allow mod clear config
 }
 
-func (a *SysSetting) SetEmailParams(p SysSettingLogValue) error {
+func (a *SysSetting) SetLogValue(p SysSettingLogValue) error {
 	b, err := json.Marshal(p)
 	if err != nil {
 		return err
@@ -31,7 +32,7 @@ func (a *SysSetting) SetEmailParams(p SysSettingLogValue) error {
 	return nil
 }
 
-func (a *SysSetting) GetEmailParams() (SysSettingLogValue, error) {
+func (a *SysSetting) GetLogValue() (SysSettingLogValue, error) {
 	var p SysSettingLogValue
 	if a.Value == "" {
 		return p, nil
