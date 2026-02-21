@@ -1,6 +1,6 @@
 /*layui-admin*/
 .layui-layout-admin .layui-side {
-    width: 160px;
+    width: 168px;
 }
 
 .layadmin-side-shrink .layui-side {
@@ -8,18 +8,18 @@
     width: 60px;
 }
 .layui-side-menu .layui-nav{
-    width: 160px;
+    width: 168px;
 }
 
 .layui-side-menu .layui-side-scroll {
-    width: 160px;
+    width: 168px;
 }
 
 .layui-layout-admin .layui-logo {
-    width: 160px;
+    width: 168px;
 }
 .layui-layout-admin .layui-layout-left, .layadmin-pagetabs, .layui-layout-admin .layui-body, .layui-layout-admin .layui-footer {
-    left: 160px;
+    left: 168px;
 }
 
 .layui-nav-tree .layui-nav-item>a .layui-nav-more {
