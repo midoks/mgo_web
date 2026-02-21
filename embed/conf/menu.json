@@ -24,7 +24,7 @@
                 "name": "集群列表",
                 "path": "/clusters",
                 "perm": "server.view",
-                "children":[
+                "subapi":[
                     {
                         "code":"clusters",
                         "path": "/clusters/create"
@@ -85,10 +85,17 @@
                 "perm": "server.view"
             },
             {
-                "code": "grants",
+                "code": "ssh",
                 "name": "节点SSH",
-                "path": "/clusters/grants",
-                "perm": "server.view"
+                "path": "/clusters/ssh",
+                "perm": "server.view",
+                "subapi":[
+                    {
+                        "code":"ssh",
+                        "path": "/clusters/ssh/create"
+                    }
+                    
+                ]
             }
         ]
     },

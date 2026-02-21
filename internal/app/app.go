@@ -110,14 +110,12 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点
 	backstage_admin.GET("/clusters", backend_cluster.Home)
+	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
 	backstage_admin.GET("/clusters/list", backend_cluster.List)
 	backstage_admin.POST("/clusters/delete", backend_cluster.Delete)
 
 	backstage_admin.GET("/clusters/cluster/boards", backend_cluster.ClusterBoards)
 	backstage_admin.GET("/clusters/cluster/list", backend_cluster.ClusterList)
-
-	//边缘节点 - 认证
-	backstage_admin.GET("/clusters/grants", backend_cluster.ClusterGrants)
 
 	// 边缘节点 - 节点
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
@@ -150,7 +148,11 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/clusters/regions/delete", backend_cluster.ClusterRegionsDelete)
 	backstage_admin.POST("/clusters/regions/trigger_status", backend_cluster.ClusterRegionsTriggerStatus)
 
-	backstage_admin.POST("/clusters/create", backend_cluster.PostCreate)
+	//边缘节点 - 认证
+	backstage_admin.GET("/clusters/ssh", backend_cluster.ClusterSsh)
+	backstage_admin.GET("/clusters/ssh", backend_cluster.ClusterSsh)
+	backstage_admin.GET("/clusters/ssh/list", backend_cluster.ClusterSshList)
+	backstage_admin.POST("/clusters/ssh/create", backend_cluster.PostClusterSshCreate)
 
 	//服务器
 	backstage_admin.GET("/server/index", backend_server.Home)
