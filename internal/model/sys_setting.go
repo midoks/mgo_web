@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -15,12 +16,12 @@ type SysSetting struct {
 }
 
 type SysSettingLogValue struct {
-	AllowedManualDelete bool   `json:"allowed_manual_delete"`  // allowed manual delete
-	AllowedManual       bool   `json:"allowed_manual"`         // allowed manual
-	SaveDay             int64  `json:"save_day"`               // save day
-	MaxCapacityLimit    int64  `json:"max_capacity_limit"`     // max capacity limit
-	MaxCapacityUnit     string `json:"max_capacity_unit"`      // max capacity unit
-	AllowModClearConfig bool   `json:"allow_mod_clear_config"` // allow mod clear config
+	AllowedManualDelete   bool   `json:"allowed_manual_delete"`    // allowed manual delete
+	AllowedManual         bool   `json:"allowed_manual"`           // allowed manual
+	SaveDay               int64  `json:"save_day"`                 // save day
+	MaxCapacityLimit      int64  `json:"max_capacity_limit"`       // max capacity limit
+	MaxCapacityUnit       string `json:"max_capacity_unit"`        // max capacity unit
+	AllowedModClearConfig bool   `json:"allowed_mod_clear_config"` // allowed mod clear config
 }
 
 func (a *SysSetting) SetLogValue(p SysSettingLogValue) error {
@@ -37,6 +38,9 @@ func (a *SysSetting) GetLogValue() (SysSettingLogValue, error) {
 	if a.Value == "" {
 		return p, nil
 	}
+
 	err := json.Unmarshal([]byte(a.Value), &p)
+
+	fmt.Println("p:", p)
 	return p, err
 }

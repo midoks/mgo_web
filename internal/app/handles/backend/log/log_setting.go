@@ -19,10 +19,11 @@ const LOGSYSNAME = "log_sys"
 func Settings(c *gin.Context) {
 
 	log_data, _ := db.GetSysSettingByCode(LOGSYSNAME)
-	// fmt.Println(log_data)
 	data := common.CommonVer(c)
 	data["submenu"] = GetLogSubMenu()
 	data["Data"] = log_data
+	d, err := log_data.GetLogValue()
+	fmt.Println(d, err)
 	c.HTML(http.StatusOK, "backend/log/setting.tmpl", data)
 }
 

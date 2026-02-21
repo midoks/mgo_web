@@ -72,7 +72,7 @@
                             <tr>
                                 <td>允许修改清除配置</td>
                                 <td>
-                                    <input type="checkbox" name="allow_mod_clear_config" {[if .Data]}{[if .Data.GetLogValue.AllowModClearConfig]}checked{[end]}{[end]}>
+                                    <input type="checkbox" name="allowed_mod_clear_config" {[if .Data]}{[if.Data.GetLogValue.AllowedModClearConfig]}checked{[end]}{[end]}>
                                     <p class="layui-font-12">选中后，不能再次修改删除、清理等相关设置，防止攻击者用来擦除日志。</p>
                                 </td>
                             </tr>
@@ -117,10 +117,10 @@ form.on("submit(submit_log_setting)", function(data){
         field['allowed_manual'] = false;
     }
 
-    if (field['allow_mod_clear_config'] == "on"){
-        field['allow_mod_clear_config'] = true;
+    if (field['allowed_mod_clear_config'] == "on"){
+        field['allowed_mod_clear_config'] = true;
     } else {
-        field['allow_mod_clear_config'] = false;
+        field['allowed_mod_clear_config'] = false;
     }
 
 
