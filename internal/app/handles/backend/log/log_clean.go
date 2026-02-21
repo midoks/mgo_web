@@ -15,3 +15,7 @@ func Clean(c *gin.Context) {
 	data["submenu"] = GetLogSubMenu()
 	c.HTML(http.StatusOK, "backend/log/clean.tmpl", data)
 }
+
+func PostLogClean(c *gin.Context) {
+
+}
