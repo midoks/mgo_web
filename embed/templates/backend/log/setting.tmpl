@@ -59,8 +59,13 @@
 
                                         <div class="layui-input-inline" style="float: left;">
                                             <select name="max_capacity_unit" lay-verify="required">
-                                                <option value="byte">字节</option>
-                                                <option value="kib">KiB</option>
+                                                <option value="byte" {[if eq .Data.GetLogValue.MaxCapacityUnit "byte" ]}selected{[end]}>字节</option>
+                                                <option value="kib" {[if eq .Data.GetLogValue.MaxCapacityUnit "kib" ]}selected{[end]}>KiB</option>
+                                                <option value="mib" {[if eq .Data.GetLogValue.MaxCapacityUnit "mib" ]}selected{[end]}>MiB</option>
+                                                <option value="gib" {[if eq .Data.GetLogValue.MaxCapacityUnit "gib" ]}selected{[end]}>GiB</option>
+                                                <option value="tib" {[if eq .Data.GetLogValue.MaxCapacityUnit "tib" ]}selected{[end]}>TiB</option>
+                                                <option value="pib" {[if eq .Data.GetLogValue.MaxCapacityUnit "pib" ]}selected{[end]}>PiB</option>
+                                                <option value="eib" {[if eq .Data.GetLogValue.MaxCapacityUnit "eib" ]}selected{[end]}>EiB</option>
                                             </select>
                                         </div>
                                         
