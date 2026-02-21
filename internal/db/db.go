@@ -41,10 +41,14 @@ func InitDb() {
 	)
 
 	database := conf.Database
+	prefix := database.TablePrefix
+	if prefix == "" {
+		prefix = "mgo_"
+	}
 
 	gormConfig := &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix: database.TablePrefix,
+			TablePrefix: prefix,
 		},
 		Logger: newLogger,
 		// performance optimization: enable prepared statement cache
