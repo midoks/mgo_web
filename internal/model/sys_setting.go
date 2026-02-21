@@ -2,7 +2,6 @@ package model
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -40,7 +39,5 @@ func (a *SysSetting) GetLogValue() (SysSettingLogValue, error) {
 	}
 
 	err := json.Unmarshal([]byte(a.Value), &p)
-
-	fmt.Println("p:", p)
 	return p, err
 }
