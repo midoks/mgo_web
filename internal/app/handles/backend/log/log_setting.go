@@ -17,7 +17,7 @@ func Settings(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/log/setting.tmpl", data)
 }
 
-func PostLogSettting(c *gin.Context) {
+func PostSettting(c *gin.Context) {
 	var field form.LogSetting
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, 0)

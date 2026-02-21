@@ -161,6 +161,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/log", backend_log.Home)
 	backstage_admin.GET("/log/list", backend_log.List)
 	backstage_admin.GET("/log/settings", backend_log.Settings)
+	backstage_admin.POST("/log/settings", backend_log.PostSettting)
 	backstage_admin.GET("/log/clean", backend_log.Clean)
 	backstage_admin.POST("/log/clean", backend_log.PostLogClean)
 	backstage_admin.POST("/log/delete", backend_log.Delete)
