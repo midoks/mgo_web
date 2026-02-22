@@ -65,6 +65,38 @@
                                 <div>
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <a class="table_more mlink" target_class="more_table">
+                                        <cite>更多选项</cite>
+                                        <i class="layui-icon layui-icon-down layui-nav-more"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr class="more_table hide">
+                                <td>SSH主机地址</td>
+                                <td><input type="text" name="ssh_host" autocomplete="off" placeholder="" class="layui-input"></td>
+                            </tr>
+
+                            <tr class="more_table hide">
+                                <td>SSH主机端口</td>
+                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input"></td>
+                            </tr>
+
+                            <tr class="more_table hide">
+                                <td>SSH登录认证</td><td>
+                                <div id="ssh">
+                                    <span id="ssh_btn"></span>
+                                    <span id="ssh_origin">
+                                        <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择已用认证]</a>
+                                        <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加新认证]</a>
+                                    </span>
+                                <div>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
 
