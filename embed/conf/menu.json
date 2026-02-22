@@ -93,6 +93,18 @@
                     {
                         "code":"ssh",
                         "path": "/clusters/ssh/create"
+                    },
+                    {
+                        "code":"ssh",
+                        "path": "/clusters/ssh/details"
+                    },
+                    {
+                        "code":"ssh",
+                        "path": "/clusters/ssh/update"
+                    },
+                    {
+                        "code":"ssh",
+                        "path": "/clusters/ssh/test"
                     }
                     
                 ]

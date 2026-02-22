@@ -2,7 +2,7 @@ package cluster
 
 import (
 	"net/http"
-	// "strconv"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -39,6 +39,43 @@ func ClusterSshCreate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
 	c.HTML(http.StatusOK, "backend/cluster/ssh_create.tmpl", data)
+}
+
+func ClusterSshDetails(c *gin.Context) {
+	ssh_id := c.Query("ssh_id")
+
+	data := common.CommonVer(c)
+	data["ssh_id"] = ssh_id
+
+	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
+	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	data["Data"] = ssh_data
+
+	c.HTML(http.StatusOK, "backend/cluster/ssh_details.tmpl", data)
+}
+
+func ClusterSshUpdate(c *gin.Context) {
+	ssh_id := c.Query("ssh_id")
+
+	data := common.CommonVer(c)
+	data["ssh_id"] = c.Query("ssh_id")
+
+	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
+	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	data["Data"] = ssh_data
+	c.HTML(http.StatusOK, "backend/cluster/ssh_update.tmpl", data)
+}
+
+func ClusterSshTest(c *gin.Context) {
+	ssh_id := c.Query("ssh_id")
+
+	data := common.CommonVer(c)
+	data["ssh_id"] = c.Query("ssh_id")
+
+	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
+	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	data["Data"] = ssh_data
+	c.HTML(http.StatusOK, "backend/cluster/ssh_test.tmpl", data)
 }
 
 func ClusterSshList(c *gin.Context) {

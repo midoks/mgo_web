@@ -77,9 +77,8 @@ table.on('toolbar', function(obj){
 });
 </script>
 
-
 <script type="text/html" id="nameTpl">
-    <a class="mlink" href="/{[.admin_path]}/clusters/cluster/boards?cluster_id={{d.id}}">{{d.name}}</a>
+    <a class="mlink" href="/{[.admin_path]}/clusters/cluster/details?ssh_id={{d.id}}">{{d.name}}</a>
 </script>
 
 <script type="text/html" id="methodTpl">
@@ -90,7 +89,7 @@ table.on('toolbar', function(obj){
 </script>
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">详情</a>
+<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/clusters/ssh/details?ssh_id={{d.id}}">详情</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
 </script>
 

@@ -151,8 +151,11 @@ func initRuoteAdmin(r *gin.Engine) {
 	//边缘节点 - 认证
 	backstage_admin.GET("/clusters/ssh", backend_cluster.ClusterSsh)
 	backstage_admin.GET("/clusters/ssh/list", backend_cluster.ClusterSshList)
+	backstage_admin.GET("/clusters/ssh/details", backend_cluster.ClusterSshDetails)
+	backstage_admin.GET("/clusters/ssh/test", backend_cluster.ClusterSshTest)
 	backstage_admin.GET("/clusters/ssh/create", backend_cluster.ClusterSshCreate)
 	backstage_admin.POST("/clusters/ssh/create", backend_cluster.PostClusterSshCreate)
+	backstage_admin.GET("/clusters/ssh/update", backend_cluster.ClusterSshUpdate)
 
 	//服务器
 	backstage_admin.GET("/server/index", backend_server.Home)
