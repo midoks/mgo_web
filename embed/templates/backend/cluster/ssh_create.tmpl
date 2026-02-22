@@ -24,7 +24,7 @@
                                     <div class="layui-input-inline">
                                         <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
                                     </div>
-                                    <p class="layui-font-12">为当前认证信息起一个容易识别的名称。</p>
+                                    <p class="layui-font-12 pt5">为当前认证信息起一个容易识别的名称。</p>
                                 </td>
                             </tr>
 
@@ -37,8 +37,6 @@
                                             <option value="privatekey">私钥</option>
                                         </select>
                                     </div>
-                                    <br/>
-                                    <p class="layui-font-12">SSH登录用户名。</p>
                                 </td>
                             </tr>
 
@@ -46,8 +44,7 @@
                                 <td>SSH用户名 *</td>
                                 <td>
                                     <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
-                                    <br/>
-                                    <p class="layui-font-12">SSH登录用户名。</p>
+                                    <p class="layui-font-12 pt5">SSH登录用户名。</p>
                                 </td>
                             </tr>
 
@@ -63,9 +60,7 @@
                                 <td>
 
                                     <textarea name="privatekey" class="layui-textarea" style="min-height:100px;" placeholder="填入RSA私钥内容或者拖动私钥文件到当前框中">{[if .Data]}{[.Data.Mark]}{[end]}</textarea>
-
-                                    <br/>
-                                    <p class="layui-font-12">用来生成登录SSH公钥的私钥。<red>为了安全起见，此项数据保存后将不允许在界面查看完整明文，为避免忘记，请自行记录原始数据。</red></p>
+                                    <p class="layui-font-12 pt5">用来生成登录SSH公钥的私钥。<red>为了安全起见，此项数据保存后将不允许在界面查看完整明文，为避免忘记，请自行记录原始数据。</red></p>
                                 </td>
                             </tr>
 
@@ -73,7 +68,7 @@
                                 <td>私钥密码</td>
                                 <td>
                                     <input type="password" name="privatekey_pass" autocomplete="off" class="layui-input" value="" placeholder="">
-                                    <p class="layui-font-12">为私钥设置了密码（Passphrase）后需要填写。</p>
+                                    <p class="layui-font-12 pt5">为私钥设置了密码（Passphrase）后需要填写。</p>
                                 </td>
                             </tr>
 
