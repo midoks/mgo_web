@@ -112,13 +112,20 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-form.on('select(method)', function(data){
+function initMethod(name){
     $('.id_namepass,.id_privatekey').hide();
-    if (data.value === 'namepass') {
-        $('.namepass').show();
-    } else if (data.value === 'privatekey') {
+    if (name === 'namepass') {
+        $('.id_namepass').show();
+    } else if (name === 'privatekey') {
         $('.id_privatekey').show();
     }
+}
+
+var name = $("select[name='method']").val();
+initMethod(name);
+
+form.on('select(method)', function(data){
+    initMethod(data.value);
 });
 
 
