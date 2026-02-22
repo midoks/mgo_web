@@ -40,6 +40,11 @@
     cursor: pointer;
 }
 
+.mlink:hover {
+    color: #20a53a;
+    cursor: pointer;
+}
+
 .bls{
     border-left: 2px solid rgb(22, 183, 119);
 }
@@ -80,6 +85,17 @@
     background: #f9fafb;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+}
+
 .pt5{
     padding-top: 5px;
+}
+
+.table_more{
+    cursor: pointer;
 }

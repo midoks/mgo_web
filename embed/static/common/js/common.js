@@ -126,6 +126,24 @@ $('.layui-input,.layui-textarea').click(function(){
     }
 });
 
+$('.table_more').click(function(){
+    var target_class = $(this).attr('target_class');
+    var status = $(this).data('status');
+
+    if (status){
+        $(this).data('status',false);
+        $(this).find('cite').text("更多选项");
+        $(this).find('i').removeClass("layui-icon-up").addClass('layui-icon-down');
+        $("."+target_class).hide();
+    } else{
+        $(this).data('status',true);
+        $(this).find('cite').text("收起选项");
+        $(this).find('i').removeClass("layui-icon-down").addClass('layui-icon-up');
+
+        $("."+target_class).show();
+    }
+});
+
 ///
 });
 
