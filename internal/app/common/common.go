@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"fmt"
+	// "fmt"
 	"net/http"
 	// "strings"
 
@@ -61,7 +61,6 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	data["admin_path"] = conf.Web.AdminPath
 	// Build Menus filtered by user's auth codes, super_admin bypass
 	menus := GetMenus()
-	fmt.Println("menus1", ToJson(menus))
 	if admin_id != 0 {
 		if u, err := db.GetAdminById(admin_id); err == nil {
 			if !u.SuperAdmin {
@@ -73,10 +72,6 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	data["Menus"] = menus
 	data["CurrentPath"] = c.Request.URL.Path
 	data["ActiveMenu"] = FindMenuCodeByPath(c.Request.URL.Path, conf.Web.AdminPath)
-
-	fmt.Println("ActiveMenu", data["ActiveMenu"])
-
-	fmt.Println("menus", ToJson(menus))
 	return data
 }
 

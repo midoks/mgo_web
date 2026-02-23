@@ -29,7 +29,10 @@ func GetMenus() []MenuConf {
 			return
 		}
 		err = json.Unmarshal(content, &menus)
-		fmt.Println(err)
+		if err != nil {
+			fmt.Println("menu.json:", err)
+		}
+
 	})
 	return menus
 }
