@@ -46,23 +46,24 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	username := session.Get("username")
 	data["login_name"] = username
 
-	userIDRaw := session.Get("user_id")
-	var adminID int64
-	switch v := userIDRaw.(type) {
+	login_user_id := session.Get("user_id")
+	var admin_id int64
+	switch v := login_user_id.(type) {
 	case int64:
-		adminID = v
+		admin_id = v
 	case int:
-		adminID = int64(v)
+		admin_id = int64(v)
 	case uint:
-		adminID = int64(v)
+		admin_id = int64(v)
 	case uint64:
-		adminID = int64(v)
+		admin_id = int64(v)
 	}
 	data["HasPerm"] = func(code string) bool {
-		if adminID == 0 {
+		if admin_id == 0 {
 			return false
 		}
-		ok, err := db.HasAdminPermission(adminID, code)
+
+		ok, err := db.HasAdminPermission(admin_id, code)
 		if err != nil {
 			return false
 		}
