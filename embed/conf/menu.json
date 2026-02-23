@@ -17,13 +17,13 @@
         "name": "边缘节点",
         "icon": "layui-icon-engine",
         "path": "",
-        "perm": "server.view",
+        "perm": "",
         "children": [
             {
                 "code": "clusters",
                 "name": "集群列表",
                 "path": "/clusters",
-                "perm": "server.view",
+                "perm": "",
                 "subapi":[
                     {
                         "code":"clusters",
@@ -76,19 +76,19 @@
                 "code": "clusters_ipaddr",
                 "name": "节点IP",
                 "path": "/clusters/ipaddr",
-                "perm": "server.view"
+                "perm": ""
             },
             {
                 "code": "clusters_region",
                 "name": "区域设置",
                 "path": "/clusters/regions",
-                "perm": "server.view"
+                "perm": ""
             },
             {
                 "code": "ssh",
                 "name": "节点SSH",
                 "path": "/clusters/ssh",
-                "perm": "server.view",
+                "perm": "",
                 "subapi":[
                     {
                         "code":"ssh",
@@ -116,13 +116,13 @@
         "name": "管理员",
         "icon": "layui-icon-user",
         "path": "",
-        "perm": "admin.view",
+        "perm": "",
         "children": [
             {
                 "code": "admin_list",
                 "name": "管理员列表",
                 "path": "/admin/index",
-                "perm": "admin.view",
+                "perm": "",
                 "subapi":[
                     {
                         "code":"admin_list",
@@ -138,7 +138,7 @@
                 "code": "admin_recipients",
                 "name": "通知媒介",
                 "path": "/admin/recipients",
-                "perm": "admin.view",
+                "perm": "",
                 "subapi":[
                     {
                         "code":"admin_recipients",
@@ -198,7 +198,7 @@
         "name": "系统设置",
         "icon": "layui-icon-set",
         "path": "",
-        "perm": "server.view",
+        "perm": "",
         "children": [
             {
                 "code": "system_base",

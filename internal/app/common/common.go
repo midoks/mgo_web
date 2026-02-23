@@ -58,6 +58,7 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	case uint64:
 		admin_id = int64(v)
 	}
+
 	data["HasPerm"] = func(code string) bool {
 		if admin_id == 0 {
 			return false
