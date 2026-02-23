@@ -13,24 +13,27 @@
                     </ul>
                 </div>
 
-                <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
+                <div class="layui-form toolbar layui-padding-3">
                 <form class="layui-form" action="" id="cluster_form" onclick="return false;">
+                    <table class="layui-table">
+                        <colgroup><col width="150"><col></colgroup>
+                        <tbody>
+                            <tr>
+                                <td>集群名称</td>
+                                <td>
+                                    <input type="text" name="name" lay-verify="required" placeholder="请输入集群名称" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">集群名称</label>
-                        <div class="layui-input-block">
-                          <input type="text" name="name" lay-verify="required" placeholder="请输入集群名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button type="submit" class="layui-btn" lay-submit lay-filter="submit">保存</button>
-                        </div>
-                    </div>
+                            <tr>
+                                <td colspan="2" >
+                                    <button type="submit" class="layui-btn" lay-filter="submit" lay-submit>保存</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </form>
                 </div>
-
             </div>
         </div>
     </div>
