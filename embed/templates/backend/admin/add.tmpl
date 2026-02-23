@@ -57,7 +57,7 @@
 
 <div class="layui-fluid">
 
-    <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
+    <div class="layui-form toolbar layui-padding-3">
     <form class="layui-form layui-form-pane" onclick="return false;">
         <table class="layui-table">
             <colgroup><col width="150"><col></colgroup>
@@ -91,7 +91,7 @@
                 <tr>
                     <td>允许登录</td>
                     <td>
-                        <input type="checkbox" name="allow_login" lay-text="" {[if .Data]}{[if .Data.AllowLogin]}checked{[end]}{[end]}> 
+                        <input type="checkbox" name="allow_login" {[if .Data]}{[if .Data.AllowLogin]}checked{[end]}{[end]}> 
                         <p class="layui-font-12">选中后，当前管理员才可以登录当前的管理平台。</p>
                     </td>
                 </tr>
@@ -99,12 +99,12 @@
                 <tr>
                     <td>超级管理员</td>
                     <td>
-                        <input type="checkbox" name="super_admin" lay-text="" {[if .Data]}{[if .Data.SuperAdmin]}checked{[end]}{[end]}> 
+                        <input type="checkbox" name="super_admin" lay-filter="super_admin" {[if .Data]}{[if .Data.SuperAdmin]}checked{[end]}{[end]}> 
                         <p class="layui-font-12">选中后，表示当前管理员为超级管理员；超级管理员自动拥有所有的管理权限。</p>
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="auth {[if .Data]}{[if .Data.SuperAdmin]}hide{[end]}{[end]}">
                     <td>权限</td>
                     <td>
                         {[range $menu := .Menus]}
@@ -119,11 +119,10 @@
             </tbody>
         </table>
 
-
         <div class="layui-form-item" style="text-align: center;">
             <input type="hidden" name="status" value="true">
             <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-            <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
+            <button class="layui-btn" lay-filter="submit_admin" lay-submit>保存</button>
         </div>
     </form>
     </div>
@@ -137,6 +136,12 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+var layer = layui.layer;
+
+form.on('checkbox(super_admin)', function(data){
+    var checked = data.elem.checked;
+    $('.auth').toggleClass('hide', checked);
+});
 
 form.on("submit(submit_admin)", function(data){
     var index = layer.load();

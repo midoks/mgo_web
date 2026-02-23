@@ -3,6 +3,7 @@ package common
 import (
 	"encoding/json"
 	"mgo/embed"
+	"strings"
 	"sync"
 )
 
@@ -30,6 +31,63 @@ func GetMenus() []MenuConf {
 		_ = json.Unmarshal(content, &menus)
 	})
 	return menus
+}
+
+// ParseAuthCodes tries to parse admin.Auth into a set of codes.
+// Supports JSON array: ["clusters","ssh"] or comma/semicolon separated: "clusters,ssh".
+func ParseAuthCodes(auth string) map[string]bool {
+	m := make(map[string]bool)
+	if auth == "" {
+		return m
+	}
+	var arr []string
+	if json.Unmarshal([]byte(auth), &arr) == nil {
+		for _, s := range arr {
+			s = strings.TrimSpace(s)
+			if s != "" {
+				m[s] = true
+			}
+		}
+		return m
+	}
+	// Fallback to separators
+	for _, s := range strings.FieldsFunc(auth, func(r rune) bool {
+		return r == ',' || r == ';' || r == '|' || r == ' '
+	}) {
+		s = strings.TrimSpace(s)
+		if s != "" {
+			m[s] = true
+		}
+	}
+	return m
+}
+
+// FilterMenusByCodes returns a pruned menu tree containing only codes present in 'allowed'.
+// A parent is included if its own code is allowed or any child/subapi is allowed.
+func FilterMenusByCodes(all []MenuConf, allowed map[string]bool) []MenuConf {
+	if len(allowed) == 0 {
+		return []MenuConf{}
+	}
+	out := make([]MenuConf, 0, len(all))
+	for _, m := range all {
+		// Filter children/subapi first
+		var filteredChildren []MenuConf
+		if len(m.Children) > 0 {
+			filteredChildren = FilterMenusByCodes(m.Children, allowed)
+		}
+		var filteredSubApi []MenuConf
+		if len(m.SubApi) > 0 {
+			filteredSubApi = FilterMenusByCodes(m.SubApi, allowed)
+		}
+		// Decide include
+		if allowed[m.Code] || len(filteredChildren) > 0 || len(filteredSubApi) > 0 {
+			item := m
+			item.Children = filteredChildren
+			item.SubApi = filteredSubApi
+			out = append(out, item)
+		}
+	}
+	return out
 }
 
 func FindMenuCodeByPath(requestPath string, adminPath string) string {

@@ -3,6 +3,7 @@ package admin
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -13,11 +14,21 @@ import (
 
 func Update(c *gin.Context) {
 	id := c.Query("id")
-	idInt, _ := strconv.ParseInt(id, 10, 64)
-	admin_data, _ := db.GetAdminById(idInt)
+	idint, _ := strconv.ParseInt(id, 10, 64)
+	admin_data, _ := db.GetAdminById(idint)
+
+	auth := []string{}
+	authMap := map[string]bool{}
+	if admin_data.Auth != "" {
+		auth = strings.Split(admin_data.Auth, ",")
+		for _, code := range auth {
+			authMap[code] = true
+		}
+	}
 
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = admin_data
+	data["AuthMap"] = authMap
 	c.HTML(http.StatusOK, "backend/admin/admin_update.tmpl", data)
 }
