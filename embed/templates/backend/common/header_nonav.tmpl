@@ -59,8 +59,6 @@
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
 
                     {[range $menu := .Menus]}
-                        {[if or (eq $menu.Perm "") (call $.HasPerm $menu.Perm)]}
-
                         {[$isActive := false]}
                         
                         {[if eq $menu.Code $.ActiveMenu]}
@@ -81,16 +79,13 @@
                             {[if $menu.Children]}
                             <dl class="layui-nav-child">
                                 {[range $child := $menu.Children]}
-                                    {[if or (eq $child.Perm "") (call $.HasPerm $child.Perm)]}
                                     <dd class="{[if eq $child.Code $.ActiveMenu]}layui-this{[end]}">
                                         <a href="/{[$.admin_path]}{[$child.Path]}">{[$child.Name]}</a>
                                     </dd>
-                                    {[end]}
                                 {[end]}
                             </dl>
                             {[end]}
                         </li>
-                        {[end]}
                     {[end]}
 
                 </ul>

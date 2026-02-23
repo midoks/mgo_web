@@ -4,14 +4,13 @@ import (
 	"context"
 	"encoding/json"
 
-	// "fmt"
+	"fmt"
 	"net/http"
 	// "strings"
 
 	"mgo/internal/conf"
 	"mgo/internal/db"
-
-	// "mgo/internal/utils"
+	// utils "mgo/internal/utils"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -59,21 +58,10 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 		admin_id = int64(v)
 	}
 
-	data["HasPerm"] = func(code string) bool {
-		if admin_id == 0 {
-			return false
-		}
-
-		ok, err := db.HasAdminPermission(admin_id, code)
-		if err != nil {
-			return false
-		}
-		return ok
-	}
-
 	data["admin_path"] = conf.Web.AdminPath
 	// Build Menus filtered by user's auth codes, super_admin bypass
 	menus := GetMenus()
+	fmt.Println("menus1", ToJson(menus))
 	if admin_id != 0 {
 		if u, err := db.GetAdminById(admin_id); err == nil {
 			if !u.SuperAdmin {
@@ -85,6 +73,10 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	data["Menus"] = menus
 	data["CurrentPath"] = c.Request.URL.Path
 	data["ActiveMenu"] = FindMenuCodeByPath(c.Request.URL.Path, conf.Web.AdminPath)
+
+	fmt.Println("ActiveMenu", data["ActiveMenu"])
+
+	fmt.Println("menus", ToJson(menus))
 	return data
 }
 

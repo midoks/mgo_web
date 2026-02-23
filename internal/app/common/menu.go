@@ -2,6 +2,7 @@ package common
 
 import (
 	"encoding/json"
+	"fmt"
 	"mgo/embed"
 	"strings"
 	"sync"
@@ -12,7 +13,6 @@ type MenuConf struct {
 	Name     string     `json:"name"`
 	Icon     string     `json:"icon"`
 	Path     string     `json:"path"`
-	Perm     string     `json:"perm"`
 	Children []MenuConf `json:"children,omitempty"`
 	SubApi   []MenuConf `json:"subapi,omitempty"`
 }
@@ -28,7 +28,8 @@ func GetMenus() []MenuConf {
 		if err != nil {
 			return
 		}
-		_ = json.Unmarshal(content, &menus)
+		err = json.Unmarshal(content, &menus)
+		fmt.Println(err)
 	})
 	return menus
 }
@@ -70,7 +71,11 @@ func FilterMenusByCodes(all []MenuConf, allowed map[string]bool) []MenuConf {
 	}
 	out := make([]MenuConf, 0, len(all))
 	for _, m := range all {
-		// Filter children/subapi first
+		if allowed[m.Code] {
+			item := m
+			out = append(out, item)
+			continue
+		}
 		var filteredChildren []MenuConf
 		if len(m.Children) > 0 {
 			filteredChildren = FilterMenusByCodes(m.Children, allowed)
@@ -79,8 +84,7 @@ func FilterMenusByCodes(all []MenuConf, allowed map[string]bool) []MenuConf {
 		if len(m.SubApi) > 0 {
 			filteredSubApi = FilterMenusByCodes(m.SubApi, allowed)
 		}
-		// Decide include
-		if allowed[m.Code] || len(filteredChildren) > 0 || len(filteredSubApi) > 0 {
+		if len(filteredChildren) > 0 || len(filteredSubApi) > 0 {
 			item := m
 			item.Children = filteredChildren
 			item.SubApi = filteredSubApi

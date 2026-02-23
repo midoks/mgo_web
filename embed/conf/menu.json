@@ -4,7 +4,6 @@
         "name": "数据看板",
         "icon": "layui-icon-console",
         "path": "/index",
-        "perm": "",
         "subapi":[
             {
                 "code":"home",
@@ -17,13 +16,11 @@
         "name": "边缘节点",
         "icon": "layui-icon-engine",
         "path": "",
-        "perm": "",
         "children": [
             {
                 "code": "clusters",
                 "name": "集群列表",
                 "path": "/clusters",
-                "perm": "",
                 "subapi":[
                     {
                         "code":"clusters",
@@ -75,20 +72,17 @@
             {
                 "code": "clusters_ipaddr",
                 "name": "节点IP",
-                "path": "/clusters/ipaddr",
-                "perm": ""
+                "path": "/clusters/ipaddr"
             },
             {
                 "code": "clusters_region",
                 "name": "区域设置",
-                "path": "/clusters/regions",
-                "perm": ""
+                "path": "/clusters/regions"
             },
             {
                 "code": "ssh",
                 "name": "节点SSH",
                 "path": "/clusters/ssh",
-                "perm": "",
                 "subapi":[
                     {
                         "code":"ssh",
@@ -116,13 +110,11 @@
         "name": "管理员",
         "icon": "layui-icon-user",
         "path": "",
-        "perm": "",
         "children": [
             {
                 "code": "admin_list",
                 "name": "管理员列表",
                 "path": "/admin/index",
-                "perm": "",
                 "subapi":[
                     {
                         "code":"admin_list",
@@ -138,7 +130,6 @@
                 "code": "admin_recipients",
                 "name": "通知媒介",
                 "path": "/admin/recipients",
-                "perm": "",
                 "subapi":[
                     {
                         "code":"admin_recipients",
@@ -176,7 +167,6 @@
         "code": "log",
         "name": "日志审计",
         "icon": "layui-icon-refresh-3",
-        "perm": "",
         "path": "/log",
         "subapi":[
             {
@@ -198,19 +188,16 @@
         "name": "系统设置",
         "icon": "layui-icon-set",
         "path": "",
-        "perm": "",
         "children": [
             {
                 "code": "system_base",
                 "name": "基础设置",
-                "path": "/system/base",
-                "perm": "server.view"
+                "path": "/system/base"
             },
             {
                 "code": "system_database",
                 "name": "高级设置",
-                "path": "/system/advanced",
-                "perm": "server.view"
+                "path": "/system/advanced"
             }
         ]
     }
