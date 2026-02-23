@@ -18,12 +18,12 @@ func AuthRequired() gin.HandlerFunc {
 		uid := session.Get("user_id")
 		// fmt.Println(uid)
 
-		var uidInt int64
+		var idint int64
 		if v, ok := uid.(int64); ok {
-			uidInt = v
+			idint = v
 		}
 
-		if user == nil && uidInt < 1 {
+		if user == nil && idint < 1 {
 			path := conf.Web.AdminPath
 			if !strings.HasPrefix(path, "/") {
 				path = "/" + path
