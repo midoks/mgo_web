@@ -6,8 +6,9 @@ type AdminAdd struct {
 	Password   string            `form:"password"`
 	Password2  string            `form:"password2"`
 	FullName   string            `form:"full_name"`
-	AllowLogin string            `form:"allow_login"`
-	SuperAdmin string            `form:"super_admin"`
+	AllowLogin bool              `form:"allow_login"`
+	SuperAdmin bool              `form:"super_admin"`
+	Status     bool              `form:"status"`
 	Auth       map[string]string `form:"auth"`
 }
 

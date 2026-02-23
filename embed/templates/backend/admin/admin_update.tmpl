@@ -35,10 +35,9 @@
                                 <td>全名 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
+                                        <input type="text" name="full_name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
                                     </div>
-                                    <br/>
-                                    <p class="layui-font-12">可以输入姓名、公司名等容易识别的名称。</p>
+                                    <p class="layui-font-12 pt5">可以输入姓名、公司名等容易识别的名称。</p>
                                 </td>
                             </tr>
 
@@ -46,10 +45,9 @@
                                 <td>登录用户名 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                        <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
                                     </div>
-                                    <br/>
-                                    <p class="layui-font-12">用户名只能英文、数字、下划线的组合。</p>
+                                    <p class="layui-font-12 pt5">用户名只能英文、数字、下划线的组合。</p>
                                 </td>
                             </tr>
 
@@ -71,7 +69,7 @@
                                 <td>允许登录</td>
                                 <td>
                                     <input type="checkbox" name="allow_login" lay-text="" {[if .Data]}{[if .Data.AllowLogin]}checked{[end]}{[end]}> 
-                                    <p class="layui-font-12">选中后，当前管理员才可以登录当前的管理平台。</p>
+                                    <p class="layui-font-12 pt5">选中后，当前管理员才可以登录当前的管理平台。</p>
                                 </td>
                             </tr>
 
@@ -79,7 +77,7 @@
                                 <td>超级管理员</td>
                                 <td>
                                     <input type="checkbox" name="super_admin" lay-text="" {[if .Data]}{[if .Data.SuperAdmin]}checked{[end]}{[end]}> 
-                                    <p class="layui-font-12">选中后，表示当前管理员为超级管理员；超级管理员自动拥有所有的管理权限。</p>
+                                    <p class="layui-font-12 pt5">选中后，表示当前管理员为超级管理员；超级管理员自动拥有所有的管理权限。</p>
                                 </td>
                             </tr>
 
@@ -113,6 +111,39 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+
+form.on("submit(submit_admin)", function(data){
+    var index = layer.load();
+    var field = data.field;
+
+    if (field['status'] == "on"){
+        field['status'] = true;
+    } else {
+        field['status'] = false;
+    }
+
+    if (field['allow_login'] == "on"){
+        field['allow_login'] = true;
+    } else {
+        field['allow_login'] = false;
+    }
+
+    if (field['super_admin'] == "on"){
+        field['super_admin'] = true;
+    } else {
+        field['super_admin'] = false;
+    }
+
+    $.post("/{[$.admin_path]}/admin/add", field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
 
 ///
 });

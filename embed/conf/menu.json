@@ -73,13 +73,13 @@
                 ]
             },
             {
-                "code": "server_list",
+                "code": "clusters_ipaddr",
                 "name": "节点IP",
-                "path": "/server/index",
+                "path": "/clusters/ipaddr",
                 "perm": "server.view"
             },
             {
-                "code": "server_regions",
+                "code": "clusters_region",
                 "name": "区域设置",
                 "path": "/clusters/regions",
                 "perm": "server.view"

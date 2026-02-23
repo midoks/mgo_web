@@ -19,7 +19,6 @@ import (
 	backend_admin "mgo/internal/app/handles/backend/admin"
 	backend_cluster "mgo/internal/app/handles/backend/cluster"
 	backend_log "mgo/internal/app/handles/backend/log"
-	backend_server "mgo/internal/app/handles/backend/server"
 	backend_system "mgo/internal/app/handles/backend/system"
 	"mgo/internal/app/handles/install"
 	"mgo/internal/app/middleware"
@@ -75,8 +74,6 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	backstage_admin.GET("/admin/add", backend_admin.Add)
 	backstage_admin.POST("/admin/add", backend_admin.PostAdd)
-	backstage_admin.GET("/admin/edit", backend_admin.Edit)
-	backstage_admin.POST("/admin/edit", backend_admin.PostEdit)
 	backstage_admin.GET("/admin/list", backend_admin.List)
 	backstage_admin.GET("/admin/details", backend_admin.Details)
 	backstage_admin.GET("/admin/update", backend_admin.Update)
@@ -119,6 +116,7 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点 - 节点
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
+	backstage_admin.GET("/clusters/ipaddr", backend_cluster.Node)
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)
 	backstage_admin.GET("/clusters/select/ip", backend_cluster.SelectIp)
 	backstage_admin.GET("/clusters/select/region", backend_cluster.SelectRegion)
@@ -156,11 +154,6 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/ssh/create", backend_cluster.ClusterSshCreate)
 	backstage_admin.POST("/clusters/ssh/create", backend_cluster.PostClusterSshCreate)
 	backstage_admin.GET("/clusters/ssh/update", backend_cluster.ClusterSshUpdate)
-
-	//服务器
-	backstage_admin.GET("/server/index", backend_server.Home)
-	backstage_admin.GET("/server/list", middleware.PermissionRequired("server.view"), backend_server.List)
-	backstage_admin.GET("/server/edit", middleware.PermissionRequired("server.edit"), backend_server.Edit)
 
 	// 日志审计
 	backstage_admin.GET("/log", backend_log.Home)

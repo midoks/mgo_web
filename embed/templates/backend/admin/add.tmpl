@@ -121,6 +121,7 @@
 
 
         <div class="layui-form-item" style="text-align: center;">
+            <input type="hidden" name="status" value="true">
             <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
             <button class="layui-btn" lay-filter="submit_save" lay-submit>保存</button>
         </div>
@@ -128,5 +129,50 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+form.on("submit(submit_admin)", function(data){
+    var index = layer.load();
+    var field = data.field;
+
+    if (field['status'] == "on"){
+        field['status'] = true;
+    } else {
+        field['status'] = false;
+    }
+
+    if (field['allow_login'] == "on"){
+        field['allow_login'] = true;
+    } else {
+        field['allow_login'] = false;
+    }
+
+    if (field['super_admin'] == "on"){
+        field['super_admin'] = true;
+    } else {
+        field['super_admin'] = false;
+    }
+
+    $.post("/{[$.admin_path]}/admin/add", field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
+
+///
+});
+</script>
 
 {[template "backend/common/footer.tmpl" .]}
