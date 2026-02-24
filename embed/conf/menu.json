@@ -215,7 +215,29 @@
             {
                 "code": "system_database",
                 "name": "高级设置",
-                "path": "/system/advanced"
+                "path": "/system/database",
+                "children":[
+                    {
+                        "code":"system_database",
+                        "path": "/system/settings"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/settings/profile"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/settings/login"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/settings/login/logs"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db"
+                    }
+                ]
             }
         ]
     }

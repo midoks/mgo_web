@@ -186,7 +186,8 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	backstage_admin.GET("/system/settings/login", backend_system.Login)
 	backstage_admin.GET("/system/settings/login/logs", backend_system.LoginLogs)
-	backstage_admin.GET("/system/advanced", backend_system.Advanced)
+	backstage_admin.GET("/system/database", backend_system.Database)
+	backstage_admin.GET("/system/db", backend_system.Db)
 
 }
 

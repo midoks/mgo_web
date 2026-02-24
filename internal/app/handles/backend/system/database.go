@@ -15,7 +15,7 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 1,
 			Name:   "数据库",
-			Link:   "system/advanced",
+			Link:   "system/database",
 		},
 		{
 			Number: 2,
@@ -30,7 +30,7 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 4,
 			Name:   "日志数据库",
-			Link:   "clusters/cluster/create_node",
+			Link:   "system/db",
 		},
 		{
 			Number: 5,
@@ -41,8 +41,8 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 	return menu
 }
 
-func Advanced(c *gin.Context) {
+func Database(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysAdvancedSubMenu()
-	c.HTML(http.StatusOK, "backend/system/advanced.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/database.tmpl", data)
 }
