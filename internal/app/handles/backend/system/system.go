@@ -79,3 +79,9 @@ func Login(c *gin.Context) {
 	data["submenu"] = GetSysBaseSubMenu()
 	c.HTML(http.StatusOK, "backend/system/settings_login.tmpl", data)
 }
+
+func LoginLogs(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSysBaseSubMenu()
+	c.HTML(http.StatusOK, "backend/system/settings_login_logs.tmpl", data)
+}

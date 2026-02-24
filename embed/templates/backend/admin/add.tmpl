@@ -92,7 +92,7 @@
                     <td>允许登录</td>
                     <td>
                         <input type="checkbox" name="allow_login" {[if .Data]}{[if .Data.AllowLogin]}checked{[end]}{[end]}> 
-                        <p class="layui-font-12">选中后，当前管理员才可以登录当前的管理平台。</p>
+                        <p class="layui-font-12 pt5">选中后，当前管理员才可以登录当前的管理平台。</p>
                     </td>
                 </tr>
 
@@ -100,7 +100,7 @@
                     <td>超级管理员</td>
                     <td>
                         <input type="checkbox" name="super_admin" lay-filter="super_admin" {[if .Data]}{[if .Data.SuperAdmin]}checked{[end]}{[end]}> 
-                        <p class="layui-font-12">选中后，表示当前管理员为超级管理员；超级管理员自动拥有所有的管理权限。</p>
+                        <p class="layui-font-12 pt5">选中后，表示当前管理员为超级管理员；超级管理员自动拥有所有的管理权限。</p>
                     </td>
                 </tr>
 

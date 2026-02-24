@@ -205,6 +205,10 @@
                     {
                         "code":"system_settings",
                         "path": "/system/settings/login"
+                    },
+                    {
+                        "code":"system_settings",
+                        "path": "/system/settings/login/logs"
                     }
                 ]
             },

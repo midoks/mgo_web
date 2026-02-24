@@ -38,6 +38,12 @@
         left: 0;
     }
 }
+
+.layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #16b777;
+}
 /*layui-admin*/
 
 .steps{display:flex;align-items:center;gap:24px}
