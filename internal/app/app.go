@@ -165,7 +165,9 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/log/delete", backend_log.Delete)
 
 	// 系统设置
-	backstage_admin.GET("/system/base", backend_system.Home)
+	backstage_admin.GET("/system/settings", backend_system.Home)
+	backstage_admin.GET("/system/settings/profile", backend_system.Profile)
+	backstage_admin.GET("/system/settings/login", backend_system.Login)
 	backstage_admin.GET("/system/advanced", backend_system.Advanced)
 
 }

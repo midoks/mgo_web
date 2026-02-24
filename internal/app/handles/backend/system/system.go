@@ -19,17 +19,17 @@ func GetSysBaseSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 1,
 			Name:   "管理员界面设置",
-			Link:   "system/base",
+			Link:   "system/settings",
 		},
 		{
 			Number: 2,
 			Name:   "个人资料",
-			Link:   "clusters/cluster/list",
+			Link:   "system/settings/profile",
 		},
 		{
 			Number: 3,
 			Name:   "登录设置",
-			Link:   "clusters/cluster/create_node",
+			Link:   "system/settings/login",
 		},
 	}
 	return menu
@@ -38,7 +38,19 @@ func GetSysBaseSubMenu() []form.ClusterSubMenu {
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/index.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/settings.tmpl", data)
+}
+
+func Profile(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSysBaseSubMenu()
+	c.HTML(http.StatusOK, "backend/system/settings_profile.tmpl", data)
+}
+
+func Login(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSysBaseSubMenu()
+	c.HTML(http.StatusOK, "backend/system/settings_login.tmpl", data)
 }
 
 func List(c *gin.Context) {

@@ -7,7 +7,7 @@
         "subapi":[
             {
                 "code":"home",
-                "path": "/clusters/creates"
+                "path": "/admin/list"
             }
         ]
     },
@@ -190,9 +190,23 @@
         "path": "",
         "children": [
             {
-                "code": "system_base",
+                "code": "system_settings",
                 "name": "基础设置",
-                "path": "/system/base"
+                "path": "/system/settings",
+                "children":[
+                    {
+                        "code":"system_settings",
+                        "path": "/system/settings"
+                    },
+                    {
+                        "code":"system_settings",
+                        "path": "/system/settings/profile"
+                    },
+                    {
+                        "code":"system_settings",
+                        "path": "/system/settings/login"
+                    }
+                ]
             },
             {
                 "code": "system_database",
