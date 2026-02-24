@@ -8,7 +8,7 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         {[range $menu := .submenu]}
-                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}">{[$menu.Name]}</a></li>
+                            <li data-status="{[$menu.Number]}" {[if IsSubOrEq $.CurrentPath (print "/" $.admin_path "/" $menu.Link)]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}">{[$menu.Name]}</a></li>
                         {[end]}
                     </ul>
                 </div>
@@ -16,7 +16,7 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         <li data-status="1"><a href="/{[$.admin_path]}/system/settings/login">设置</a></li>
-                        <li data-status="2" class="layui-this"><a href="/{[$.admin_path]}/system/settings/login/logs">登录历史</a></li>
+                        <li data-status="2" class="layui-this">登录历史</li>
                     </ul>
                 </div>
                 

@@ -35,6 +35,21 @@ func initTemp(r *gin.Engine) {
 		"BuildCommit": func() string {
 			return conf.BuildCommit
 		},
+		"HasPrefix": func(s, prefix string) bool {
+			return strings.HasPrefix(s, prefix)
+		},
+		//是子菜单或当前菜单
+		"IsSubOrEq": func(base, menu string) bool {
+			if base == menu {
+				return true
+			}
+			endp := strings.Replace(base, menu, "", 1)
+			endp = strings.TrimPrefix(endp, "/")
+			return !strings.Contains(endp, "/")
+		},
+		"Contains": func(s, substr string) bool {
+			return strings.Contains(s, substr)
+		},
 	}
 
 	// Build template set with directory-aware names (e.g., "install/index.tmpl")
