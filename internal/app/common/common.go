@@ -35,19 +35,9 @@ type LayuiResp[T any] struct {
 	Data  T      `json:"data"`
 }
 
-func CommonVer(c *gin.Context) map[string]interface{} {
-	data := map[string]interface{}{
-		"title":   "MGOWEB",
-		"version": conf.App.Version,
-	}
-
-	session := sessions.Default(c)
-	username := session.Get("username")
-	data["login_name"] = username
-
-	login_user_id := session.Get("user_id")
+func ParseAdminId(login_uid interface{}) int64 {
 	var admin_id int64
-	switch v := login_user_id.(type) {
+	switch v := login_uid.(type) {
 	case int64:
 		admin_id = v
 	case int:
@@ -57,18 +47,34 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	case uint64:
 		admin_id = int64(v)
 	}
+	return admin_id
+}
 
-	data["admin_path"] = conf.Web.AdminPath
-	// Build Menus filtered by user's auth codes, super_admin bypass
+func CommonVer(c *gin.Context) map[string]interface{} {
+	data := map[string]interface{}{
+		"title":   "MGOWEB",
+		"version": conf.App.Version,
+	}
+
+	session := sessions.Default(c)
+	username := session.Get("username")
+	login_uid := session.Get("user_id")
+
+	data["login_name"] = username
+	admin_id := ParseAdminId(login_uid)
+	data["login_uid"] = admin_id
+
 	menus := GetMenus()
-	if admin_id != 0 {
-		if u, err := db.GetAdminById(admin_id); err == nil {
-			if !u.SuperAdmin {
-				allowed := ParseAuthCodes(u.Auth)
-				menus = FilterMenusByCodes(menus, allowed)
-			}
+	if admin_data, err := db.GetAdminById(admin_id); err == nil {
+		data["login_data"] = admin_data
+		// Build Menus filtered by user's auth codes, super_admin bypass
+		if !admin_data.SuperAdmin {
+			allowed := ParseAuthCodes(admin_data.Auth)
+			menus = FilterMenusByCodes(menus, allowed)
 		}
 	}
+
+	data["admin_path"] = conf.Web.AdminPath
 	data["Menus"] = menus
 	data["CurrentPath"] = c.Request.URL.Path
 	data["ActiveMenu"] = FindMenuCodeByPath(c.Request.URL.Path, conf.Web.AdminPath)

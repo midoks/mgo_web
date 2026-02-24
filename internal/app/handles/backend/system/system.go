@@ -1,13 +1,17 @@
 package server
 
 import (
+	"errors"
 	"net/http"
+	"time"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
+	"mgo/internal/model"
 )
 
 func GetSysBaseSubMenu() []form.ClusterSubMenu {
@@ -43,13 +47,35 @@ func Profile(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/system/settings_profile.tmpl", data)
 }
 
+func PostProfile(c *gin.Context) {
+	var field form.SettingProfile
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if field.Name == "" {
+		common.ErrorResp(c, errors.New("你的姓名,不能为空!"), -2)
+		return
+	}
+
+	session := sessions.Default(c)
+	uid := session.Get("user_id")
+	adminID := common.ParseAdminId(uid)
+
+	common_data := &model.Admin{
+		FullName:   field.Name,
+		UpdateTime: time.Now(),
+	}
+	if err := db.GetDb().Model(&model.Admin{}).Where("id = ?", adminID).Updates(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
+}
+
 func Login(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
 	c.HTML(http.StatusOK, "backend/system/settings_login.tmpl", data)
-}
-
-func List(c *gin.Context) {
-	result, count, _ := db.GetAdminList(1, 10)
-	common.SuccessLayuiResp(c, count, "ok", result)
 }

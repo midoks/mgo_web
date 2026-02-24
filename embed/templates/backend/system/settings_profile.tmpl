@@ -22,15 +22,14 @@
                                 <td>你的姓名 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .login_name]}{[.login_name]}{[end]}" placeholder="">
+                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .login_data]}{[.login_data.FullName]}{[end]}" placeholder="">
                                     </div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td colspan="2" >
-                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-                                    <button class="layui-btn" lay-filter="submit_admin" lay-submit>保存</button>
+                                    <button class="layui-btn" lay-filter="submit_setting" lay-submit>保存</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -50,6 +49,19 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+
+form.on("submit(submit_setting)", function(data){
+    var field = data.field;
+    $.post("/{[$.admin_path]}/system/settings/profile", field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
 
 ///
 });

@@ -33,7 +33,7 @@
 
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>{[.login_name]}</cite>
+                        <cite>{[if .login_data]}{[.login_data.FullName]}{[end]}</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd style="text-align: center;"><a href="/{[.admin_path]}/logout">退出</a></dd>
