@@ -13,23 +13,23 @@
                     </ul>
                 </div>
 
-                <div class="layui-form toolbar">
+                    
+                <div class="steps" style="padding:1em;">
+                    <div class="step active"><span class="num">1</span><span class="label mlink">填写节点信息</span><span class="line"></span></div>
+                    <div class="step"><span class="num">2</span><span class="label">安装节点</span><span class="line"></span></div>
+                    <div class="step"><span class="num">3</span><span class="label">完成</span></div>
+                </div>
+
+
+                <div class="layui-form toolbar install_node_step1">
                 <form class="layui-form layui-form-pane" onclick="return false;">
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
                             <tr>
-                                <td colspan="2">
-                                    <div class="steps">
-                                        <div class="step active"><span class="num">1</span><span class="label mlink">填写节点信息</span><span class="line"></span></div>
-                                        <div class="step"><span class="num">2</span><span class="label">安装节点</span><span class="line"></span></div>
-                                        <div class="step"><span class="num">3</span><span class="label">完成</span></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>节点名称</td>
-                                <td><input type="text" name="name" autocomplete="off" placeholder="" lay-verify="required" class="layui-input"></td>
+                                <!--  lay-verify="required" -->
+                                <td><input type="text" name="name" autocomplete="off" placeholder="" class="layui-input"></td>
                             </tr>
 
                             <tr>
@@ -38,7 +38,7 @@
                                     <div id="ip">
                                         <span id="ip_btn"></span>
                                         <span id="ip_origin">
-                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('添加IP地址','/{[$.admin_path]}/clusters/select/ip',700,550)">
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('添加IP地址','/{[$.admin_path]}/clusters/select/ip',700,450)">
                                             <i class="layui-icon layui-icon-add-circle"></i>
                                             </button>
                                         </span>
@@ -102,15 +102,73 @@
                             </tr>
 
                             <tr>
-                                <td colspan="2" >
+                                <td colspan="2">
+                                    <input type="hidden" name="ip" value="127.0.0.1">
+                                    <input type="hidden" name="cluster_id" value="{[if .cluster_id]}{[.cluster_id]}{[end]}">
                                     <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-                                    <button class="layui-btn" lay-filter="submit_node" lay-submit>保存</button>
+                                    <button class="layui-btn" lay-filter="submit_step1" lay-submit>保存</button>
                                 </td>
                             </tr>
 
                         </tbody>
                     </table>
                 </form>
+                </div>
+
+                <div class="layui-form toolbar install_node_step2">
+                <form class="layui-form layui-form-pane" onclick="return false;">
+                    <table class="layui-table">
+                        <colgroup><col width="150"><col></colgroup>
+                        <tbody>
+
+                            <tr>
+                                <td>SSH主机地址</td>
+                                <td><input type="text" name="ssh_host" autocomplete="off" placeholder="" class="layui-input"></td>
+                            </tr>
+
+                            <tr>
+                                <td>SSH主机端口</td>
+                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input"></td>
+                            </tr>
+
+                            <tr>
+                                <td>SSH登录认证</td><td>
+                                <div id="ssh">
+                                    <span id="ssh_btn"></span>
+                                    <span id="ssh_origin">
+                                        <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择已用认证]</a>
+                                        <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加新认证]</a>
+                                    </span>
+                                <div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <input type="hidden" name="ip" value="127.0.0.1">
+                                    <input type="hidden" name="cluster_id" value="{[if .cluster_id]}{[.cluster_id]}{[end]}">
+                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                    <button class="layui-btn" lay-filter="submit_step2" lay-submit>安装</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </form>
+                </div>
+
+                <div class="layui-form toolbar install_node_step3">
+                    <div>
+                        <div style="text-align: center; font-size: 1.4em; margin-top: 2.4em;">
+                            <span class="green">"154.21.203.11"节点已被创建并安装成功。</span>
+                        </div>
+
+                         <div style="text-align: center; margin-top: 3em;">
+                            <a href="/clusters/cluster/node?nodeId=7&amp;clusterId=1" type="button" class="layui-btn">现在进入节点详情<i class="layui-icon layui-icon-right"></i></a>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1em;"><a class="mlink" href="">继续创建下一个节点</a></div>
+                    </div>
                 </div>
             <!--  end  -->
             </div>
@@ -149,13 +207,12 @@ window.loadIpBtn = function(){
     });
 }
 
-//监听全局表单提交
-form.on('submit(submit_node)', function(data){
+//安装节点第一步
+form.on('submit(submit_step)', function(data){
     var index = layer.load();
     var field = data.field;
     var ip = $('#ip_btn .ip').text();
     field['ip'] = ip;
-    field['cluster_id'] = "{[.cluster_id]}";
 
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         showMsg(res.msg, function(){
@@ -167,6 +224,25 @@ form.on('submit(submit_node)', function(data){
     },'json');
     return false;
 });
+
+
+form.on('submit(submit_step2)', function(data){
+    var index = layer.load();
+    var field = data.field;
+    var ip = $('#ip_btn .ip').text();
+    field['ip'] = ip;
+    // $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
+    //     showMsg(res.msg, function(){
+    //         layer.close(index);
+    //         if(res.code > -1){
+    //             parent.location.href = "/{[$.admin_path]}/clusters/cluster/list?cluster_id={[.cluster_id]}";
+    //         }
+    //     },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    // },'json');
+    return true;
+});
+
+
 
 ///
 });

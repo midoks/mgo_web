@@ -60,6 +60,11 @@ func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/index.tmpl", data)
 }
 
+func Create(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
+}
+
 func ClusterBoards(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()

@@ -1,9 +1,10 @@
 package cluster
 
 import (
-	"errors"
+	// "errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -13,11 +14,6 @@ import (
 	"mgo/internal/db"
 	"mgo/internal/model"
 )
-
-func Create(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/create.tmpl", data)
-}
 
 func SelectIp(c *gin.Context) {
 	data := common.CommonVer(c)
@@ -41,6 +37,11 @@ func SelectGroups(c *gin.Context) {
 }
 
 func CreateNode(c *gin.Context) {
+	method := strings.ToUpper(c.Request.Method)
+	if method == "POST" {
+		PostCreateNode(c)
+		return
+	}
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
@@ -67,16 +68,17 @@ func NodeList(c *gin.Context) {
 }
 
 func PostCreateNode(c *gin.Context) {
+	data := common.CommonVer(c)
 	var field form.ClusterCreateNode
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
 	fmt.Println("field1:", field.Ip)
-	if field.Ip == "" {
-		common.ErrorResp(c, errors.New("IP不能为空!"), -1)
-		return
-	}
+	// if field.Ip == "" {
+	// 	common.ErrorResp(c, errors.New("IP不能为空!"), -1)
+	// 	return
+	// }
 
 	fmt.Println("field2:", field.Ip)
 
@@ -93,7 +95,10 @@ func PostCreateNode(c *gin.Context) {
 		return
 	}
 
-	common.SuccessResp(c)
+	// common.SuccessResp(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = field.ClusterID
+	c.HTML(http.StatusOK, "backend/cluster/cluster_create_node2.tmpl", data)
 }
 
 func PostDeleteNode(c *gin.Context) {

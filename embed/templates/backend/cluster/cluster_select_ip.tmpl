@@ -68,7 +68,7 @@
                         <div class="layui-input-inline">
                             <input type="text" name="ip" autocomplete="off" class="layui-input" value="" placeholder="">
                         </div>
-                        <p class="layui-font-12">支持单个IP、CIDR格式的一组IP（位数不能小于24）、IP范围（类似于x.x.x.x-x.x.x.x ，最多只取256个）等。</p>
+                        <p class="layui-font-12 pt5">支持单个IP、CIDR格式的一组IP（位数不能小于24）、IP范围（类似于x.x.x.x-x.x.x.x ，最多只取256个）等。</p>
                     </td>
                 </tr>
 
@@ -76,25 +76,33 @@
                     <td>允许公开访问</td>
                     <td>
                         <input type="checkbox" name="allow_public" lay-text="" checked> 
-                        <p class="layui-font-12">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
+                        <p class="layui-font-12 pt5">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
                     </td>
                 </tr>
 
                 <tr>
+                    <td colspan="2">
+                        <a class="table_more mlink" target_class="more_table">
+                            <cite>更多选项</cite>
+                            <i class="layui-icon layui-icon-down layui-nav-more"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr class="more_table hide">
                     <td>允许健康检查</td>
                     <td>
                         <input type="checkbox" name="allow_public" lay-text="" checked> 
-                        <p class="layui-font-12">选中后，表示可以在集群的“健康检查”当中对当前IP进行健康检查。</p>
+                        <p class="layui-font-12 pt5">选中后，表示可以在集群的“健康检查”当中对当前IP进行健康检查。</p>
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="more_table hide">
                     <td>备注</td>
                     <td>
                         <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder=""></textarea>
                     </td>
                 </tr>
-
             </tbody>
         </table>
 

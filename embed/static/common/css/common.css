@@ -48,6 +48,8 @@
 .no-thead .layui-table-view .layui-table-header{display:none;}
 /*layui-admin*/
 
+
+
 .steps{display:flex;align-items:center;gap:24px}
 .step{
 display:flex;align-items:center;gap:8px;color:#909399;
@@ -63,6 +65,13 @@ font-size:12px;color:#606266;background:#fff
 .step .label{font-size:14px}
 .step .line{flex:2;height:2px;background:#e4e7ed;margin:0 12px}
 
+/*color*/
+span.green {
+    color: #21ba45;
+}
+/*color*/
+
+
 .h30, .h30 .layui-input {
     height: 32px;
 }
@@ -72,6 +81,7 @@ font-size:12px;color:#606266;background:#fff
 }
 
 .mlink {
+    font-size: 12px;
     color: #20a53a;
     cursor: pointer;
 }
