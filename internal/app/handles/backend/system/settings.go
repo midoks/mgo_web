@@ -119,3 +119,14 @@ func LoginLogs(c *gin.Context) {
 	data["submenu"] = GetSysBaseSubMenu()
 	c.HTML(http.StatusOK, "backend/system/settings_login_logs.tmpl", data)
 }
+
+func LoginLogsList(c *gin.Context) {
+	var field form.AdminPage
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, _ := db.GetAdminLogsListByAdminId(field.AdminId, field.Page.Page, field.Page.Limit)
+	common.SuccessLayuiResp(c, count, "ok", result)
+}
