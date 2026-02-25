@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
+	utils "mgo/internal/utils"
 )
 
 func GetSysBaseSubMenu() []form.ClusterSubMenu {
@@ -59,14 +59,12 @@ func PostProfile(c *gin.Context) {
 		return
 	}
 
-	session := sessions.Default(c)
-	uid := session.Get("user_id")
-	adminID := common.ParseAdminId(uid)
-
 	common_data := &model.Admin{
 		FullName:   field.Name,
 		UpdateTime: time.Now(),
 	}
+	data := common.CommonVer(c)
+	adminID := data["login_uid"]
 	if err := db.GetDb().Model(&model.Admin{}).Where("id = ?", adminID).Updates(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return
@@ -78,6 +76,42 @@ func Login(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
 	c.HTML(http.StatusOK, "backend/system/settings_login.tmpl", data)
+}
+
+func PostLogin(c *gin.Context) {
+	var field form.SettingLogin
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if field.Name == "" {
+		common.ErrorResp(c, errors.New("你的姓名,不能为空!"), -2)
+		return
+	}
+	common_data := &model.Admin{
+		FullName:   field.Name,
+		UpdateTime: time.Now(),
+	}
+
+	if field.Password != "" || field.Password2 != "" {
+		if field.Password != field.Password2 {
+			common.ErrorResp(c, errors.New("两次密码不一致!"), -2)
+			return
+		}
+
+		salt := utils.RandString(16)
+		common_data.Salt = salt
+		common_data.Password = model.TwoHashPwd(field.Password, salt)
+	}
+
+	data := common.CommonVer(c)
+	adminID := data["login_uid"]
+	if err := db.GetDb().Model(&model.Admin{}).Where("id = ?", adminID).Updates(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
 }
 
 func LoginLogs(c *gin.Context) {
