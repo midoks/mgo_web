@@ -20,7 +20,9 @@
                     </ul>
                 </div>
 
-                <div id="list"></div>
+                <div class="no-thead">
+                    <div id="list"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,15 +42,22 @@ table.render({
     url: '/{[.admin_path]}/system/settings/login/logs/list?admin_id={[$.login_uid]}',
     title: '数据表',
     cols: [[
-        {field:'name', title:'节点名称', toolbar: '#nameTpl'},
         {field:'ip', title:'IP'},
-        {field:'status', title:'状态', toolbar: '#statusTpl'},
+        {field:'user_agent', title:'UA'},
+        {field:'create_time', title:'时间'},
      ]],
     page: true
+    ,done: function(){
+        $('.no-thead .layui-table-view .layui-table-header').css('display','none');
+    }
 });
 
 ///
 });
 </script>
+
+<style>
+.no-thead .layui-table-view .layui-table-header{display:none;}
+</style>
 
 {[template "backend/common/footer.tmpl" .]}

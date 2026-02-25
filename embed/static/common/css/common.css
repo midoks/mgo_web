@@ -44,6 +44,8 @@
     border-radius: 0;
     border-bottom: 1px solid #16b777;
 }
+
+.no-thead .layui-table-view .layui-table-header{display:none;}
 /*layui-admin*/
 
 .steps{display:flex;align-items:center;gap:24px}
