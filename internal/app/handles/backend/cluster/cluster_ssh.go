@@ -95,6 +95,17 @@ func ClusterSshList(c *gin.Context) {
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
+func ClusterSshListBySelect(c *gin.Context) {
+	var field form.Page
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, _ := db.GetClusterSshList(field.Page, field.Limit)
+	common.SuccessLayuiResp(c, count, "ok", result)
+}
+
 func PostClusterSshCreate(c *gin.Context) {
 	var field form.ClusterSshCreate
 	if err := c.ShouldBind(&field); err != nil {

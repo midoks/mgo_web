@@ -140,7 +140,6 @@ func Init(d *gorm.DB) {
 		new(model.AdminMediaInstance),
 		new(model.AdminMediaGroup),
 		new(model.AdminRecipientsTasks),
-		new(model.User),
 		new(model.Cluster),
 		new(model.ClusterGroup),
 		new(model.ClusterRegion),
@@ -148,6 +147,7 @@ func Init(d *gorm.DB) {
 		new(model.ClusterNodeLogin),
 		new(model.ClusterSsh),
 		new(model.Log),
+		new(model.User),
 	)
 	if err != nil {
 		log.Fatalf("failed migrate database: %s", err.Error())

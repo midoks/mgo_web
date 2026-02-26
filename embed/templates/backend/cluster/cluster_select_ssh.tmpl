@@ -2,115 +2,34 @@
 
 
 <style type="text/css">
-.layui-form-item .layui-input-inline{
-    width: auto;
-    margin-left: 5px;
-}
-.type-input{
-    height:70px;
-    overflow-y: auto;
-}
-.type-input::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
-    height: 1px;
-}
-.type-input::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 10px;
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background   : #666;
-}
-.type-input::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    background   : #ededed;
-}
-.layui-form-radio{
-    margin: 0; 
-    padding-right: 0;
-}
+/* Layout */
+.ssh-select{padding:12px;}
+.ssh-search{height:40px;}
+.ssh-section-title{color:#64748b;font-size:16px;margin:16px 0 8px;}
+.ssh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 
-.layui-form-pane .layui-form-checkbox {
-    margin: 4px 0 4px 1px;
-}
-.layui-form-checkbox[lay-skin=primary] span {
-    padding-right: 4px;
-}
-.layui-form-checkbox[lay-skin=primary] i {
-    left: 6px;
-}
-.layui-form-item .layui-col-xs12{
-    margin-top: 10px;
-}
-@media screen and (max-width: 990px){
-    .layui-form-item .layui-col-xs12:first-child{
-        margin-top: 0px;
-    }
-    .layui-form-item{
-        margin-bottom: 10px; 
-    }
-}
+/* Card */
+.ssh-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;cursor:pointer;transition:all .2s;}
+.ssh-card:hover{border-color:#d1d5db;background:#f8fafc;}
+.ssh-card .title{font-size:14px;color:#111827;margin-bottom:6px;}
+.ssh-card .title .meta{color:gray;font-size:12px;margin-left:6px;}
+.ssh-card .subtitle{font-size:12px;color:#374151;}
+
+/* Responsive */
+@media (max-width: 990px){ .ssh-grid{grid-template-columns:repeat(3,1fr);} }
 </style>
-<!-- start -->
 
 <div class="layui-fluid">
+    <div class="ssh-select">
+        <input type="text" class="layui-input ssh-search" id="ssh_search" placeholder="搜索名称、用户名等">
 
-    <div class="layui-form toolbar layui-padding-3" style="margin-top: 10px;margin-bottom: 10px;">
-    <form class="layui-form layui-form-pane" onclick="return false;">
-        <table class="layui-table">
-            <colgroup><col width="150"><col></colgroup>
-            <tbody>
-                <tr>
-                    <td>IP地址 *</td>
-                    <td>
-                        <div class="layui-input-inline">
-                            <input type="text" name="ip" autocomplete="off" class="layui-input" value="" placeholder="">
-                        </div>
-                        <p class="layui-font-12 pt5">支持单个IP、CIDR格式的一组IP（位数不能小于24）、IP范围（类似于x.x.x.x-x.x.x.x ，最多只取256个）等。</p>
-                    </td>
-                </tr>
+        <div class="ssh-section-title">推荐认证</div>
+        <div class="ssh-grid" id="ssh_grid_top"></div>
 
-                <tr>
-                    <td>允许公开访问</td>
-                    <td>
-                        <input type="checkbox" name="allow_public" lay-text="" checked> 
-                        <p class="layui-font-12 pt5">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
-                    </td>
-                </tr>
+        <div class="ssh-section-title">全部认证</div>
+        <div class="ssh-grid" id="ssh_grid_all"></div>
 
-                <tr>
-                    <td colspan="2">
-                        <a class="table_more mlink" target_class="more_table">
-                            <cite>更多选项</cite>
-                            <i class="layui-icon layui-icon-down layui-nav-more"></i>
-                        </a>
-                    </td>
-                </tr>
-
-                <tr class="more_table hide">
-                    <td>允许健康检查</td>
-                    <td>
-                        <input type="checkbox" name="allow_public" lay-text="" checked> 
-                        <p class="layui-font-12 pt5">选中后，表示可以在集群的“健康检查”当中对当前IP进行健康检查。</p>
-                    </td>
-                </tr>
-
-                <tr class="more_table hide">
-                    <td>备注</td>
-                    <td>
-                        <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder=""></textarea>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <div class="layui-form-item" style="text-align: center;">
-            <button class="layui-btn" lay-filter="select" lay-submit>保存</button>
-        </div>
-    </form>
+        <p></p>
     </div>
 
 </div>
@@ -125,24 +44,58 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-//监听全局表单提交
-form.on('submit(select)', function(data){
-    // console.log(data);
-    var val = $('input[name=ip]').val();
-    if (val && parent && parent.$) {
-        parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;"><span class="ip">'+ val +'</span><a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+function subtitleByMethod(m){
+    if(m === 'password'){ return '用户名+密码'; }
+    if(m === 'privatekey'){ return '私钥'; }
+    return '认证方式';
+}
+function cardTpl(item){
+    var title = $('<div class="title"></div>').append(
+        $('<span></span>').text(item.name),
+        $('<span class="meta"></span>').text('(' + (item.username||'root') + ')')
+    );
+    var sub = $('<div class="subtitle"></div>').text(subtitleByMethod(item.method));
+    var card = $('<div class="ssh-card"></div>').append(title, sub);
+    card.on('click', function(){
+        if (parent && parent.$) {
+            parent.$('#ssh_btn').html('<div><span id="ssh_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ item.name +' <a class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+            parent.$('#ssh_origin').hide();
+            if (parent.window.loadSshBtn) parent.window.loadSshBtn();
+            var idx = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(idx);
+        }
+    });
+    return card;
+}
+function render(list){
+    var top = $('#ssh_grid_top').empty();
+    var all = $('#ssh_grid_all').empty();
+    var rec = list.slice(0, 3);
+    rec.forEach(function(it){ top.append(cardTpl(it)); });
+    list.forEach(function(it){ all.append(cardTpl(it)); });
+}
+function filter(list, key){
+    key = (key||'').toLowerCase();
+    if(!key) return list;
+    return list.filter(function(it){
+        return (it.name||'').toLowerCase().indexOf(key)>-1
+            || (it.username||'').toLowerCase().indexOf(key)>-1;
+    });
+}
 
-        parent.$('#ip_origin').hide();
-        parent.window.loadIpBtn();
-        var idx = parent.layer.getFrameIndex(window.name);
-        parent.layer.close(idx);
+var allList = [];
+$.get('/{[.admin_path]}/clusters/ssh/list?page=1&limit=100', function(data){
+    console.log(data);
+    if(data && data.data){ 
+        allList = data.data; 
+        render(allList); 
     }
-    return false;
+}, 'json');
+
+$('#ssh_search').on('input', function(){
+    render(filter(allList, $(this).val()));
 });
 
-
-
-///
 });
 </script>
 
