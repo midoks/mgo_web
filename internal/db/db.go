@@ -148,7 +148,8 @@ func Init(d *gorm.DB) {
 		new(model.Cluster),
 		new(model.ClusterGroup),
 		new(model.ClusterRegion),
-		new(model.ClusterNodeIp),
+		new(model.ClusterNode),
+		new(model.ClusterNodeLogin),
 		new(model.ClusterSsh),
 		new(model.Log),
 	)

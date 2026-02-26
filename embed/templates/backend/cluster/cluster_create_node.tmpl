@@ -22,7 +22,7 @@
 
 
                 <div class="layui-form toolbar install_node_step1">
-                <form class="layui-form layui-form-pane" onclick="return false;">
+                <form class="layui-form layui-form-pane">
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
@@ -115,8 +115,8 @@
                 </form>
                 </div>
 
-                <div class="layui-form toolbar install_node_step2">
-                <form class="layui-form layui-form-pane" onclick="return false;">
+                <div class="layui-form toolbar install_node_step2" style="display:none;">
+                <form class="layui-form layui-form-pane">
                     <table class="layui-table">
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
@@ -157,7 +157,7 @@
                 </form>
                 </div>
 
-                <div class="layui-form toolbar install_node_step3">
+                <div class="layui-form toolbar install_node_step3" style="display:none;">
                     <div>
                         <div style="text-align: center; font-size: 1.4em; margin-top: 2.4em;">
                             <span class="green">"154.21.203.11"节点已被创建并安装成功。</span>
@@ -208,7 +208,7 @@ window.loadIpBtn = function(){
 }
 
 //安装节点第一步
-form.on('submit(submit_step)', function(data){
+form.on('submit(submit_step1)', function(data){
     var index = layer.load();
     var field = data.field;
     var ip = $('#ip_btn .ip').text();
@@ -217,9 +217,8 @@ form.on('submit(submit_step)', function(data){
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
-            if(res.code > -1){
-                parent.location.href = "/{[$.admin_path]}/clusters/cluster/list?cluster_id={[.cluster_id]}";
-            }
+            $('.install_node_step1').hide();
+            $('.install_node_step2').show();
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');
     return false;

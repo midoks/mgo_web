@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type ClusterNodeIp struct {
+type ClusterNode struct {
 	ID               int64     `json:"id" gorm:"primaryKey"`                  // unique key
 	ClusterID        int64     `json:"cluster_id"`                            // cluster_id
 	Name             string    `json:"name"`                                  // name

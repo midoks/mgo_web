@@ -137,7 +137,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/select/region", backend_cluster.SelectRegion)
 	backstage_admin.GET("/clusters/select/groups", backend_cluster.SelectGroups)
 	backstage_admin.GET("/clusters/cluster/create_node", backend_cluster.CreateNode)
-	backstage_admin.POST("/clusters/cluster/create_node", backend_cluster.CreateNode)
+	backstage_admin.POST("/clusters/cluster/create_node", backend_cluster.PostCreateNode)
 	backstage_admin.POST("/clusters/cluster/delete_node", backend_cluster.PostDeleteNode)
 	backstage_admin.GET("/clusters/cluster/node_list", backend_cluster.NodeList)
 

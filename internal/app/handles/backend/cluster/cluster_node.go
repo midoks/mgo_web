@@ -1,7 +1,7 @@
 package cluster
 
 import (
-	// "errors"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -59,7 +59,7 @@ func NodeList(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
-	result, count, err := db.GetClusterNodeIpListByClusterID(field.ClusterID, field.Page.Page, field.Page.Limit)
+	result, count, err := db.GetClusterNodeListByClusterID(field.ClusterID, field.Page.Page, field.Page.Limit)
 	if err != nil {
 		common.ErrorResp(c, err, -2)
 		return
@@ -74,15 +74,15 @@ func PostCreateNode(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
-	fmt.Println("field1:", field.Ip)
-	// if field.Ip == "" {
-	// 	common.ErrorResp(c, errors.New("IP不能为空!"), -1)
-	// 	return
-	// }
+
+	if field.Ip == "" {
+		common.ErrorResp(c, errors.New("IP不能为空!"), -1)
+		return
+	}
 
 	fmt.Println("field2:", field.Ip)
 
-	nodeip := &model.ClusterNodeIp{
+	nodeip := &model.ClusterNode{
 		Name:       field.Name,
 		Ip:         field.Ip,
 		ClusterID:  field.ClusterID,
@@ -108,7 +108,7 @@ func PostDeleteNode(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterNodeIpDeleteById(field.ID)
+	err := db.ClusterNodeDeleteById(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

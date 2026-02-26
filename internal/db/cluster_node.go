@@ -10,35 +10,35 @@ import (
 	// utils "mgo/internal/utils"
 )
 
-func GetClusterNodeIpList(page, size int) ([]model.ClusterNodeIp, int64, error) {
-	cluster := db.Model(&model.ClusterNodeIp{})
+func GetClusterNodeList(page, size int) ([]model.ClusterNode, int64, error) {
+	cluster := db.Model(&model.ClusterNode{})
 	var count int64
 	if err := cluster.Count(&count).Error; err != nil {
 		return nil, 0, errors.Wrapf(err, "failed get cluster group")
 	}
 
-	var list []model.ClusterNodeIp
+	var list []model.ClusterNode
 	if err := db.Order(columnName("id")).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
 	return list, count, nil
 }
 
-func GetClusterNodeIpListByClusterID(cluster_id int64, page, size int) ([]model.ClusterNodeIp, int64, error) {
-	cluster := db.Model(&model.ClusterNodeIp{})
+func GetClusterNodeListByClusterID(cluster_id int64, page, size int) ([]model.ClusterNode, int64, error) {
+	cluster := db.Model(&model.ClusterNode{})
 	var count int64
 	if err := cluster.Count(&count).Error; err != nil {
-		return nil, 0, errors.Wrapf(err, "failed get cluster group")
+		return nil, 0, errors.Wrapf(err, "failed get cluster node list")
 	}
 
-	var list []model.ClusterNodeIp
+	var list []model.ClusterNode
 	if err := db.Order(columnName("id")).Where("cluster_id =?", cluster_id).Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
 	return list, count, nil
 }
 
-func AddClusterNodeIpGroup(name string, clusterId int64) error {
+func AddClusterNodeGroup(name string, clusterId int64) error {
 	data := &model.ClusterGroup{
 		Name:      name,
 		ClusterId: clusterId,
@@ -52,7 +52,7 @@ func AddClusterNodeIpGroup(name string, clusterId int64) error {
 	return nil
 }
 
-func UpdateClusterNodeIpGroup(name string, id int64) error {
+func UpdateClusterNodeGroup(name string, id int64) error {
 	data := &model.ClusterGroup{
 		Name: name,
 	}
@@ -66,7 +66,7 @@ func UpdateClusterNodeIpGroup(name string, id int64) error {
 	return nil
 }
 
-func GetClusterNodeIpGroupById(id int64) (*model.ClusterGroup, error) {
+func GetClusterNodeGroupById(id int64) (*model.ClusterGroup, error) {
 	var data model.ClusterGroup
 	if err := db.First(&data, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get cluster group")
@@ -74,7 +74,7 @@ func GetClusterNodeIpGroupById(id int64) (*model.ClusterGroup, error) {
 	return &data, nil
 }
 
-func ClusterNodeIpDeleteById(id int64) error {
-	var d model.ClusterNodeIp
+func ClusterNodeDeleteById(id int64) error {
+	var d model.ClusterNode
 	return db.Where("id = ?", id).Delete(&d).Error
 }
