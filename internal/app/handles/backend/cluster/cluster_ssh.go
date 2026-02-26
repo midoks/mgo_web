@@ -35,6 +35,12 @@ func ClusterSsh(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/ssh.tmpl", data)
 }
 
+func ClusterSshAdd(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSshSubMenu()
+	c.HTML(http.StatusOK, "backend/cluster/ssh_add.tmpl", data)
+}
+
 func ClusterSshCreate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
