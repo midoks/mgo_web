@@ -141,10 +141,6 @@ func Init(d *gorm.DB) {
 		new(model.AdminMediaGroup),
 		new(model.AdminRecipientsTasks),
 		new(model.User),
-		new(model.Role),
-		new(model.Permission),
-		new(model.AdminRole),
-		new(model.RolePermission),
 		new(model.Cluster),
 		new(model.ClusterGroup),
 		new(model.ClusterRegion),
@@ -156,7 +152,6 @@ func Init(d *gorm.DB) {
 	if err != nil {
 		log.Fatalf("failed migrate database: %s", err.Error())
 	}
-	InitRBACDefault()
 }
 
 func AutoMigrate(dst ...interface{}) error {

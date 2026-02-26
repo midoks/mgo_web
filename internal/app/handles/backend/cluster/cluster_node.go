@@ -36,6 +36,13 @@ func SelectGroups(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/cluster_select_groups.tmpl", data)
 }
 
+func SelectSsh(c *gin.Context) {
+	data := common.CommonVer(c)
+	// region_list, _, _ := db.GetClusterGroupList(1, 100)
+	// data["groups_list"] = region_list
+	c.HTML(http.StatusOK, "backend/cluster/cluster_select_ssh.tmpl", data)
+}
+
 func CreateNode(c *gin.Context) {
 	method := strings.ToUpper(c.Request.Method)
 	if method == "POST" {
