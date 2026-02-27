@@ -20,12 +20,12 @@ import (
 func RecipientsInstances(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetRecipientsSubMenu()
-	c.HTML(http.StatusOK, "backend/admin/recipients_instances.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/instances.tmpl", data)
 }
 
 func RecipientsInstancesAdd(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/admin/recipients_instances_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/instances_add.tmpl", data)
 }
 
 func RecipientsInstancesDetails(c *gin.Context) {
@@ -36,7 +36,7 @@ func RecipientsInstancesDetails(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = recipient_data
-	c.HTML(http.StatusOK, "backend/admin/recipients_instances_details.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/instances_details.tmpl", data)
 }
 
 func RecipientsInstancesUpdate(c *gin.Context) {
@@ -47,7 +47,7 @@ func RecipientsInstancesUpdate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = recipient_data
-	c.HTML(http.StatusOK, "backend/admin/recipients_instances_update.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/instances_update.tmpl", data)
 }
 
 func RecipientsInstancesTest(c *gin.Context) {
@@ -59,7 +59,7 @@ func RecipientsInstancesTest(c *gin.Context) {
 	data["id"] = id
 	data["Data"] = recipient_data
 
-	c.HTML(http.StatusOK, "backend/admin/recipients_instances_test.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/instances_test.tmpl", data)
 }
 
 func PostRecipientsInstancesTest(c *gin.Context) {

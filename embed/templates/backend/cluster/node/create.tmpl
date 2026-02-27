@@ -86,7 +86,7 @@
 
                             <tr class="more_table hide">
                                 <td>SSH主机端口</td>
-                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input"></td>
+                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input" value="22"></td>
                             </tr>
 
                             <tr class="more_table hide">
@@ -128,7 +128,7 @@
 
                             <tr>
                                 <td>SSH主机端口</td>
-                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input"></td>
+                                <td><input type="number" name="ssh_port" value="22" autocomplete="off" placeholder="" class="layui-input"></td>
                             </tr>
 
                             <tr>
@@ -230,14 +230,14 @@ form.on('submit(submit_step2)', function(data){
     var field = data.field;
     var ip = $('#ip_btn .ip').text();
     field['ip'] = ip;
-    // $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
-    //     showMsg(res.msg, function(){
-    //         layer.close(index);
-    //         if(res.code > -1){
-    //             parent.location.href = "/{[$.admin_path]}/clusters/cluster/list?cluster_id={[.cluster_id]}";
-    //         }
-    //     },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
-    // },'json');
+    $.post("/{[$.admin_path]}/clusters/cluster/create_node_login", data.field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.href = "/{[$.admin_path]}/clusters/cluster/list?cluster_id={[.cluster_id]}";
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
     return true;
 });
 

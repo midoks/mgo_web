@@ -19,11 +19,12 @@ type AdminMediaInstance struct {
 	CreateTime time.Time `json:"create_time"`                           // create_time
 	UpdateTime time.Time `json:"update_time"`                           // update_time
 }
+
 type AdminMediaTelegramParams struct {
 	Token               string `json:"token"`
 	SendID              string `json:"send_id"`
-	TelegramProxyScheme string `form:"telegram_proxy_scheme"`
-	TelegramProxyValue  string `form:"telegram_proxy_value"`
+	TelegramProxyScheme string `json:"telegram_proxy_scheme"`
+	TelegramProxyValue  string `json:"telegram_proxy_value"`
 }
 
 type AdminMediaWebhookParams struct {

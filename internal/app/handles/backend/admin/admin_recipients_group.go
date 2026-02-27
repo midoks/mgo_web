@@ -17,7 +17,7 @@ import (
 func RecipientsGroups(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetRecipientsSubMenu()
-	c.HTML(http.StatusOK, "backend/admin/recipients_groups.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/groups.tmpl", data)
 }
 
 func RecipientsGroupsSelect(c *gin.Context) {
@@ -25,7 +25,7 @@ func RecipientsGroupsSelect(c *gin.Context) {
 
 	group_list, _, _ := db.GetAdminRecipientsGroupList(1, 100)
 	data["groups_list"] = group_list
-	c.HTML(http.StatusOK, "backend/admin/recipients_groups_select.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/groups_select.tmpl", data)
 }
 
 func RecipientsGroupsAdd(c *gin.Context) {
@@ -38,7 +38,7 @@ func RecipientsGroupsAdd(c *gin.Context) {
 	if err == nil {
 		data["Data"] = ga_data
 	}
-	c.HTML(http.StatusOK, "backend/admin/recipients_groups_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/groups_add.tmpl", data)
 }
 
 func RecipientsGroupsList(c *gin.Context) {

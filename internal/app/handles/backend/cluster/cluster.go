@@ -69,35 +69,35 @@ func ClusterBoards(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_boards.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/boards.tmpl", data)
 }
 
 func ClusterList(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_list.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/list.tmpl", data)
 }
 
 func ClusterSettings(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_settings.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/settings.tmpl", data)
 }
 
 func ClusterInstall(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_install.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/install.tmpl", data)
 }
 
 func ClusterDelete(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_delete.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/delete.tmpl", data)
 }
 
 func Edit(c *gin.Context) {

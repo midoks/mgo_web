@@ -16,7 +16,7 @@ func ClusterGroups(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_groups.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/groups/index.tmpl", data)
 }
 
 func ClusterGroupsAdd(c *gin.Context) {
@@ -40,7 +40,7 @@ func ClusterGroupsAdd(c *gin.Context) {
 
 		fmt.Println(cg_data)
 	}
-	c.HTML(http.StatusOK, "backend/cluster/cluster_groups_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/groups/add.tmpl", data)
 }
 
 func ClusterGroupsList(c *gin.Context) {

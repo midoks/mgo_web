@@ -15,7 +15,7 @@ import (
 
 func ClusterRegions(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/regions.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/regions/index.tmpl", data)
 }
 
 func ClusterRegionsAdd(c *gin.Context) {
@@ -34,12 +34,12 @@ func ClusterRegionsAdd(c *gin.Context) {
 		data["data"] = cg_data
 	}
 
-	c.HTML(http.StatusOK, "backend/cluster/regions_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/regions/add.tmpl", data)
 }
 
 func ClusterRegionsNodes(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/regions_nodes.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/regions/nodes.tmpl", data)
 }
 
 func ClusterRegionsList(c *gin.Context) {

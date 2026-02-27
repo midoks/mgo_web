@@ -30,5 +30,5 @@ func Update(c *gin.Context) {
 	data["id"] = id
 	data["Data"] = admin_data
 	data["AuthMap"] = authMap
-	c.HTML(http.StatusOK, "backend/admin/admin_update.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/update.tmpl", data)
 }

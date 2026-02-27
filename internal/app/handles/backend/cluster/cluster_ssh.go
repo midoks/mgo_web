@@ -33,19 +33,19 @@ func GetSshSubMenu() []form.ClusterSubMenu {
 func ClusterSsh(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
-	c.HTML(http.StatusOK, "backend/cluster/ssh.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/index.tmpl", data)
 }
 
 func ClusterSshAdd(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
-	c.HTML(http.StatusOK, "backend/cluster/ssh_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/add.tmpl", data)
 }
 
 func ClusterSshCreate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
-	c.HTML(http.StatusOK, "backend/cluster/ssh_create.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/create.tmpl", data)
 }
 
 func ClusterSshDetails(c *gin.Context) {
@@ -58,7 +58,7 @@ func ClusterSshDetails(c *gin.Context) {
 	ssh_data, _ := db.GetClusterSshById(ssh_idint)
 	data["Data"] = ssh_data
 
-	c.HTML(http.StatusOK, "backend/cluster/ssh_details.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/details.tmpl", data)
 }
 
 func ClusterSshUpdate(c *gin.Context) {
@@ -70,7 +70,7 @@ func ClusterSshUpdate(c *gin.Context) {
 	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
 	ssh_data, _ := db.GetClusterSshById(ssh_idint)
 	data["Data"] = ssh_data
-	c.HTML(http.StatusOK, "backend/cluster/ssh_update.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/update.tmpl", data)
 }
 
 func ClusterSshTest(c *gin.Context) {
@@ -82,7 +82,7 @@ func ClusterSshTest(c *gin.Context) {
 	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
 	ssh_data, _ := db.GetClusterSshById(ssh_idint)
 	data["Data"] = ssh_data
-	c.HTML(http.StatusOK, "backend/cluster/ssh_test.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/ssh/test.tmpl", data)
 }
 
 func ClusterSshList(c *gin.Context) {
@@ -99,7 +99,7 @@ func ClusterSshList(c *gin.Context) {
 func ClusterSshSelectList(c *gin.Context) {
 	common_data := &entity.ClusterSshEntityList{}
 	suggest_data, _ := db.GetClusterSshListBySuggest(100)
-	common_data.Sugguest = suggest_data
+	common_data.List = suggest_data
 	common.SuccessResp(c, common_data)
 }
 

@@ -22,11 +22,20 @@ func GetClusterSshList(page, size int) ([]model.ClusterSsh, int64, error) {
 }
 
 func GetClusterSshListBySuggest(limit int) ([]entity.ClusterSsh, error) {
-	var list []entity.ClusterSsh
-	if err := db.Order(columnName("id")).Limit(limit).Find(&list).Error; err != nil {
-		return nil, 0, errors.WithStack(err)
+	var models []model.ClusterSsh
+	if err := db.Order(columnName("id")).Limit(limit).Find(&models).Error; err != nil {
+		return nil, errors.WithStack(err)
 	}
-	return list, nil
+	out := make([]entity.ClusterSsh, 0, len(models))
+	for _, m := range models {
+		out = append(out, entity.ClusterSsh{
+			ID:       m.ID,
+			Name:     m.Name,
+			Method:   m.Method,
+			Username: m.Username,
+		})
+	}
+	return out, nil
 }
 
 func GetClusterSshById(id int64) (*model.ClusterSsh, error) {

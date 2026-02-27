@@ -131,6 +131,11 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点 - 节点
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
+	backstage_admin.GET("/clusters/node/boards", backend_cluster.NodeBoards)
+	backstage_admin.GET("/clusters/node/details", backend_cluster.NodeBoards)
+	backstage_admin.GET("/clusters/node/logs", backend_cluster.NodeLogs)
+	backstage_admin.GET("/clusters/node/settings", backend_cluster.NodeSetting)
+
 	backstage_admin.GET("/clusters/ipaddr", backend_cluster.Node)
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)
 	backstage_admin.GET("/clusters/select/ip", backend_cluster.SelectIp)

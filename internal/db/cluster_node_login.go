@@ -14,7 +14,7 @@ func GetClusterNodeLoginList(page, size int) ([]model.ClusterNodeLogin, int64, e
 	cluster := db.Model(&model.ClusterNodeLogin{})
 	var count int64
 	if err := cluster.Count(&count).Error; err != nil {
-		return nil, 0, errors.Wrapf(err, "failed get cluster login")
+		return nil, 0, errors.Wrapf(err, "failed get cluster node login")
 	}
 
 	var list []model.ClusterNodeLogin
@@ -27,4 +27,8 @@ func GetClusterNodeLoginList(page, size int) ([]model.ClusterNodeLogin, int64, e
 func ClusterNodeLoginDeleteById(id int64) error {
 	var d model.ClusterNodeLogin
 	return db.Where("id = ?", id).Delete(&d).Error
+}
+
+func ClusterNodeLoginFindFrequentSsh(cluster_id int64) {
+
 }

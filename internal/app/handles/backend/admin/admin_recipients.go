@@ -47,7 +47,7 @@ func GetRecipientsSubMenu() []form.SubMenu {
 func Recipients(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetRecipientsSubMenu()
-	c.HTML(http.StatusOK, "backend/admin/recipients.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/index.tmpl", data)
 }
 
 func RecipientsAdd(c *gin.Context) {
@@ -62,7 +62,7 @@ func RecipientsAdd(c *gin.Context) {
 	recipients_list, _, _ := db.GetAdminRecipientsInstancesList(1, 100)
 	data["RecipientsList"] = recipients_list
 
-	c.HTML(http.StatusOK, "backend/admin/recipients_add.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/recipients/add.tmpl", data)
 }
 
 func PostRecipientsAdd(c *gin.Context) {

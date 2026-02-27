@@ -19,27 +19,27 @@ func SelectIp(c *gin.Context) {
 	data := common.CommonVer(c)
 	region_list, _, _ := db.GetClusterRegionList(1, 100)
 	data["region_list"] = region_list
-	c.HTML(http.StatusOK, "backend/cluster/cluster_select_ip.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/select/ip.tmpl", data)
 }
 
 func SelectRegion(c *gin.Context) {
 	data := common.CommonVer(c)
 	region_list, _, _ := db.GetClusterRegionList(1, 100)
 	data["region_list"] = region_list
-	c.HTML(http.StatusOK, "backend/cluster/cluster_select_region.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/select/region.tmpl", data)
 }
 
 func SelectGroups(c *gin.Context) {
 	data := common.CommonVer(c)
 	region_list, _, _ := db.GetClusterGroupList(1, 100)
 	data["groups_list"] = region_list
-	c.HTML(http.StatusOK, "backend/cluster/cluster_select_groups.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/select/groups.tmpl", data)
 }
 
 func SelectSsh(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_select_ssh.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/select/ssh.tmpl", data)
 }
 
 func CreateNode(c *gin.Context) {
@@ -51,12 +51,40 @@ func CreateNode(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/cluster_create_node.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/node/create.tmpl", data)
 }
 
 func Node(c *gin.Context) {
 	data := common.CommonVer(c)
 	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
+}
+
+func NodeBoards(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = c.Query("cluster_id")
+	c.HTML(http.StatusOK, "backend/cluster/cluster/node/boards.tmpl", data)
+}
+
+func NodeDatail(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = c.Query("cluster_id")
+	c.HTML(http.StatusOK, "backend/cluster/cluster/node/detail.tmpl", data)
+}
+
+func NodeLogs(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = c.Query("cluster_id")
+	c.HTML(http.StatusOK, "backend/cluster/cluster/node/logs.tmpl", data)
+}
+
+func NodeSetting(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = c.Query("cluster_id")
+	c.HTML(http.StatusOK, "backend/cluster/cluster/node/settings.tmpl", data)
 }
 
 func NodeList(c *gin.Context) {

@@ -19,5 +19,5 @@ func Details(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/admin/admin_details.tmpl", data)
+	c.HTML(http.StatusOK, "backend/admin/details.tmpl", data)
 }
