@@ -84,7 +84,7 @@ function filter(list, key){
 }
 
 var allList = [];
-$.get('/{[.admin_path]}/clusters/ssh/list?page=1&limit=100', function(data){
+$.get('/{[.admin_path]}/clusters/ssh/select_list?cluster_id={[.cluster_id]}', function(data){
     console.log(data);
     if(data && data.data){ 
         allList = data.data; 

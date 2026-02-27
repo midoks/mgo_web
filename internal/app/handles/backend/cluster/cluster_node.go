@@ -2,7 +2,7 @@ package cluster
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -38,8 +38,7 @@ func SelectGroups(c *gin.Context) {
 
 func SelectSsh(c *gin.Context) {
 	data := common.CommonVer(c)
-	// region_list, _, _ := db.GetClusterGroupList(1, 100)
-	// data["groups_list"] = region_list
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/cluster_select_ssh.tmpl", data)
 }
 
@@ -75,7 +74,6 @@ func NodeList(c *gin.Context) {
 }
 
 func PostCreateNode(c *gin.Context) {
-	data := common.CommonVer(c)
 	var field form.ClusterCreateNode
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
@@ -83,11 +81,9 @@ func PostCreateNode(c *gin.Context) {
 	}
 
 	if field.Ip == "" {
-		common.ErrorResp(c, errors.New("IP不能为空!"), -1)
+		common.ErrorResp(c, errors.New("ip address cannot be empty!"), -1)
 		return
 	}
-
-	fmt.Println("field2:", field.Ip)
 
 	nodeip := &model.ClusterNode{
 		Name:       field.Name,
@@ -101,11 +97,7 @@ func PostCreateNode(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
-
-	// common.SuccessResp(c)
-	data["submenu"] = GetSubMenu()
-	data["cluster_id"] = field.ClusterID
-	c.HTML(http.StatusOK, "backend/cluster/cluster_create_node2.tmpl", data)
+	common.SuccessResp(c)
 }
 
 func PostDeleteNode(c *gin.Context) {

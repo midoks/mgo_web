@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
+	"mgo/internal/app/entity"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
@@ -95,15 +96,11 @@ func ClusterSshList(c *gin.Context) {
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
-func ClusterSshListBySelect(c *gin.Context) {
-	var field form.Page
-	if err := c.ShouldBind(&field); err != nil {
-		common.ErrorResp(c, err, -1)
-		return
-	}
-
-	result, count, _ := db.GetClusterSshList(field.Page, field.Limit)
-	common.SuccessLayuiResp(c, count, "ok", result)
+func ClusterSshSelectList(c *gin.Context) {
+	common_data := &entity.ClusterSshEntityList{}
+	suggest_data, _ := db.GetClusterSshListBySuggest(100)
+	common_data.Sugguest = suggest_data
+	common.SuccessResp(c, common_data)
 }
 
 func PostClusterSshCreate(c *gin.Context) {
