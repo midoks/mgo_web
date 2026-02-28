@@ -15,6 +15,11 @@
 .ssh-card .title .meta{color:gray;font-size:12px;margin-left:6px;}
 .ssh-card .subtitle{font-size:12px;color:#374151;}
 
+/* Selected chip */
+.ssh-selected{display:inline-flex;align-items:center;gap:4px;}
+.ssh-selected .name{font-size:14px;}
+.ssh-selected .meta{font-size:12px;color:gray;}
+
 /* Responsive */
 @media (max-width: 990px){ .ssh-grid{grid-template-columns:repeat(3,1fr);} }
 </style>
@@ -45,7 +50,7 @@ var admin = layui.admin
 ,table = layui.table;
 
 function subtitleByMethod(m){
-    if(m === 'password'){ return '用户名+密码'; }
+    if(m === 'namepass'){ return '用户名+密码'; }
     if(m === 'privatekey'){ return '私钥'; }
     return '认证方式';
 }
@@ -58,8 +63,13 @@ function cardTpl(item){
     var card = $('<div class="ssh-card"></div>').append(title, sub);
     card.on('click', function(){
         if (parent && parent.$) {
-            parent.$('#ssh_btn').html('<div><span id="ssh_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">'+ item.name +' <a class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
-            parent.$('#ssh_origin').hide();
+
+            var title = "<span style='font-size:14px;'>"+item.name+"</span>";
+            title += "<span class='meta'>(" + subtitleByMethod(item.method) + ")</span>";
+            title += "<span class='meta'>(" + (item.username || 'root') + ")</span>";
+
+            parent.$('.ssh_btn').html('<div><span id="ssh_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;border-radius:2px;"><span class="ssh-selected">'+ title +'<a class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+            parent.$('.ssh_origin').hide();
             if (parent.window.loadSshBtn) parent.window.loadSshBtn();
             var idx = parent.layer.getFrameIndex(window.name);
             parent.layer.close(idx);
@@ -74,6 +84,17 @@ function render(list){
     rec.forEach(function(it){ top.append(cardTpl(it)); });
     list.forEach(function(it){ all.append(cardTpl(it)); });
 }
+
+function renderList(list){
+    var all = $('#ssh_grid_all').empty();
+    list.forEach(function(it){ all.append(cardTpl(it)); });
+}
+
+function renderSuggest(list){
+    var top = $('#ssh_grid_top').empty();
+    list.forEach(function(it){ top.append(cardTpl(it)); });
+}
+
 function filter(list, key){
     key = (key||'').toLowerCase();
     if(!key) return list;
@@ -85,10 +106,10 @@ function filter(list, key){
 
 var allList = [];
 $.get('/{[.admin_path]}/clusters/ssh/select_list?cluster_id={[.cluster_id]}', function(data){
-    console.log(data);
-    if(data && data.data){ 
-        allList = data.data; 
-        render(allList); 
+    console.log(data.data);
+    // var data = data.data.list;
+    if (data.code >0){
+        renderList(data.data.list); 
     }
 }, 'json');
 

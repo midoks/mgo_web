@@ -91,6 +91,12 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+window.loadSshBtn = function(){
+    $('.ssh_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('.ssh_origin').show();
+    });
+}
 
 ///
 });
