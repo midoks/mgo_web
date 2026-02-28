@@ -51,7 +51,7 @@ table.render({
     url: '/{[.admin_path]}/clusters/cluster/node_list?cluster_id={[.cluster_id]}',
     title: '数据表',
     cols: [[
-        {field:'name', title:'节点名称', toolbar: '#nameTpl'},
+        {field:'name', title:'节点名称', width:180,toolbar: '#nameTpl'},
         {field:'ip', title:'IP'},
         {field:'status', title:'状态', toolbar: '#statusTpl'},
         {title:'操作', toolbar: '#cmdTpl', width:180, fixed: 'right'}
@@ -77,7 +77,7 @@ table.on('toolbar', function(obj){
 
 
 <script type="text/html" id="nameTpl">
-    <a class="mlink" href="/{[.admin_path]}/clusters/cluster/boards?id={{d.id}}">{{d.name}}</a>
+    <a class="mlink" href="/{[.admin_path]}/clusters/node/boards?node_id={{d.id}}">{{d.name}}</a>
 </script>
 
 <script type="text/html" id="statusTpl">
@@ -87,15 +87,12 @@ table.on('toolbar', function(obj){
 </script>
 
 <script type="text/html" id="cmdTpl">
-
-<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'编辑','edit?id={{d.id}}',500,400)">详情</a>
-
+<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/clusters/node/boards?node_id={{d.id}}">详情</a>
 {{# if (d.status == 1){ }}
 <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="status">停用</a>
 {{# } else if (d.status == 0) { }}
 <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">启用</a>
 {{# } }}
-
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete_node','{{d.id}}')">删除</a>
 </script>
 

@@ -28,10 +28,6 @@
                     },
                     {
                         "code":"clusters",
-                        "path": "/clusters/node"
-                    },
-                    {
-                        "code":"clusters",
                         "path": "/clusters/update"
                     },
                     {
@@ -65,6 +61,30 @@
                     {
                         "code":"clusters",
                         "path": "/clusters/cluster/settings"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/boards"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/install"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/details"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/logs"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/settings"
                     }
                     
                 ]
