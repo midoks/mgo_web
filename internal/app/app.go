@@ -137,6 +137,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/node/logs", backend_cluster.NodeLogs)
 	backstage_admin.GET("/clusters/node/settings", backend_cluster.NodeSettings)
 	backstage_admin.GET("/clusters/node/settings/ssh", backend_cluster.NodeSettingsSsh)
+	backstage_admin.POST("/clusters/node_login/add", backend_cluster.PostNodeLoginAdd)
 
 	backstage_admin.GET("/clusters/ipaddr", backend_cluster.Node)
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)

@@ -4,6 +4,7 @@ import (
 	// "errors"
 	// "fmt"
 	"net/http"
+	"strconv"
 	// "strings"
 	// "time"
 
@@ -11,7 +12,7 @@ import (
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
-	// "mgo/internal/db"
+	"mgo/internal/db"
 	// "mgo/internal/model"
 )
 
@@ -48,9 +49,15 @@ func NodeSettings(c *gin.Context) {
 }
 
 func NodeSettingsSsh(c *gin.Context) {
+	node_id := c.Query("node_id")
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["setting_menu"] = GetNodeSettingSubMenu()
 	data["node_id"] = c.Query("node_id")
+
+	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
+	node_data, _ := db.GetClusterNodeByNodeID(node_idint)
+	data["Data"] = node_data
+
 	c.HTML(http.StatusOK, "backend/cluster/node/settings_ssh.tmpl", data)
 }

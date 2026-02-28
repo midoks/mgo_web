@@ -24,6 +24,22 @@ func GetClusterNodeLoginList(page, size int) ([]model.ClusterNodeLogin, int64, e
 	return list, count, nil
 }
 
+func GetClusterNodeByID(id int64) (*model.ClusterNodeLogin, error) {
+	var data model.ClusterNodeLogin
+	if err := db.Where("id=?", id).First(&data).Error; err != nil {
+		return nil, errors.Wrapf(err, "failed get cluster group")
+	}
+	return &data, nil
+}
+
+func GetClusterNodeByNodeID(node_id int64) (*model.ClusterNodeLogin, error) {
+	var data model.ClusterNodeLogin
+	if err := db.Where("node_id=?", node_id).First(&data).Error; err != nil {
+		return nil, errors.Wrapf(err, "failed get cluster group")
+	}
+	return &data, nil
+}
+
 func ClusterNodeLoginDeleteById(id int64) error {
 	var d model.ClusterNodeLogin
 	return db.Where("id = ?", id).Delete(&d).Error
