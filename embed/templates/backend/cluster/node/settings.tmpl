@@ -14,21 +14,19 @@
                 </div>
 
                 <div class="layui-row" style="margin-top: 10px;font-size: 12px;">
+                    
                     <div class="layui-col-md2 menu_list_left">
-                        <div class="bg">
-                            <a href="javascript:;" class="select">基础设置</a>
-                            <a href="javascript:;">DNS设置</a>
-                            <a href="javascript:;">缓存设置</a>
-                            <a href="javascript:;" href="/{[$.admin_path]}/clusters/node/settings/ssh?node_id={[$.node_id]}">SSH设置</a>
-                            <div class="line"></div>
-                            <a href="javascript:;">智能调度</a>
-                            <a href="javascript:;">阈值设置</a>
-                            <div class="line"></div>
-                            <a href="javascript:;">访问日志设置</a>
-                            <a href="javascript:;">系统设置</a>
-                            <a href="javascript:;">DDoS防护</a>
+                        <div class="bg" style="margin-top: 3px;">
+                            {[range $smenu := .setting_menu]}
+                                {[if eq $smenu.Type "line"]}
+                                <div class="line"></div>
+                                {[else]}
+                                <a href="/{[$.admin_path]}/{[$smenu.Link]}?node_id={[$.node_id]}" {[if eq (print "/" $.admin_path "/" $smenu.Link) $.CurrentPath]}class="select"{[end]}>{[$smenu.Name]}</a>
+                                {[end]}
+                            {[end]}
                         </div>
                     </div>
+
                     <div class="layui-col-md10">
                         <div style="background: #fff; border-radius: 8px;margin-left: 8px;">
                         <form class="layui-form layui-form-pane" onclick="return false;">
