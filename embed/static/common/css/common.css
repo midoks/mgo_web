@@ -73,6 +73,13 @@ span.green {
 .gray2{
     color:rgb(107 114 128);
 }
+
+.setting_smail {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 2px;
+    font-size: 10px;
+}
 /*color*/
 
 .line{

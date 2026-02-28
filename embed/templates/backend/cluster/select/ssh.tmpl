@@ -65,8 +65,8 @@ function cardTpl(item){
         if (parent && parent.$) {
 
             var content = "<span style='font-size:14px;'>"+item.name+"</span>";
-            content += "<span class='gray2 layui-btn-sm'>(" + subtitleByMethod(item.method) + ")</span>";
-            content += "<span class='gray2 layui-btn-sm'>(" + (item.username || 'root') + ")</span>";
+            content += "<span class='gray2 setting_smail'>(" + subtitleByMethod(item.method) + ")</span>";
+            content += "<span class='gray2 setting_smail'>(" + (item.username || 'root') + ")</span>";
             content += '<a class="remove" style="padding-left:3px;cursor:pointer;">X</a>';
 
             parent.$('.ssh_btn').html('<div><span class="layui-btn layui-btn-primary layui-btn-sm" \
@@ -108,10 +108,13 @@ function filter(list, key){
 
 var allList = [];
 $.get('/{[.admin_path]}/clusters/ssh/select_list?cluster_id={[.cluster_id]}', function(data){
-    console.log(data.data);
-    // var data = data.data.list;
-    if (data.code >0){
-        renderList(data.data.list); 
+    var option = data.data;
+    if (data.code > 0 && option && option.list){
+        renderList(option.list);
+        if (!option.sugguest || option.sugguest.length === 0) {
+            var topList = option.list.slice(0,3);
+            renderSuggest(topList);
+        }
     }
 }, 'json');
 
