@@ -5,10 +5,18 @@
         <div class="layui-card">
             <div class="layui-card-body">
 
-                <div class="layui-tab layui-tab-brief">
+          <!--       <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         {[range $menu := .submenu]}
                             <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}?node_id={[$.node_id]}">{[$menu.Name]}</a></li>
+                        {[end]}
+                    </ul>
+                </div>
+ -->
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title" id="status">
+                        {[range $menu := .submenu]}
+                            <li data-status="{[$menu.Number]}" {[if IsSubOrEq $.CurrentPath (print "/" $.admin_path "/" $menu.Link)]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}?node_id={[$.node_id]}">{[$menu.Name]}</a></li>
                         {[end]}
                     </ul>
                 </div>
