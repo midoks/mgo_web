@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="layui-row" style="margin-top: 10px;font-size: 12px;">
-                    
+
                     <div class="layui-col-md2 menu_list_left">
                         <div class="bg" style="margin-top: 3px;">
                             {[range $smenu := .setting_menu]}
@@ -37,7 +37,7 @@
                                         <td>SSH主机地址 *</td>
                                         <td>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="full_name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
+                                                <input type="text" name="ssh_host" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
                                             </div>
                                         </td>
                                     </tr>
@@ -46,9 +46,21 @@
                                         <td>SSH主机端口 *</td>
                                         <td>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                                <input type="number" name="ssh_port" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
                                             </div>
                                             <p class="layui-font-12 pt5">比如22。</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>SSH登录认证</td><td>
+                                        <div class="ssh">
+                                            <span class="ssh_btn"></span>
+                                            <span class="ssh_origin">
+                                                <a class="mlink" onclick="Admin.open('选择已用认证','/{[$.admin_path]}/clusters/select/ssh',850,510)">[选择已用认证]</a>
+                                                <a class="mlink" onclick="Admin.open('添加新认证','/{[$.admin_path]}/clusters/ssh/add',750,510)">[添加新认证]</a>
+                                            </span>
+                                        <div>
                                         </td>
                                     </tr>
 
