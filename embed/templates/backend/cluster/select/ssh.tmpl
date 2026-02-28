@@ -17,8 +17,8 @@
 
 /* Selected chip */
 .ssh-selected{display:inline-flex;align-items:center;gap:4px;}
-.ssh-selected .name{font-size:14px;}
-.ssh-selected .meta{font-size:12px;color:gray;}
+.ssh-selected .name{font-size:12px;}
+.ssh-selected .meta{font-size:12px;color:rgb(107 114 128);}
 
 /* Responsive */
 @media (max-width: 990px){ .ssh-grid{grid-template-columns:repeat(3,1fr);} }
@@ -64,11 +64,13 @@ function cardTpl(item){
     card.on('click', function(){
         if (parent && parent.$) {
 
-            var title = "<span style='font-size:14px;'>"+item.name+"</span>";
-            title += "<span class='meta'>(" + subtitleByMethod(item.method) + ")</span>";
-            title += "<span class='meta'>(" + (item.username || 'root') + ")</span>";
+            var content = "<span style='font-size:14px;'>"+item.name+"</span>";
+            content += "<span class='gray2 layui-btn-sm'>(" + subtitleByMethod(item.method) + ")</span>";
+            content += "<span class='gray2 layui-btn-sm'>(" + (item.username || 'root') + ")</span>";
+            content += '<a class="remove" style="padding-left:3px;cursor:pointer;">X</a>';
 
-            parent.$('.ssh_btn').html('<div><span id="ssh_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;border-radius:2px;"><span class="ssh-selected">'+ title +'<a class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
+            parent.$('.ssh_btn').html('<div><span class="layui-btn layui-btn-primary layui-btn-sm" \
+                    style="margin-right:8px;">'+ content +'</span></div>');
             parent.$('.ssh_origin').hide();
             if (parent.window.loadSshBtn) parent.window.loadSshBtn();
             var idx = parent.layer.getFrameIndex(window.name);
