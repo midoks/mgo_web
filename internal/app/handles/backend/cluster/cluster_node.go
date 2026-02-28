@@ -125,6 +125,13 @@ func NodeSettings(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/node/settings.tmpl", data)
 }
 
+func NodeSettingsSsh(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetNodeSubMenu()
+	data["node_id"] = c.Query("node_id")
+	c.HTML(http.StatusOK, "backend/cluster/node/settings_ssh.tmpl", data)
+}
+
 func NodeList(c *gin.Context) {
 	var field form.ClusterNodeList
 	if err := c.ShouldBind(&field); err != nil {

@@ -85,6 +85,10 @@
                     {
                         "code":"clusters",
                         "path": "/clusters/node/settings"
+                    },
+                    {
+                        "code":"clusters",
+                        "path": "/clusters/node/settings/ssh"
                     }
                     
                 ]
