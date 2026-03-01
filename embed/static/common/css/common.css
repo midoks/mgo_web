@@ -80,6 +80,22 @@ span.green {
     padding: 0 2px;
     font-size: 10px;
 }
+
+.success{
+    border:1px solid #bbf7d0;
+    background:#ecfdf3;
+    color:#16a34a;
+    padding:10px 12px;
+    border-radius:6px;
+}
+
+.fail {
+    border:1px solid #fbd5d5;
+    background:#fee2e2;
+    color:#991b1b;
+    padding:10px 12px;
+    border-radius:6px;
+}
 /*color*/
 
 .line{

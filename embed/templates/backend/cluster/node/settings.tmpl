@@ -34,7 +34,7 @@
                                 <colgroup><col width="150"><col></colgroup>
                                 <tbody>
                                     <tr>
-                                        <td>SSH主机地址 *</td>
+                                        <td>节点名称 *</td>
                                         <td>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="full_name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
@@ -43,7 +43,17 @@
                                     </tr>
 
                                     <tr>
-                                        <td>SSH主机端口 *</td>
+                                        <td>所属集群</td>
+                                        <td>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                            </div>
+                                            <p class="layui-font-12 pt5">比如22。</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>IP地址 *</td>
                                         <td>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
