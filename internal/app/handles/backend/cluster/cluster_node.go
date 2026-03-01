@@ -94,6 +94,7 @@ func NodeBoards(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
 }
 
@@ -101,6 +102,7 @@ func NodeDatail(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/detail.tmpl", data)
 }
 
@@ -108,6 +110,7 @@ func NodeInstall(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/install.tmpl", data)
 }
 
@@ -115,6 +118,7 @@ func NodeLogs(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/logs.tmpl", data)
 }
 

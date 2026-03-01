@@ -77,7 +77,7 @@ table.on('toolbar', function(obj){
 
 
 <script type="text/html" id="nameTpl">
-    <a class="mlink" href="/{[.admin_path]}/clusters/node/boards?node_id={{d.id}}">{{d.name}}</a>
+    <a class="mlink" href="/{[.admin_path]}/clusters/node/boards?cluster_id={[.cluster_id]}&node_id={{d.id}}">{{d.name}}</a>
 </script>
 
 <script type="text/html" id="statusTpl">
@@ -87,7 +87,7 @@ table.on('toolbar', function(obj){
 </script>
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/clusters/node/boards?node_id={{d.id}}">详情</a>
+<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/clusters/node/boards?cluster_id={[.cluster_id]}&node_id={{d.id}}">详情</a>
 {{# if (d.status == 1){ }}
 <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="status">停用</a>
 {{# } else if (d.status == 0) { }}

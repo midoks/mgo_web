@@ -45,6 +45,7 @@ func NodeSettings(c *gin.Context) {
 	data["submenu"] = GetNodeSubMenu()
 	data["setting_menu"] = GetNodeSettingSubMenu()
 	data["node_id"] = c.Query("node_id")
+	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/settings.tmpl", data)
 }
 
@@ -53,7 +54,8 @@ func NodeSettingsSsh(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["setting_menu"] = GetNodeSettingSubMenu()
-	data["node_id"] = c.Query("node_id")
+	data["node_id"] = node_id
+	data["cluster_id"] = c.Query("cluster_id")
 
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
 	node_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
