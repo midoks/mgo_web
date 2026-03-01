@@ -75,11 +75,10 @@ function renderSuggest(list){
 }
 
 function filter(list, key){
-    key = (key||'').toLowerCase();
     if(!key) return list;
     return list.filter(function(it){
-        return (it.name||'').toLowerCase().indexOf(key)>-1
-            || (it.username||'').toLowerCase().indexOf(key)>-1;
+        return (it.name ||'').indexOf(key)>-1
+            || (it.username ||'').indexOf(key)>-1;
     });
 }
 
@@ -88,15 +87,19 @@ $.get('/{[.admin_path]}/clusters/ssh/select_list?cluster_id={[.cluster_id]}', fu
     var option = data.data;
     if (data.code > 0 && option && option.list){
         renderList(option.list);
+        allList = option.list;
         if (!option.sugguest || option.sugguest.length === 0) {
             var topList = option.list.slice(0,3);
             renderSuggest(topList);
+        } else{
+            renderSuggest(option.sugguest);
         }
     }
 }, 'json');
 
 $('#ssh_search').on('input', function(){
-    render(filter(allList, $(this).val()));
+    var title = $(this).val();
+    renderList(filter(allList, title));
 });
 
 ///

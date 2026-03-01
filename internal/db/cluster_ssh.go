@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"mgo/internal/app/entity"
 	"mgo/internal/model"
 
@@ -21,12 +23,41 @@ func GetClusterSshList(page, size int) ([]model.ClusterSsh, int64, error) {
 	return list, count, nil
 }
 
-func GetClusterSshListBySuggest(limit int) ([]entity.ClusterSsh, error) {
+func GetClusterSshListByLimit(limit int) ([]entity.ClusterSsh, error) {
 	var models []model.ClusterSsh
 	if err := db.Order(columnName("id")).Limit(limit).Find(&models).Error; err != nil {
 		return nil, errors.WithStack(err)
 	}
 	out := make([]entity.ClusterSsh, 0, len(models))
+	for _, m := range models {
+		out = append(out, entity.ClusterSsh{
+			ID:       m.ID,
+			Name:     m.Name,
+			Method:   m.Method,
+			Username: m.Username,
+		})
+	}
+	return out, nil
+}
+
+func GetClusterSshListBySuggest(clusterID int64) ([]entity.ClusterSsh, error) {
+	out := []entity.ClusterSsh{}
+
+	ids, err := ClusterNodeLoginFindFrequentSshIDs(clusterID)
+	fmt.Println("ids:", ids, err)
+	if err != nil {
+		return out, err
+	}
+
+	if len(ids) == 0 {
+		return out, nil
+	}
+
+	var models []model.ClusterSsh
+	if err := db.Order(columnName("id")).Where("id IN (?)", ids).Limit(3).Find(&models).Error; err != nil {
+		return nil, errors.WithStack(err)
+	}
+	out = make([]entity.ClusterSsh, 0, len(models))
 	for _, m := range models {
 		out = append(out, entity.ClusterSsh{
 			ID:       m.ID,

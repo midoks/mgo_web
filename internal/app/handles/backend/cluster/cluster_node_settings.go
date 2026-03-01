@@ -56,7 +56,7 @@ func NodeSettingsSsh(c *gin.Context) {
 	data["node_id"] = c.Query("node_id")
 
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
-	node_data, _ := db.GetClusterNodeByNodeID(node_idint)
+	node_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
 	data["Data"] = node_data
 
 	c.HTML(http.StatusOK, "backend/cluster/node/settings_ssh.tmpl", data)

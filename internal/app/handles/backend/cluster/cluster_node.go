@@ -73,6 +73,11 @@ func SelectSsh(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/select/ssh.tmpl", data)
 }
 
+func Node(c *gin.Context) {
+	data := common.CommonVer(c)
+	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
+}
+
 func CreateNode(c *gin.Context) {
 	method := strings.ToUpper(c.Request.Method)
 	if method == "POST" {
@@ -83,11 +88,6 @@ func CreateNode(c *gin.Context) {
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/node/create.tmpl", data)
-}
-
-func Node(c *gin.Context) {
-	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
 }
 
 func NodeBoards(c *gin.Context) {

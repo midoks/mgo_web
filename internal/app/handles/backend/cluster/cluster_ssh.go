@@ -98,9 +98,11 @@ func ClusterSshList(c *gin.Context) {
 
 func ClusterSshSelectList(c *gin.Context) {
 	common_data := &entity.ClusterSshEntityList{}
-	suggest_data, _ := db.GetClusterSshListBySuggest(100)
-	common_data.List = suggest_data
-	common_data.Sugguest = []entity.ClusterSsh{}
+	limit_data, _ := db.GetClusterSshListByLimit(100)
+	common_data.List = limit_data
+
+	sugguest_data, _ := db.GetClusterSshListBySuggest(1)
+	common_data.Sugguest = sugguest_data
 	common.SuccessResp(c, common_data)
 }
 
