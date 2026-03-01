@@ -1,29 +1,5 @@
 {[template "backend/common/header_head.tmpl" .]}
 
-
-<style type="text/css">
-/* Layout */
-.ssh-select{padding:12px;}
-.ssh-search{height:40px;}
-.ssh-section-title{color:#64748b;font-size:16px;margin:16px 0 8px;}
-.ssh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-
-/* Card */
-.ssh-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;cursor:pointer;transition:all .2s;}
-.ssh-card:hover{border-color:#d1d5db;background:#f8fafc;}
-.ssh-card .title{font-size:14px;color:#111827;margin-bottom:6px;}
-.ssh-card .title .meta{color:gray;font-size:12px;margin-left:6px;}
-.ssh-card .subtitle{font-size:12px;color:#374151;}
-
-/* Selected chip */
-.ssh-selected{display:inline-flex;align-items:center;gap:4px;}
-.ssh-selected .name{font-size:12px;}
-.ssh-selected .meta{font-size:12px;color:rgb(107 114 128);}
-
-/* Responsive */
-@media (max-width: 990px){ .ssh-grid{grid-template-columns:repeat(3,1fr);} }
-</style>
-
 <div class="layui-fluid">
     <div class="ssh-select">
         <input type="text" class="layui-input ssh-search" id="ssh_search" placeholder="搜索名称、用户名等">
@@ -68,9 +44,9 @@ function cardTpl(item){
             content += "<span class='gray2 setting_smail'>(" + subtitleByMethod(item.method) + ")</span>";
             content += "<span class='gray2 setting_smail'>(" + (item.username || 'root') + ")</span>";
             content += '<a class="remove" style="padding-left:3px;cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
-            content += '<input type="hidden" name="ssh_id" value="'+item.id+'">';
+            var ssh_id = '<input type="hidden" name="ssh_id" value="'+item.id+'">';
 
-            parent.$('.ssh_btn').html('<div><span class="layui-btn layui-btn-primary layui-btn-sm" \
+            parent.$('.ssh_btn').html('<div>'+ssh_id+'<span class="layui-btn layui-btn-primary layui-btn-sm" \
                     style="margin-right:8px;">'+ content +'</span></div>');
             parent.$('.ssh_origin').hide();
             if (parent.window.loadSshBtn) parent.window.loadSshBtn();
@@ -123,7 +99,7 @@ $('#ssh_search').on('input', function(){
     render(filter(allList, $(this).val()));
 });
 
+///
 });
 </script>
-
 {[template "backend/common/footer.tmpl" .]}

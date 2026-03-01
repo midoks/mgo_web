@@ -65,6 +65,22 @@ font-size:12px;color:#606266;background:#fff
 .step .label{font-size:14px}
 .step .line{flex:2;height:2px;background:#e4e7ed;margin:0 12px}
 
+/* Layout */
+.ssh-select{padding:12px;}
+.ssh-search{height:40px;}
+.ssh-section-title{color:#64748b;font-size:16px;margin:16px 0 8px;}
+.ssh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+
+/* Card */
+.ssh-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;cursor:pointer;transition:all .2s;}
+.ssh-card:hover{border-color:#d1d5db;background:#f8fafc;}
+.ssh-card .title{font-size:14px;color:#111827;margin-bottom:6px;}
+.ssh-card .title .meta{color:gray;font-size:12px;margin-left:6px;}
+.ssh-card .subtitle{font-size:12px;color:#374151;}
+
+/* Responsive */
+@media (max-width: 990px){ .ssh-grid{grid-template-columns:repeat(3,1fr);} }
+
 /*color*/
 span.green {
     color: #21ba45;
@@ -97,6 +113,7 @@ span.green {
     border-radius:6px;
 }
 /*color*/
+
 
 .line{
     height:1px;
