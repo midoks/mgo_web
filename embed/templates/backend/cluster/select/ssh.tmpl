@@ -43,6 +43,7 @@ function cardTpl(item){
             var content = "<span style='font-size:14px;'>"+item.name+"</span>";
             content += "<span class='gray2 setting_smail'>(" + subtitleByMethod(item.method) + ")</span>";
             content += "<span class='gray2 setting_smail'>(" + (item.username || 'root') + ")</span>";
+            content += '<a class="edit" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
             content += '<a class="remove" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
             var ssh_id = '<input type="hidden" name="ssh_id" value="'+item.id+'">';
 

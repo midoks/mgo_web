@@ -21,7 +21,7 @@
                                 {[if eq $smenu.Type "line"]}
                                 <div class="line"></div>
                                 {[else]}
-                                <a href="/{[$.admin_path]}/{[$smenu.Link]}?node_id={[$.node_id]}" {[if eq (print "/" $.admin_path "/" $smenu.Link) $.CurrentPath]}class="select"{[end]}>{[$smenu.Name]}</a>
+                                <a href="/{[$.admin_path]}/{[$smenu.Link]}?cluster_id={[$.cluster_id]}&node_id={[$.node_id]}" {[if eq (print "/" $.admin_path "/" $smenu.Link) $.CurrentPath]}class="select"{[end]}>{[$smenu.Name]}</a>
                                 {[end]}
                             {[end]}
                         </div>

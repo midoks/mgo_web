@@ -1,11 +1,11 @@
 package db
 
 import (
-	"fmt"
+	// "fmt"
 	"mgo/internal/model"
 
 	"github.com/pkg/errors"
-	"gorm.io/gorm"
+	// "gorm.io/gorm"
 )
 
 func GetClusterNodeLoginList(page, size int) ([]model.ClusterNodeLogin, int64, error) {
@@ -60,10 +60,10 @@ func ClusterNodeLoginFindFrequentSshIDs(clusterID int64) ([]int64, error) {
 		Having("ssh_id > 0").
 		Order("c DESC").
 		Limit(3)
-	sql := qb.Session(&gorm.Session{DryRun: true}).ToSQL(func(tx *gorm.DB) *gorm.DB {
-		return tx.Find(&rows)
-	})
-	fmt.Println("SQL:", sql)
+	// sql := qb.Session(&gorm.Session{DryRun: true}).ToSQL(func(tx *gorm.DB) *gorm.DB {
+	// 	return tx.Find(&rows)
+	// })
+	// fmt.Println("SQL:", sql)
 	err := qb.Find(&rows).Error
 	if err != nil {
 		return nil, errors.WithStack(err)
