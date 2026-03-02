@@ -1,7 +1,7 @@
 package db
 
 import (
-	"time"
+	// "time"
 
 	"github.com/pkg/errors"
 	// "gorm.io/gorm"
@@ -38,43 +38,15 @@ func GetClusterNodeListByClusterID(cluster_id int64, page, size int) ([]model.Cl
 	return list, count, nil
 }
 
-func AddClusterNodeGroup(name string, clusterId int64) error {
-	data := &model.ClusterGroup{
-		Name:      name,
-		ClusterId: clusterId,
-	}
-
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Create(data).Error); err != nil {
-		return err
-	}
-	return nil
-}
-
-func UpdateClusterNodeGroup(name string, id int64) error {
-	data := &model.ClusterGroup{
-		Name: name,
-	}
-
-	data.UpdateTime = time.Now()
-	if err := db.Model(&model.ClusterGroup{}).
-		Where("id = ?", id).
-		Updates(&data).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetClusterNodeGroupById(id int64) (*model.ClusterGroup, error) {
-	var data model.ClusterGroup
+func GetClusterNodeByID(id int64) (*model.ClusterNode, error) {
+	var data model.ClusterNode
 	if err := db.First(&data, id).Error; err != nil {
-		return nil, errors.Wrapf(err, "failed get cluster group")
+		return nil, errors.Wrapf(err, "failed get cluster node")
 	}
 	return &data, nil
 }
 
-func ClusterNodeDeleteById(id int64) error {
+func ClusterNodeDeleteByID(id int64) error {
 	var d model.ClusterNode
 	return db.Where("id = ?", id).Delete(&d).Error
 }

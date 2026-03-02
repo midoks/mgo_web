@@ -21,7 +21,7 @@ func TestNotification_Send(t *testing.T) {
 		t.Log("Skipping real sending test because TELEGRAM_TOKEN or TELEGRAM_CHAT_ID is not set")
 
 		// 测试禁用状态
-		n, err := NewNotification("dummy_token", 0, false)
+		n, err := NewNotification("dummy_token", 0, "", false)
 		if err != nil {
 			t.Fatalf("Failed to create disabled notification: %v", err)
 		}

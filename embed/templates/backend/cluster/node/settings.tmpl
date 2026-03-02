@@ -37,7 +37,7 @@
                                         <td>节点名称 *</td>
                                         <td>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="full_name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.FullName]}{[end]}" placeholder="">
+                                                <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="">
                                             </div>
                                         </td>
                                     </tr>
@@ -46,9 +46,8 @@
                                         <td>所属集群</td>
                                         <td>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                                <input type="text" name="cluster_id" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.ClusterID]}{[end]}" placeholder="">
                                             </div>
-                                            <p class="layui-font-12 pt5">比如22。</p>
                                         </td>
                                     </tr>
 
@@ -56,9 +55,32 @@
                                         <td>IP地址 *</td>
                                         <td>
                                             <div class="layui-input-inline">
-                                                <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="">
+                                                <input type="text" name="ip" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Ip]}{[end]}" placeholder="">
                                             </div>
-                                            <p class="layui-font-12 pt5">比如22。</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>所属分组</td><td>
+                                        <div id="group">
+                                            <span id="group_btn"></span>
+                                            <span id="group_origin">
+                                                <a class="mlink" onclick="Admin.open('选择分组','/{[$.admin_path]}/clusters/select/groups',500,330)">[选择分组]</a>
+                                                <a class="mlink" onclick="Admin.open('添加分组','/{[$.admin_path]}/clusters/cluster/groups_add',500,330)">[添加分组]</a>
+                                            </span>
+                                        <div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>所属区域</td><td>
+                                        <div id="region">
+                                            <span id="region_btn"></span>
+                                            <span id="region_origin">
+                                                <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择区域]</a>
+                                                <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/regions/add',500,330)">[添加区域]</a>
+                                            </span>
+                                        <div>
                                         </td>
                                     </tr>
 
