@@ -40,12 +40,15 @@ function cardTpl(item){
     card.on('click', function(){
         if (parent && parent.$) {
 
+            var ssh_id = '<input type="hidden" name="ssh_id" value="'+item.id+'">';
+
             var content = "<span style='font-size:14px;'>"+item.name+"</span>";
             content += "<span class='gray2 setting_smail'>(" + subtitleByMethod(item.method) + ")</span>";
             content += "<span class='gray2 setting_smail'>(" + (item.username || 'root') + ")</span>";
-            content += '<a class="edit" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
+
+            content += '<a class="edit" onclick="Admin.open(\'修改认证\',\'/{[$.admin_path]}/clusters/ssh/add?ssh_id='+item.id+'\',700,550)" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
             content += '<a class="remove" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
-            var ssh_id = '<input type="hidden" name="ssh_id" value="'+item.id+'">';
+            
 
             parent.$('.ssh_btn').html('<div>'+ssh_id+'<span class="layui-btn layui-btn-primary layui-btn-sm" \
                     style="margin-right:8px;">'+ content +'</span></div>');

@@ -39,6 +39,13 @@ func ClusterSsh(c *gin.Context) {
 func ClusterSshAdd(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()
+
+	ssh_id := c.Query("ssh_id")
+	data["ssh_id"] = ssh_id
+	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
+	ssh_data, _ := db.GetClusterSshByID(ssh_idint)
+	data["Data"] = ssh_data
+
 	c.HTML(http.StatusOK, "backend/cluster/ssh/add.tmpl", data)
 }
 
@@ -55,7 +62,7 @@ func ClusterSshDetails(c *gin.Context) {
 	data["ssh_id"] = ssh_id
 
 	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
-	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	ssh_data, _ := db.GetClusterSshByID(ssh_idint)
 	data["Data"] = ssh_data
 
 	c.HTML(http.StatusOK, "backend/cluster/ssh/details.tmpl", data)
@@ -68,7 +75,7 @@ func ClusterSshUpdate(c *gin.Context) {
 	data["ssh_id"] = c.Query("ssh_id")
 
 	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
-	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	ssh_data, _ := db.GetClusterSshByID(ssh_idint)
 	data["Data"] = ssh_data
 	c.HTML(http.StatusOK, "backend/cluster/ssh/update.tmpl", data)
 }
@@ -80,7 +87,7 @@ func ClusterSshTest(c *gin.Context) {
 	data["ssh_id"] = c.Query("ssh_id")
 
 	ssh_idint, _ := strconv.ParseInt(ssh_id, 10, 64)
-	ssh_data, _ := db.GetClusterSshById(ssh_idint)
+	ssh_data, _ := db.GetClusterSshByID(ssh_idint)
 	data["Data"] = ssh_data
 	c.HTML(http.StatusOK, "backend/cluster/ssh/test.tmpl", data)
 }

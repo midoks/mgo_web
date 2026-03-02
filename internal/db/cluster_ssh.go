@@ -69,7 +69,7 @@ func GetClusterSshListBySuggest(clusterID int64) ([]entity.ClusterSsh, error) {
 	return out, nil
 }
 
-func GetClusterSshById(id int64) (*model.ClusterSsh, error) {
+func GetClusterSshByID(id int64) (*model.ClusterSsh, error) {
 	var data model.ClusterSsh
 	if err := db.First(&data, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get cluster ssh")
@@ -77,7 +77,7 @@ func GetClusterSshById(id int64) (*model.ClusterSsh, error) {
 	return &data, nil
 }
 
-func ClusterSshDeleteById(id int64) error {
+func ClusterSshDeleteByID(id int64) error {
 	var d model.ClusterSsh
 	return db.Where("id = ?", id).Delete(&d).Error
 }
