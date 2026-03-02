@@ -12,6 +12,7 @@ type ClusterNode struct {
 	AllowPublic      bool      `json:"allow_public" binding:"required"`            // allow_public
 	AllowHealthCheck bool      `json:"allow_health_check" binding:"required"`      // allow_health_check
 	IsInstalled      bool      `json:"is_installed"`                               // is_installed
+	NodeInfo         string    `json:"node_info"`                                  // node_info
 	Secret           string    `json:"secret" gorm:"unique" binding:"required"`    // secret
 	UniqueID         string    `json:"unique_id" gorm:"unique" binding:"required"` // unique_id
 	Mark             string    `json:"mark"`                                       // mark

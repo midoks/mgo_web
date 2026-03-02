@@ -111,6 +111,21 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+window.loadRegionBtn = function(){
+    $('#region_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#region_origin').show();
+    });
+}
+
+window.loadGroupBtn = function(){
+    $('#group_btn .remove').bind('click',function(){
+        $(this).parent().parent().remove();
+        $('#group_origin').show();
+    });
+}
+
+
 
 ///
 });
