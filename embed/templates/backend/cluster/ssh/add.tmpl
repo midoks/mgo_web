@@ -120,6 +120,12 @@ form.on("submit(submit_ssh)", function(data){
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
+                // if (parent && parent.layer) {
+                //     var idx = parent.layer.getFrameIndex(window.name);
+                //     parent.layer.close(idx);
+                // } else {
+                //     window.close();
+                // }
                 parent.location.reload();
             }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});

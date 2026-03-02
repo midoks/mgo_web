@@ -5,6 +5,7 @@ import (
 	// "fmt"
 	"net/http"
 	"strconv"
+
 	// "strings"
 	// "time"
 
@@ -58,8 +59,18 @@ func NodeSettingsSsh(c *gin.Context) {
 	data["cluster_id"] = c.Query("cluster_id")
 
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
-	node_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
+	node_data, err := db.GetClusterNodeLoginByNodeID(node_idint)
+	if err != nil {
+		c.HTML(http.StatusOK, "backend/cluster/node/settings_ssh.tmpl", data)
+		return
+	}
 	data["Data"] = node_data
-
+	node_param, err := node_data.GetParams()
+	if err == nil {
+		if node_param.SshID > 0 {
+			ssh_data, _ := db.GetClusterSshByID(node_param.SshID)
+			data["SshData"] = ssh_data
+		}
+	}
 	c.HTML(http.StatusOK, "backend/cluster/node/settings_ssh.tmpl", data)
 }

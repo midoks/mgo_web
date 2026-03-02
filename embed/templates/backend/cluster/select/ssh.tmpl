@@ -46,8 +46,8 @@ function cardTpl(item){
             content += "<span class='gray2 setting_smail'>(" + subtitleByMethod(item.method) + ")</span>";
             content += "<span class='gray2 setting_smail'>(" + (item.username || 'root') + ")</span>";
 
-            content += '<a class="edit" onclick="Admin.open(\'修改认证\',\'/{[$.admin_path]}/clusters/ssh/add?ssh_id='+item.id+'\',700,550)" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
-            content += '<a class="remove" style="padding-left:2px;cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
+            content += '<a class="edit" onclick="Admin.open(\'修改认证\',\'/{[$.admin_path]}/clusters/ssh/add?ssh_id='+item.id+'\',700,550)" style="cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
+            content += '<a class="remove" style="cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
             
 
             parent.$('.ssh_btn').html('<div>'+ssh_id+'<span class="layui-btn layui-btn-primary layui-btn-sm" \

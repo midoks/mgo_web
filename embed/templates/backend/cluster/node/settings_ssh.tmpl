@@ -55,8 +55,25 @@
                                     <tr>
                                         <td>SSH登录认证</td><td>
                                         <div class="ssh">
-                                            <span class="ssh_btn"></span>
-                                            <span class="ssh_origin">
+                                            <span class="ssh_btn">
+                                                {[if .SshData]}
+                                                    <div>
+                                                        <input type="hidden" name="ssh_id" value="{[.SshData.ID]}">
+                                                        <span class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">
+                                                            <span style='font-size:14px;'>{[.SshData.Name]}</span>
+                                                            <span class='gray2 setting_smail'>
+                                                                {[if eq .SshData.Method "namepass"]}(用户名+密码){[else]}
+                                                                {[if eq .SshData.Method "privatekey"]}(私钥}{[end]}
+                                                                {[end]}
+                                                            </span>
+                                                            <span class='gray2 setting_smail'>({[.SshData.Username]})</span>
+                                                            <a class="edit" onclick="Admin.open('修改认证','/{[$.admin_path]}/clusters/ssh/add?ssh_id={[.SshData.ID]}',700,550)" style="cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>
+                                                            <a class="remove" style="cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>
+                                                        </span>
+                                                    </div>
+                                                {[end]}
+                                            </span>
+                                            <span class="ssh_origin" {[if .SshData]}style="display:none;"{[end]}>
                                                 <a class="mlink" onclick="Admin.open('选择已用认证','/{[$.admin_path]}/clusters/select/ssh',850,510)">[选择已用认证]</a>
                                                 <a class="mlink" onclick="Admin.open('添加新认证','/{[$.admin_path]}/clusters/ssh/add',750,510)">[添加新认证]</a>
                                             </span>
@@ -97,6 +114,8 @@ window.loadSshBtn = function(){
         $('.ssh_origin').show();
     });
 }
+
+window.loadSshBtn();
 
 form.on("submit(submit_setting_ssh)", function(data){
     var index = layer.load();
