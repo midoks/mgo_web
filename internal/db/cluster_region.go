@@ -51,7 +51,7 @@ func UpdateClusterRegion(name string, mark string, id int64) error {
 	return nil
 }
 
-func GetClusterRegionById(id int64) (*model.ClusterRegion, error) {
+func GetClusterRegionByID(id int64) (*model.ClusterRegion, error) {
 	var data model.ClusterRegion
 	if err := db.First(&data, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get cluster region")
@@ -59,7 +59,7 @@ func GetClusterRegionById(id int64) (*model.ClusterRegion, error) {
 	return &data, nil
 }
 
-func ClusterRegionDeleteById(id int64) error {
+func ClusterRegionDeleteByID(id int64) error {
 	var d model.ClusterRegion
 	return db.Where("id = ?", id).Delete(&d).Error
 }

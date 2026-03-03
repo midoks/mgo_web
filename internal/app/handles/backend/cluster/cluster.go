@@ -197,7 +197,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterDeleteById(field.ID)
+	err := db.ClusterDeleteByID(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

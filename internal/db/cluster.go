@@ -22,7 +22,7 @@ func GetClusterList(page, size int) ([]model.Cluster, int64, error) {
 	return list, count, nil
 }
 
-func GetClusterById(id int64) (*model.Cluster, error) {
+func GetClusterByID(id int64) (*model.Cluster, error) {
 	var u model.Cluster
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get admin")
@@ -30,7 +30,7 @@ func GetClusterById(id int64) (*model.Cluster, error) {
 	return &u, nil
 }
 
-func ClusterDeleteById(id int64) error {
+func ClusterDeleteByID(id int64) error {
 	var d model.Cluster
 	return db.Where("id = ?", id).Delete(&d).Error
 }

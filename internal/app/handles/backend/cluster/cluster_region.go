@@ -27,7 +27,7 @@ func ClusterRegionsAdd(c *gin.Context) {
 
 		}
 
-		cg_data, err := db.GetClusterRegionById(qid)
+		cg_data, err := db.GetClusterRegionByID(qid)
 		if err != nil {
 
 		}
@@ -86,7 +86,7 @@ func ClusterRegionsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterRegionDeleteById(field.ID)
+	err := db.ClusterRegionDeleteByID(field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

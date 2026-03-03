@@ -2,14 +2,13 @@ package cluster
 
 import (
 	"net/http"
-	// "strconv"
+	"strconv"
 	// "time"
-
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
-	// "mgo/internal/db"
+	"mgo/internal/db"
 	// "mgo/internal/model"
 	// utils "mgo/internal/utils"
 )
@@ -30,8 +29,8 @@ func GetSettingSubMenu() []form.SubSettingMenu {
 		},
 		{
 			Number: 3,
-			Name:   "SSH设置",
-			Link:   "clusters/cluster/settings",
+			Name:   "健康检查",
+			Link:   "clusters/cluster/settings/health",
 			Type:   "a",
 		},
 	}
@@ -39,9 +38,15 @@ func GetSettingSubMenu() []form.SubSettingMenu {
 }
 
 func ClusterSettings(c *gin.Context) {
+	cluster_id := c.Query("cluster_id")
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
 	data["setting_menu"] = GetSettingSubMenu()
-	data["cluster_id"] = c.Query("cluster_id")
+	data["cluster_id"] = cluster_id
+
+	cluster_idint, _ := strconv.ParseInt(cluster_id, 10, 64)
+	cluster_data, _ := db.GetClusterByID(cluster_idint)
+
+	data["Data"] = cluster_data
 	c.HTML(http.StatusOK, "backend/cluster/settings/index.tmpl", data)
 }
