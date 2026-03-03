@@ -55,3 +55,7 @@ func NodeSettings(c *gin.Context) {
 	data["Data"] = node_data
 	c.HTML(http.StatusOK, "backend/cluster/node/settings.tmpl", data)
 }
+
+func PostNodeSettings(c *gin.Context) {
+
+}

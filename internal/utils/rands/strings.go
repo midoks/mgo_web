@@ -1,5 +1,16 @@
 package rands
 
+import (
+	"math/rand"
+	"sync"
+	"time"
+)
+
+var (
+	locker = &sync.Mutex{}
+	source = rand.New(rand.NewSource(time.Now().UnixNano()))
+)
+
 const (
 	hexChars          = "0123456789abcdef"
 	hexCharsLength    = len(hexChars)
