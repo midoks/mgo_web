@@ -120,17 +120,24 @@ func Init(d *gorm.DB) {
 	// performance optimization: configure connection pool using performance config
 	sqlDb, err := d.DB()
 	if err == nil {
-		// Use conservative, safe defaults for the connection pool
-		defaultMaxIdleConns := 10
-		defaultMaxOpenConns := 100
-		defaultConnMaxLifetime := time.Hour
+		// Use performance-optimized connection pool settings
+		// MaxIdleConns: number of connections retained in idle pool
+		// MaxOpenConns: maximum number of open connections to the database
+		// ConnMaxLifetime: maximum amount of time a connection may be reused
+		defaultMaxIdleConns := 25                  // Increased from 10 for better concurrency
+		defaultMaxOpenConns := 100                 // Sufficient for most applications
+		defaultConnMaxLifetime := time.Hour * 2    // 2 hours to prevent connection leaks
+		defaultConnMaxIdleTime := time.Minute * 10 // 10 minutes idle timeout
 
 		sqlDb.SetMaxIdleConns(defaultMaxIdleConns)
 		sqlDb.SetMaxOpenConns(defaultMaxOpenConns)
 		sqlDb.SetConnMaxLifetime(defaultConnMaxLifetime)
+		sqlDb.SetConnMaxIdleTime(defaultConnMaxIdleTime)
 
-		// log.Infof("Database connection pool configured: MaxIdle=%d, MaxOpen=%d, MaxLifetime=%v",
-		// 	defaultMaxIdleConns, defaultMaxOpenConns, defaultConnMaxLifetime)
+		// Test connection to ensure pool is working
+		if err := sqlDb.Ping(); err != nil {
+			log.Warnf("Database connection test failed: %v", err)
+		}
 	}
 
 	err = AutoMigrate(

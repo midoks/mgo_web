@@ -52,6 +52,10 @@
                     },
                     {
                         "code":"clusters",
+                        "path": "/clusters/cluster/settings/health"
+                    },
+                    {
+                        "code":"clusters",
                         "path": "/clusters/cluster/delete"
                     },
                     {

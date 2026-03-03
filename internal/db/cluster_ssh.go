@@ -2,9 +2,11 @@ package db
 
 import (
 	"fmt"
+	"time"
 
 	"mgo/internal/app/entity"
 	"mgo/internal/model"
+	"mgo/internal/utils/cache"
 
 	"github.com/pkg/errors"
 )
@@ -70,10 +72,22 @@ func GetClusterSshListBySuggest(clusterID int64) ([]entity.ClusterSsh, error) {
 }
 
 func GetClusterSshByID(id int64) (*model.ClusterSsh, error) {
+	// Check cache first
+	cacheKey := fmt.Sprintf("ssh_%d", id)
+	if cached, found := cache.GetGlobal(cacheKey); found {
+		if ssh, ok := cached.(*model.ClusterSsh); ok {
+			return ssh, nil
+		}
+	}
+
 	var data model.ClusterSsh
 	if err := db.First(&data, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get cluster ssh")
 	}
+
+	// Cache for 5 minutes
+	cache.SetGlobal(cacheKey, &data, 5*time.Minute)
+
 	return &data, nil
 }
 
