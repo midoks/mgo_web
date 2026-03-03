@@ -79,13 +79,6 @@ func ClusterList(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/list.tmpl", data)
 }
 
-func ClusterSettings(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetSubMenu()
-	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/settings.tmpl", data)
-}
-
 func ClusterInstall(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSubMenu()
