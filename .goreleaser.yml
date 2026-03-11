@@ -31,9 +31,7 @@ archives:
 
   - files:
       - src: LICENSE
-      - src: README.md
-      - src: release
-      - src: script
+      - src: readme.md
 
 upx:
   - enabled: true
