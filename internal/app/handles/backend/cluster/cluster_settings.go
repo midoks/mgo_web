@@ -1,15 +1,17 @@
 package cluster
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
-	// "time"
+	"time"
+
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
 	"mgo/internal/db"
-	// "mgo/internal/model"
+	"mgo/internal/model"
 	// utils "mgo/internal/utils"
 )
 
@@ -49,4 +51,28 @@ func ClusterSettings(c *gin.Context) {
 
 	data["Data"] = cluster_data
 	c.HTML(http.StatusOK, "backend/cluster/settings/index.tmpl", data)
+}
+
+func PostClusterSettings(c *gin.Context) {
+	var field form.ClusterSettings
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	if field.Name == "" {
+		common.ErrorResp(c, errors.New("name cannot be empty!"), -1)
+		return
+	}
+
+	common_data := &model.Cluster{
+		Name:       field.Name,
+		UpdateTime: time.Now(),
+	}
+
+	if err := db.GetDb().Model(&model.Cluster{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
 }

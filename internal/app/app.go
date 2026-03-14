@@ -161,6 +161,7 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点 - 设置
 	backstage_admin.GET("/clusters/cluster/settings", backend_cluster.ClusterSettings)
+	backstage_admin.POST("/clusters/cluster/settings", backend_cluster.PostClusterSettings)
 	backstage_admin.GET("/clusters/cluster/settings/health", backend_cluster.ClusterSettingsHealth)
 
 	backstage_admin.GET("/clusters/cluster/delete", backend_cluster.ClusterDelete)
