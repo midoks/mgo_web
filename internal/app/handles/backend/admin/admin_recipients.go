@@ -100,7 +100,12 @@ func PostRecipientsAdd(c *gin.Context) {
 }
 
 func RecipientsList(c *gin.Context) {
-	result, count, _ := db.GetAdminRecipientsList(1, 10)
+	var field form.Page
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	result, count, _ := db.GetAdminRecipientsList(field.Page, field.Limit)
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 

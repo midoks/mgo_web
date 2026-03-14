@@ -181,6 +181,10 @@
                     },
                     {
                         "code":"admin_recipients",
+                        "path": "/admin/recipients/recipients/details"
+                    },
+                    {
+                        "code":"admin_recipients",
                         "path": "/admin/recipients/logs"
                     },
                     {
