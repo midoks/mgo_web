@@ -45,7 +45,7 @@ table.render({
         {field:'tel', title:'媒介类型'},
         {field:'recipient_id', title:'接收人标识'},
         {field:'email', title:'所属分组'},
-        {field:'mark', title:'备注'},
+        {field:'mark', title:'备注', toolbar:"#markTpl"},
         {field:'status', title:'状态', width:80, toolbar:"#statusTpl"},
         {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
      ]],
@@ -67,6 +67,15 @@ table.on('toolbar', function(obj){
 ///
 });
 </script>
+
+<script type="text/html" id="markTpl">
+{{# if (d.mark){ }}
+{{d.mark}}
+{{# } else { }}
+<span style="color:#e2e2e2;">-</span>
+{{# } }}
+</script>
+
 
 <script type="text/html" id="statusTpl">
 {{# if (d.status){ }}
