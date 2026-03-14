@@ -87,7 +87,7 @@ table.on('toolbar', function(obj){
 
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" lay-event='edit' onclick="Admin.open('【{{d.username}}】'+'详情','edit?id={{d.id}}',700,650)">详情</a>
+<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/admin/recipients/recipients/details?id={{d.id}}">详情</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
 </script>
 
