@@ -138,14 +138,16 @@
                     <td><textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder="">{[if .Data]}{[.Data.Mark]}{[end]}</textarea></td>
                 </tr>
                 
+
+                <tr>
+                    <td colspan="2">
+                        <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                        <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
+                    </td>
+                </tr>
+
             </tbody>
         </table>
-
-
-        <div class="layui-form-item" style="text-align: center;">
-            <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-            <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
-        </div>
     </form>
     </div>
 

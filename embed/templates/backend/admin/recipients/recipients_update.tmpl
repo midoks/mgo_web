@@ -11,9 +11,7 @@
                     </a>
 
                     <span style="margin:0;font-size:18px;">
-                        {[if .Data]}
-                            {[if eq .Data.MediaType "telegram" ]}telegram机器人{[else]}{[if eq .Data.MediaType "email" ]}邮件{[else]}{[if eq .Data.MediaType "webhook" ]}Webhook{[end]}{[end]}{[end]}
-                        {[end]}
+                        更新
                     </span>
                 </div>
 
@@ -31,199 +29,89 @@
                         <colgroup><col width="150"><col></colgroup>
                         <tbody>
                             <tr>
-                                <td>媒介名称 *</td>
+                                <td>系统管理员 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Name]}{[end]}" placeholder="媒介名称">
+                                        <select name="admin_id" lay-verify="required">
+                                            <option value="">[选择系统管理员]</option>
+                                            {[range $admin_data := .AdminList]}
+                                                <option value="{[$admin_data.ID]}" >{[$admin_data.Username]}</option>
+                                            {[end]}
+                                        </select>
                                     </div>
-                                    <br/>
-                                    <p class="layui-font-12">给当前媒介填写一个容易识别的名称。</p>
+                                    <p class="layui-font-12">选择关联的系统管理员。</p>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td>媒介类型 *</td>
+                                <td>媒介 *</td>
                                 <td>
                                     <div class="layui-input-inline">
                                         <select name="media_type" lay-verify="required" lay-search lay-filter="media">
-                                            <option value="">[选择媒介类型]</option>
-                                            <option value="telegram" {[if .Data]}{[if eq .Data.MediaType "telegram" ]}selected{[end]}{[end]}>Telegram</option>
-                                            <option value="email" {[if .Data]}{[if eq .Data.MediaType "email" ]}selected{[end]}{[end]}>邮件</option>
-                                            <option value="webhook" {[if .Data]}{[if eq .Data.MediaType "webhook" ]}selected{[end]}{[end]}>WebHook</option>
+                                            <option value="">[选择媒介]</option>
+                                            {[range $recipients_data := .RecipientsList]}
+                                                <option value="{[$recipients_data.ID]}" >{[$recipients_data.Name]}</option>
+                                            {[end]}
                                         </select>
                                     </div>
-                                    <br/>
-                                    <p class="layui-font-12">通过HTTP请求发送通知。</p>
                                 </td>
                             </tr>
 
-                            <div id="id_telegram">
-                                <tr class="id_telegram bls" style="display:none;">
-                                    <td>机器人Token *</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="token" autocomplete="off" class="layui-input" placeholder="请输入Token" value="{[if .Data]}{[.Data.GetTelegramParams.Token]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">创建机器人的时候可以获得，类似于 123456:AAAA-BBBB ，可以向 @BotFather 发送 /newbot 指令创建新的机器人。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_telegram bls" style="display:none;">
-                                    <td>接收人标识</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="send_id" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetTelegramParams.SendID]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">群或用户的Chat ID,通常是一个数字,可以通过和@get_id_bot[/my_id]建立对话并发送任意消息获得。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_telegram bls" style="display:none;">
-                                    <td>代理服务</td>
-                                    <td>
-                                        <div class="layui-inline">
-                                            <div class="layui-input-inline" style="float: left;">
-                                                <select name="telegram_proxy_scheme" lay-verify="required" lay-search lay-filter="telegram_proxy_scheme">
-                                                    <option value="socket5" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "socket5" ]}selected{[end]}{[end]}>socket5://</option>
-                                                    <option value="https" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "https" ]}selected{[end]}{[end]}>https://</option>
-                                                    <option value="http" {[if .Data]}{[if eq .Data.GetTelegramParams.TelegramProxyScheme "http" ]}selected{[end]}{[end]}>http://</option>
-                                                </select>
-                                            </div>
-                                            <div class="layui-input-inline" style="float: left;">
-                                                <input type="text" name="telegram_proxy_value" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.GetTelegramParams.TelegramProxyValue]}{[end]}">
-                                            </div>
-                                        </div>
-                                        <p class="layui-font-12">可选项，仅当API节点所在服务器无法直接连接Telegram API时填写；测试是否能够连接Telegram API的方法： 
-curl https://api.telegram.org 出现2XX、3XX、4XX之类提示时说明能够直接连接；如果你设置了代理，请使用 
-curl -x "你的代理服务地址" https://api.telegram.org 来测试你的代理是否可用。</p>
-                                    </td>
-                                </tr>
-                            </div>
-
-                            <div id="id_webhook">
-                                <tr class="id_webhook bls" style="display:none;">
-                                    <td>URL *</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="webhook_url" autocomplete="off" class="layui-input" placeholder="http://" value="{[if .Data.GetWebhookParams]}{[.Data.GetWebhookParams.Url]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">可以在URL中使用 ${MessageUser} 、 ${MessageSubject} 和 ${MessageBody} 来代表接收人标识、标题和内容。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_webhook bls" style="display:none;">
-                                    <td>请求方法 *</td>
-                                    <td>
-                                        <div class="layui-input-inline">
-                                            <select name="webhook_method" lay-verify="required" lay-search>
-                                                <option value="get" {[if eq .Data.GetWebhookParams.Method "get" ]}selected{[end]}>GET</option>
-                                                <option value="post" {[if eq .Data.GetWebhookParams.Method "post" ]}selected{[end]}>POST</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
-
-                            <div id="id_email">
-                                <tr class="id_email bls" style="display:none;">
-                                    <td>SMTP *</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="email_smtp" autocomplete="off" class="layui-input" placeholder="类似于 smtp.example.com:465" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Smtp]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">只支持SSL（或TLS）连接，端口通常为：465或587。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_email bls" style="display:none;">
-                                    <td>账号 *</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="email_username" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Username]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">邮箱账号，比如 123456@qq.com。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_email bls" style="display:none;">
-                                    <td>密码 *</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="password" name="email_password" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.Password]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">账号对应的密码或者授权码（比如QQ邮箱就需要授权码）。</p>
-                                    </td>
-                                </tr>
-
-                                <tr class="id_email bls" style="display:none;">
-                                    <td>发送者Email</td>
-                                    <td>
-                                        <div class="layui-input-line">
-                                            <input type="text" name="email_from" autocomplete="off" class="layui-input" placeholder="类似于 xxx@example.com" value="{[if .Data.GetEmailParams]}{[.Data.GetEmailParams.From]}{[end]}">
-                                        </div>
-                                        <p class="layui-font-12">默认和账号一致</p>
-                                    </td>
-                                </tr>
-                            </div>
+                            <tr>
+                                <td>接收人标识</td>
+                                <td>
+                                    <input type="text" name="recipients_id" autocomplete="off" class="layui-input" value="" placeholder="">
+                                </td>
+                            </tr>
 
                             <tr>
-                                <td>发送频率 <br/>（次/分钟）</td>
+                                <td>分组</td>
                                 <td>
+                                    <div id="groups">
+                                        <span id="groups_btn"></span>
+                                        <span id="groups_origin">
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('选择分组','/{[$.admin_path]}/admin/recipients/groups/select',600,450)">
+                                            <i class="layui-icon layui-icon-add-circle"></i>
+                                            </button>
+                                        </span>
                                     <div>
-                                        <div class="layui-inline">
-                                            <div class="layui-input-inline">
-                                                <input style="width: 60px;" type="number" name="count" autocomplete="off" class="layui-input" value="{[if .Data.GetRate]}{[.Data.GetRate.Count]}{[end]}" placeholder="">
-                                            </div>
-                                            <label class="layui-form-label" style="width: 50px;float: right;">次</label>
-                                        </div>
-                                        <span>/</span>
-                                        <div class="layui-inline">
-                                            <div class="layui-input-inline">
-                                                <input style="width: 60px;" type="number" name="minutes" autocomplete="off" class="layui-input" value="{[if .Data.GetRate]}{[.Data.GetRate.Minutes]}{[end]}" placeholder="">
-                                            </div>
-                                            <label class="layui-form-label" style="width: 70px;float: right;">分钟</label>
-                                        </div>
-                                    </div>
-                                    <p class="layui-font-12">用来限制此媒介的发送频率，防止短时间内消息数量过载。</p>
+                                    <p class="layui-font-12">选择当前接收人所属分组。</p>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td>忽略相似消息周期</td>
+                                <td>关联的集群</td>
                                 <td>
-                                    <div class="layui-inline">
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="hash_life" autocomplete="off" class="layui-input" placeholder="" value="{[if .Data]}{[.Data.HashLife]}{[end]}">
+                                    {[range $cluster := .ClusterList]}
+                                        <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                            <input type="checkbox" name="cluster[{[$cluster.ID]}]" lay-text="{[$cluster.Name]}">
                                         </div>
-                                        <label class="layui-form-label" style="float: right;">秒</label>
-                                    </div>
-                                    <br/>
-                                    <p class="layui-font-12">可以在这个时间内忽略相似消息，防止短时间内消息数量过载。默认60秒。</p>
+                                    {[end]}
                                 </td>
                             </tr>
 
                             <tr>
+                                <td colspan="2">
+                                    <a class="table_more mlink" target_class="more_table">
+                                        <cite>更多选项</cite>
+                                        <i class="layui-icon layui-icon-down layui-nav-more"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr class="more_table hide">
                                 <td>备注</td>
                                 <td><textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder="">{[if .Data]}{[.Data.Mark]}{[end]}</textarea></td>
                             </tr>
 
-                            <tr>
-                                <td>启用当前媒介</td>
-                                <td>
-                                    <input type="checkbox" name="status"
-                                    {[if .Data]}{[if .Data.Status]}checked{[end]}
-                                    {[else]}checked
-                                    {[end]}> 
-                                </td>
-                            </tr>
-
 
                             <tr>
-                                <td colspan="2" >
+                                <td colspan="2">
                                     <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
                                     <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
                                 </td>
                             </tr>
+                            
                         </tbody>
                     </table>
                 </form>
@@ -271,7 +159,7 @@ form.on("submit(submit_recipients)", function(data){
         field['status'] = 0;
     }
 
-    $.post("/{[$.admin_path]}/admin/recipients/instances/add", field, function(res) {
+    $.post("/{[$.admin_path]}/admin/recipients/recipients/add", field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
