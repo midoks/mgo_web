@@ -185,6 +185,14 @@
                     },
                     {
                         "code":"admin_recipients",
+                        "path": "/admin/recipients/recipients/update"
+                    },
+                    {
+                        "code":"admin_recipients",
+                        "path": "/admin/recipients/recipients/test"
+                    },
+                    {
+                        "code":"admin_recipients",
                         "path": "/admin/recipients/logs"
                     },
                     {
