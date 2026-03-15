@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -70,6 +72,12 @@ func PostRecipientsAdd(c *gin.Context) {
 	if err := c.ShouldBind(&field); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
+	}
+
+	if b, err := json.Marshal(field); err == nil {
+		fmt.Println(string(b))
+	} else {
+		fmt.Println("json marshal error:", err)
 	}
 
 	common_data := &model.AdminRecipients{

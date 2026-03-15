@@ -35,7 +35,11 @@
                                         <select name="admin_id" lay-verify="required">
                                             <option value="">[选择系统管理员]</option>
                                             {[range $admin_data := .AdminList]}
+                                                {[if eq $admin_data.ID $.Data.AdminID]}
+                                                <option value="{[$admin_data.ID]}" selected>{[$admin_data.Username]}</option>
+                                                {[else]}
                                                 <option value="{[$admin_data.ID]}" >{[$admin_data.Username]}</option>
+                                                {[end]}
                                             {[end]}
                                         </select>
                                     </div>
@@ -47,10 +51,14 @@
                                 <td>媒介 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <select name="media_type" lay-verify="required" lay-search lay-filter="media">
+                                        <select name="media_id" lay-verify="required" lay-search lay-filter="media">
                                             <option value="">[选择媒介]</option>
                                             {[range $recipients_data := .RecipientsList]}
+                                                {[if eq $recipients_data.ID $.Data.MediaID]}
+                                                <option value="{[$recipients_data.ID]}" selected>{[$recipients_data.Name]}</option>
+                                                {[else]}
                                                 <option value="{[$recipients_data.ID]}" >{[$recipients_data.Name]}</option>
+                                                 {[end]}
                                             {[end]}
                                         </select>
                                     </div>
@@ -60,7 +68,7 @@
                             <tr>
                                 <td>接收人标识</td>
                                 <td>
-                                    <input type="text" name="recipients_id" autocomplete="off" class="layui-input" value="" placeholder="">
+                                    <input type="text" name="recipients_id" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.RecipientID]}{[end]}" placeholder="">
                                 </td>
                             </tr>
 
@@ -159,7 +167,10 @@ form.on("submit(submit_recipients)", function(data){
         field['status'] = 0;
     }
 
+    console.log(field);
+
     $.post("/{[$.admin_path]}/admin/recipients/add", field, function(res) {
+
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
