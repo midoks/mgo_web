@@ -159,7 +159,7 @@ form.on("submit(submit_recipients)", function(data){
         field['status'] = 0;
     }
 
-    $.post("/{[$.admin_path]}/admin/recipients/recipients/add", field, function(res) {
+    $.post("/{[$.admin_path]}/admin/recipients/add", field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
