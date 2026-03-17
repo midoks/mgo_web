@@ -88,7 +88,7 @@
                             </tr>
 
                             <tr>
-                                <td>关联的集群</td>
+                                <td>关联的边缘节点集群</td>
                                 <td>
                                     {[range $cluster := .ClusterList]}
                                         <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
@@ -98,12 +98,21 @@
                                 </td>
                             </tr>
 
+
+
                             <tr>
                                 <td colspan="2">
                                     <a class="table_more mlink" target_class="more_table">
                                         <cite>更多选项</cite>
                                         <i class="layui-icon layui-icon-down layui-nav-more"></i>
                                     </a>
+                                </td>
+                            </tr>
+
+                            <tr class="more_table hide">
+                                <td>启用当前接收人</td>
+                                <td>
+                                    <input type="checkbox" name="status" lay-text="" {[if .Data]}{[if .Data.Status]}checked{[end]}{[end]}> 
                                 </td>
                             </tr>
 
@@ -138,28 +147,27 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
-function initMedia(data){
-    $('.id_telegram,.id_webhook,.id_email').hide();
-    if (data === 'telegram') {
-        $('.id_telegram').show();
-    } else if (data === 'webhook') {
-        $('.id_webhook').show();
-    } else if (data === 'email') {
-        $('.id_email').show();
-    }
-}
-
-var data = $('select[name=media_type]').val();
-initMedia(data);
-
-form.on('select(media)', function(data){
-    initMedia(data.value);
-});
-
 
 form.on("submit(submit_recipients)", function(data){
     var index = layer.load();
     var field = data.field;
+
+    var selected = [];
+    for (var k in field) {
+        if (!Object.prototype.hasOwnProperty.call(field, k)) continue;
+        var m = k.match(/^cluster\[(\d+)\]$/);
+        if (m) {
+            if (field[k] === 'on') {
+                selected.push(parseInt(m[1], 10));
+            }
+            delete field[k];
+        }
+    }
+    if (selected.length > 0) {
+        field['cluster_ids'] = selected.join(',');
+    } else {
+        field['cluster_ids'] = '';
+    }
 
     if (field['status'] == "on"){
         field['status'] = 1;
