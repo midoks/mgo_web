@@ -21,11 +21,6 @@ func RecipientsRecipientsDetails(c *gin.Context) {
 	data["id"] = id
 	data["Data"] = recipient_data
 
-	if recipient_data != nil {
-		media_data, _ := db.GetAdminRecipientsInstancesByID(recipient_data.MediaID)
-		data["MediaData"] = media_data
-	}
-
 	c.HTML(http.StatusOK, "backend/admin/recipients/recipients_details.tmpl", data)
 }
 
@@ -37,6 +32,10 @@ func RecipientsRecipientsUpdate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["id"] = id
 	data["Data"] = recipient_data
+
+	data["AdminID"] = recipient_data.AdminID
+	data["MediaID"] = recipient_data.MediaID
+	data["GroupID"] = recipient_data.GroupID
 
 	cluster_list, _, _ := db.GetClusterList(1, 100)
 	data["ClusterList"] = cluster_list

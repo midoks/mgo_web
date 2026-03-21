@@ -41,10 +41,10 @@ table.render({
     url: '/{[.admin_path]}/admin/recipients/list',
     title: '数据表',
     cols: [[
-        {field:'username', title:'系统管理员'},
-        {field:'tel', title:'媒介类型'},
+        {field:'admin_name', title:'系统管理员'},
+        {field:'media_name', title:'媒介类型'},
         {field:'recipient_id', title:'接收人标识'},
-        {field:'email', title:'所属分组'},
+        {field:'group_name', title:'所属分组'},
         {field:'mark', title:'备注', toolbar:"#markTpl"},
         {field:'status', title:'状态', width:80, toolbar:"#statusTpl"},
         {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}

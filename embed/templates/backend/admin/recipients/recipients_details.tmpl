@@ -12,7 +12,9 @@
                     </a>
 
                     <span style="margin:0;font-size:18px;">
-                        详情
+                        {[if .Data]}
+                        {[.Data.AdminName]} （{[.Data.MediaName]}）
+                        {[end]}
                     </span>
                 </div>
 
@@ -28,12 +30,6 @@
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">媒介名称</div>
-                                <div style="font-size: 12px; color: #333;">{[if .MediaData]}{[.MediaData.Name]}{[end]}</div>
-                            </div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                            <div class="ccc_hover">
                                 <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">状态</div>
                                 <div style="font-size: 12px;">
                                     {[if .Data]}
@@ -46,16 +42,22 @@
                         </div>
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">发送频率（次/分钟）</div>
+                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">媒介名称</div>
+                                <div style="font-size: 12px; color: #333;">{[if .Data]}{[.Data.AdminName]}{[end]}</div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
+                            <div class="ccc_hover">
+                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">媒介</div>
                                 <div style="font-size: 12px;">
-                                    {[if .MediaData.GetRate]}{[.MediaData.GetRate.Count]}{[end]}次/{[if .MediaData.GetRate]}{[.MediaData.GetRate.Minutes]}{[end]}分钟
+                                    {[if .Data]}{[.Data.MediaName]}{[end]}
                                 </div>
                             </div>
                         </div>
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">忽略相似消息周期</div>
-                                <div style="font-size: 12px;">{[if .MediaData]}{[.MediaData.HashLife]}{[end]}</div>
+                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">接收人标识</div>
+                                <div style="font-size: 12px;">{[if .Data]}{[.Data.RecipientID]}{[end]}</div>
                             </div>
                         </div>
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
@@ -74,7 +76,7 @@
                     <div class="layui-row layui-col-space10">
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">媒介类型</div>
+                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">关联的CDN集群</div>
                                 <div style="font-size: 13px; color: #333;">
                                     {[if .MediaData]}
                                         {[if eq .MediaData.MediaType "telegram" ]}Telegram机器人{[end]}
@@ -84,67 +86,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        {[if .MediaData]}
-                            {[if eq .MediaData.MediaType "telegram" ]}
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">机器人Token</div>
-                                        <div style="font-size: 12px; color: #333;">{[.MediaData.GetTelegramParams.Token]}</div>
-                                    </div>
-                                </div>
-                            {[end]}
-                            {[if eq .MediaData.MediaType "email" ]}
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">SMTP</div>
-                                        <div style="font-size: 12px; color: #333;">{[if .MediaData.GetEmailParams]}{[.MediaData.GetEmailParams.Smtp]}{[end]}</div>
-                                    </div>
-                                </div>
-
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">账号</div>
-                                        <div style="font-size: 12px; color: #333;">{[if .MediaData.GetEmailParams]}{[.MediaData.GetEmailParams.Username]}{[end]}</div>
-                                    </div>
-                                </div>
-
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">密码</div>
-                                        <div style="font-size: 12px; color: #333;">***</div>
-                                    </div>
-                                </div>
-
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">发送者Email</div>
-                                        <div style="font-size: 12px; color: #333;">{[if .MediaData.GetEmailParams]}{[.MediaData.GetEmailParams.From]}{[end]}</div>
-                                    </div>
-                                </div>
-                            {[end]}
-                            {[if eq .MediaData.MediaType "webhook" ]}
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">URL</div>
-                                        <div style="font-size: 12px; color: #333;">{[if .MediaData.GetWebhookParams]}{[.MediaData.GetWebhookParams.Url]}{[end]}</div>
-                                    </div>
-                                </div>
-
-                                <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                                    <div class="ccc_hover">
-                                        <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">请求方法</div>
-                                        <div style="font-size: 12px; color: #333;">
-                                            {[if .MediaData.GetWebhookParams]}
-                                                {[if eq .MediaData.GetWebhookParams.Method "post" ]}POST{[end]}
-                                                {[if eq .MediaData.GetWebhookParams.Method "get" ]}GET{[end]}
-                                            {[end]}
-                                        </div>
-                                    </div>
-                                </div>
-                            {[end]}
-                        {[end]}
-
                     </div>
                 </div>
 

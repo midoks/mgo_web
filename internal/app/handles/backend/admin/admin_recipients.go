@@ -81,7 +81,6 @@ func PostRecipientsAdd(c *gin.Context) {
 	}
 
 	// 设置默认的 ClusterID（如果 ClustersID 不为空）
-
 	common_data := &model.AdminRecipients{
 		AdminID:     field.AdminID,
 		MediaID:     field.MediaID,
