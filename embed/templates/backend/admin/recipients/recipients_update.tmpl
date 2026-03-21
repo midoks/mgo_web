@@ -131,62 +131,55 @@
 
 <script>
 $(document).ready(function(){
-    // 更多
-    $(document).on("click", ".table_more", function(){
-        var target_class = $(this).attr("target_class");
-        $("." + target_class).toggle();
-        if($("." + target_class).is(":visible")){
-            $(this).find("i").removeClass("layui-icon-down").addClass("layui-icon-up");
-        } else {
-            $(this).find("i").removeClass("layui-icon-up").addClass("layui-icon-down");
+//
+layui.use(['form', 'layer'], function(){
+//
+var form = layui.form;
+var layer = layui.layer;
+
+form.on('submit(submit)', function(data){
+    var field = data.field;
+    var index = layer.load(2);
+    
+    // 收集所有选中的 cluster_ids
+    var selected = [];
+    for (var k in field) {
+        var m = k.match(/^cluster\[(\d+)\]$/);
+        if (m) {
+            if (field[k] === 'on') {
+                selected.push(parseInt(m[1], 10));
+            }
+            delete field[k];
+        }
+    }
+    field['cluster_ids'] = selected;
+
+    if (field['status'] == "on"){
+        field['status'] = 1;
+    } else {
+        field['status'] = 0;
+    }
+
+    $.ajax({
+        url: "/{[$.admin_path]}/admin/recipients/add",
+        type: "POST",
+        data: field,
+        traditional: true, // arrays -> cluster_ids=1&cluster_ids=2
+        dataType: "json",
+        success: function(res){
+            showMsg(res.msg, function(){
+                layer.close(index);
+                if(res.code > -1){
+                    parent.location.reload();
+                }
+            },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
         }
     });
-
-    layui.use(['form', 'layer'], function(){
-        var form = layui.form;
-        var layer = layui.layer;
-
-        form.on('submit(submit)', function(data){
-            var field = data.field;
-            var index = layer.load(2);
-            
-            // 收集所有选中的 cluster_ids
-            var selected = [];
-            for (var k in field) {
-                var m = k.match(/^cluster\[(\d+)\]$/);
-                if (m) {
-                    if (field[k] === 'on') {
-                        selected.push(parseInt(m[1], 10));
-                    }
-                    delete field[k];
-                }
-            }
-            field['cluster_ids'] = selected;
-
-            if (field['status'] == "on"){
-                field['status'] = 1;
-            } else {
-                field['status'] = 0;
-            }
-
-            $.ajax({
-                url: "/{[$.admin_path]}/admin/recipients/add",
-                type: "POST",
-                data: field,
-                traditional: true, // arrays -> cluster_ids=1&cluster_ids=2
-                dataType: "json",
-                success: function(res){
-                    showMsg(res.msg, function(){
-                        layer.close(index);
-                        if(res.code > -1){
-                            parent.location.reload();
-                        }
-                    },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
-                }
-            });
-            return false;
-        });
-    });
+    return false;
+});
+//
+});
+//
 });
 </script>
 
