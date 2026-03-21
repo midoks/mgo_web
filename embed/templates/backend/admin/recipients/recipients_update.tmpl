@@ -38,68 +38,59 @@
                                                 {[if eq $admin_data.ID $.Data.AdminID]}
                                                 <option value="{[$admin_data.ID]}" selected>{[$admin_data.Username]}</option>
                                                 {[else]}
-                                                <option value="{[$admin_data.ID]}" >{[$admin_data.Username]}</option>
+                                                <option value="{[$admin_data.ID]}">{[$admin_data.Username]}</option>
                                                 {[end]}
                                             {[end]}
                                         </select>
                                     </div>
-                                    <p class="layui-font-12">选择关联的系统管理员。</p>
+                                    <div>
+                                    <p class="layui-font-12">选择系统管理员。</p>
                                 </td>
                             </tr>
-
                             <tr>
-                                <td>媒介 *</td>
+                                <td>通知媒介 *</td>
                                 <td>
                                     <div class="layui-input-inline">
-                                        <select name="media_id" lay-verify="required" lay-search lay-filter="media">
-                                            <option value="">[选择媒介]</option>
+                                        <select name="media_id" lay-verify="required">
+                                            <option value="">[选择通知媒介]</option>
                                             {[range $recipients_data := .RecipientsList]}
                                                 {[if eq $recipients_data.ID $.Data.MediaID]}
                                                 <option value="{[$recipients_data.ID]}" selected>{[$recipients_data.Name]}</option>
                                                 {[else]}
-                                                <option value="{[$recipients_data.ID]}" >{[$recipients_data.Name]}</option>
-                                                 {[end]}
+                                                <option value="{[$recipients_data.ID]}">{[$recipients_data.Name]}</option>
+                                                {[end]}
                                             {[end]}
                                         </select>
+                                    </div>
+                                    <div>
+                                    <p class="layui-font-12">选择通知媒介。</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>接收人标识 *</td>
+                                <td>
+                                    <div class="layui-input-inline" style="width: 500px;">
+                                        <input type="text" name="recipient_id" value="{[.Data.RecipientID]}" placeholder="请输入接收人标识" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div>
+                                    <p class="layui-font-12">接收人标识，如：邮箱地址、手机号、Telegram ID 等。</p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>关联的边缘节点集群</td>
+                                <td>
+                                    <div class="layui-row">
+                                    {[range $cluster := .ClusterList]}
+                                        <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                                            <input type="checkbox" name="cluster[{[$cluster.ID]}]" lay-text="{[$cluster.Name]}" {[range $rcr_data := $.RecipientsClusterRelated]}{[if eq $rcr_data.ClusterID $cluster.ID]}checked{[end]}{[end]}>
+                                        </div>
+                                    {[end]}
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>接收人标识</td>
-                                <td>
-                                    <input type="text" name="recipients_id" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.RecipientID]}{[end]}" placeholder="">
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>分组</td>
-                                <td>
-                                    <div id="groups">
-                                        <span id="groups_btn"></span>
-                                        <span id="groups_origin">
-                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('选择分组','/{[$.admin_path]}/admin/recipients/groups/select',600,450)">
-                                            <i class="layui-icon layui-icon-add-circle"></i>
-                                            </button>
-                                        </span>
-                                    <div>
-                                    <p class="layui-font-12">选择当前接收人所属分组。</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>关联的边缘节点集群</td>
-                                <td>
-                                    {[range $cluster := .ClusterList]}
-                                        <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-                                            <input type="checkbox" name="cluster[{[$cluster.ID]}]" lay-text="{[$cluster.Name]}">
-                                        </div>
-                                    {[end]}
-                                </td>
-                            </tr>
-
-
-
+                            <!--  more  -->
                             <tr>
                                 <td colspan="2">
                                     <a class="table_more mlink" target_class="more_table">
@@ -109,87 +100,93 @@
                                 </td>
                             </tr>
 
-                            <tr class="more_table hide">
-                                <td>启用当前接收人</td>
+                            <tr class="more_table" style="display:none;">
+                                <td>状态</td>
                                 <td>
-                                    <input type="checkbox" name="status" lay-text="" {[if .Data]}{[if .Data.Status]}checked{[end]}{[end]}> 
+                                    <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" {[if .Data.Status]}checked{[end]}>
+                                    <div>
+                                    <p class="layui-font-12">是否启用该接收人。</p>
                                 </td>
                             </tr>
 
-                            <tr class="more_table hide">
+                            <tr class="more_table" style="display:none;">
                                 <td>备注</td>
-                                <td><textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder="">{[if .Data]}{[.Data.Mark]}{[end]}</textarea></td>
-                            </tr>
-
-
-                            <tr>
-                                <td colspan="2">
-                                    <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-                                    <button class="layui-btn" lay-filter="submit_recipients" lay-submit>保存</button>
+                                <td>
+                                    <textarea name="mark" class="layui-textarea" style="min-height:100px;" placeholder="">{[if .Data]}{[.Data.Mark]}{[end]}</textarea>
+                                    <p class="layui-font-12">备注信息。</p>
                                 </td>
                             </tr>
-                            
                         </tbody>
                     </table>
+                    <input type="hidden" name="id" value="{[.id]}">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="submit">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </form>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-
-layui.config({base: '/static/layuiadmin/'}).use(['table','jquery'], function(){
-///
-var admin = layui.admin
-,$ = layui.$
-,form = layui.form
-,table = layui.table;
-
-
-form.on("submit(submit_recipients)", function(data){
-    var index = layer.load();
-    var field = data.field;
-
-    var selected = [];
-    for (var k in field) {
-        if (!Object.prototype.hasOwnProperty.call(field, k)) continue;
-        var m = k.match(/^cluster\[(\d+)\]$/);
-        if (m) {
-            if (field[k] === 'on') {
-                selected.push(parseInt(m[1], 10));
-            }
-            delete field[k];
-        }
-    }
-    field['cluster_ids'] = selected;
-
-    if (field['status'] == "on"){
-        field['status'] = 1;
-    } else {
-        field['status'] = 0;
-    }
-
-    $.ajax({
-        url: "/{[$.admin_path]}/admin/recipients/add",
-        type: "POST",
-        data: field,
-        traditional: true, // arrays -> cluster_ids=1&cluster_ids=2
-        dataType: "json",
-        success: function(res){
-            showMsg(res.msg, function(){
-                layer.close(index);
-                if(res.code > -1){
-                    parent.location.reload();
-                }
-            },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+<script>
+$(document).ready(function(){
+    // 更多
+    $(document).on("click", ".table_more", function(){
+        var target_class = $(this).attr("target_class");
+        $("." + target_class).toggle();
+        if($("." + target_class).is(":visible")){
+            $(this).find("i").removeClass("layui-icon-down").addClass("layui-icon-up");
+        } else {
+            $(this).find("i").removeClass("layui-icon-up").addClass("layui-icon-down");
         }
     });
-    return false;
-});
 
-///
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form;
+        var layer = layui.layer;
+
+        form.on('submit(submit)', function(data){
+            var field = data.field;
+            var index = layer.load(2);
+            
+            // 收集所有选中的 cluster_ids
+            var selected = [];
+            for (var k in field) {
+                var m = k.match(/^cluster\[(\d+)\]$/);
+                if (m) {
+                    if (field[k] === 'on') {
+                        selected.push(parseInt(m[1], 10));
+                    }
+                    delete field[k];
+                }
+            }
+            field['cluster_ids'] = selected;
+
+            if (field['status'] == "on"){
+                field['status'] = 1;
+            } else {
+                field['status'] = 0;
+            }
+
+            $.ajax({
+                url: "/{[$.admin_path]}/admin/recipients/add",
+                type: "POST",
+                data: field,
+                traditional: true, // arrays -> cluster_ids=1&cluster_ids=2
+                dataType: "json",
+                success: function(res){
+                    showMsg(res.msg, function(){
+                        layer.close(index);
+                        if(res.code > -1){
+                            parent.location.reload();
+                        }
+                    },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+                }
+            });
+            return false;
+        });
+    });
 });
 </script>
 
