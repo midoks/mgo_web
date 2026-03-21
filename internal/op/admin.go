@@ -13,7 +13,7 @@ import (
 )
 
 func InitAdmin(user string, pass string) error {
-	data, err := db.GetAdminById(1)
+	data, err := db.GetAdminByID(1)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 

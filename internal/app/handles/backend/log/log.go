@@ -55,7 +55,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	err := db.LogDeleteById(nil, field.ID)
+	err := db.LogDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

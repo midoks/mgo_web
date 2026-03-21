@@ -15,7 +15,7 @@ import (
 func Update(c *gin.Context) {
 	id := c.Query("id")
 	idint, _ := strconv.ParseInt(id, 10, 64)
-	admin_data, _ := db.GetAdminById(idint)
+	admin_data, _ := db.GetAdminByID(idint)
 
 	auth := []string{}
 	authMap := map[string]bool{}

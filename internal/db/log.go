@@ -23,7 +23,7 @@ func GetLogList(page, size int) ([]model.Log, int64, error) {
 	return list, count, nil
 }
 
-func GetLogById(id int64) (*model.Log, error) {
+func GetLogByID(id int64) (*model.Log, error) {
 	var u model.Log
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get log")
@@ -31,7 +31,7 @@ func GetLogById(id int64) (*model.Log, error) {
 	return &u, nil
 }
 
-func LogDeleteById(tx *gorm.DB, id int64) error {
+func LogDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}
@@ -51,7 +51,6 @@ func AddLog(tx *gorm.DB, uid int64, content string) error {
 	return errors.WithStack(tx.Create(&u).Error)
 }
 
-// LogDeleteAll 删除全部日志
 func LogDeleteAll(tx *gorm.DB) error {
 	if tx == nil {
 		tx = db
@@ -60,7 +59,6 @@ func LogDeleteAll(tx *gorm.DB) error {
 	return errors.WithStack(tx.Where("1 = 1").Delete(&d).Error)
 }
 
-// LogDeleteBeforeDays 删除 N 天之前的日志
 func LogDeleteBeforeDays(tx *gorm.DB, days int) error {
 	if tx == nil {
 		tx = db

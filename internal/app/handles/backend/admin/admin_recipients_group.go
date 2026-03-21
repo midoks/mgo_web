@@ -34,7 +34,7 @@ func RecipientsGroupsAdd(c *gin.Context) {
 	idInt, _ := strconv.ParseInt(id, 10, 64)
 
 	data := common.CommonVer(c)
-	ga_data, err := db.GetAdminRecipientsGroupById(idInt)
+	ga_data, err := db.GetAdminRecipientsGroupByID(idInt)
 	if err == nil {
 		data["Data"] = ga_data
 	}

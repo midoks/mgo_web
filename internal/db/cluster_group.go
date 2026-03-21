@@ -58,7 +58,7 @@ func UpdateClusterGroup(tx *gorm.DB, name string, id int64) error {
 	return nil
 }
 
-func GetClusterGroupById(id int64) (*model.ClusterGroup, error) {
+func GetClusterGroupByID(id int64) (*model.ClusterGroup, error) {
 	var data model.ClusterGroup
 	if err := db.First(&data, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get cluster group")
@@ -66,7 +66,7 @@ func GetClusterGroupById(id int64) (*model.ClusterGroup, error) {
 	return &data, nil
 }
 
-func ClusterGroupDeleteById(tx *gorm.DB, id int64) error {
+func ClusterGroupDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}

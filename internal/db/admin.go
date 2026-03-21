@@ -24,7 +24,7 @@ func GetAdminList(page, size int) ([]model.Admin, int64, error) {
 	return list, count, nil
 }
 
-func GetAdminById(id int64) (*model.Admin, error) {
+func GetAdminByID(id int64) (*model.Admin, error) {
 	var u model.Admin
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get admin")
@@ -172,7 +172,7 @@ func AdminTriggerStatus(tx *gorm.DB, id int64) error {
 }
 
 func InitAdmin(user string, pass string) error {
-	_, err := GetAdminById(1)
+	_, err := GetAdminByID(1)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 
@@ -193,7 +193,7 @@ func InitAdmin(user string, pass string) error {
 	return nil
 }
 
-func AdminDeleteById(tx *gorm.DB, id int64) error {
+func AdminDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}

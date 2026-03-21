@@ -29,7 +29,7 @@ func GetAdminRecipientsByID(id int64) (*model.AdminRecipients, error) {
 	return &u, nil
 }
 
-func AdminRecipientsDeleteById(tx *gorm.DB, id int64) error {
+func AdminRecipientsDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}

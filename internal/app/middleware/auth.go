@@ -82,7 +82,7 @@ func AuthRequired() gin.HandlerFunc {
 
 		// Super admin bypass
 		isSuper := false
-		if u, err := db.GetAdminById(idint); err == nil {
+		if u, err := db.GetAdminByID(idint); err == nil {
 
 			isSuper = u.SuperAdmin
 			if !isSuper {

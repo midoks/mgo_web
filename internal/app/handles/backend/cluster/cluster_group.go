@@ -31,7 +31,7 @@ func ClusterGroupsAdd(c *gin.Context) {
 
 		}
 
-		cg_data, err := db.GetClusterGroupById(qid)
+		cg_data, err := db.GetClusterGroupByID(qid)
 		fmt.Println(qid, cg_data, err)
 		if err != nil {
 
@@ -82,7 +82,7 @@ func ClusterGroupsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterGroupDeleteById(nil, field.ID)
+	err := db.ClusterGroupDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -21,6 +20,12 @@ func RecipientsRecipientsDetails(c *gin.Context) {
 
 	data["id"] = id
 	data["Data"] = recipient_data
+
+	if recipient_data != nil {
+		media_data, _ := db.GetAdminRecipientsInstancesByID(recipient_data.MediaID)
+		data["MediaData"] = media_data
+	}
+
 	c.HTML(http.StatusOK, "backend/admin/recipients/recipients_details.tmpl", data)
 }
 

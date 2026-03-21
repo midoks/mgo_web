@@ -37,7 +37,7 @@ func GetClusterNodeLoginByNodeID(node_id int64) (*model.ClusterNodeLogin, error)
 	return &data, nil
 }
 
-func ClusterNodeLoginDeleteById(tx *gorm.DB, id int64) error {
+func ClusterNodeLoginDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}
@@ -52,12 +52,10 @@ func ClusterNodeLoginFindFrequentSshIDs(clusterID int64) ([]int64, error) {
 	}
 	var rows []row
 
-	// Pre-compute subquery to avoid repeated execution
 	sub := db.Model(&model.ClusterNode{}).
 		Select("id").
 		Where("cluster_id = ?", clusterID)
 
-	// Use a more efficient query with proper indexing
 	qb := db.Model(&model.ClusterNodeLogin{}).
 		Where("status = ? AND node_id IN (?)", 1, sub).
 		Select("CAST(JSON_EXTRACT(params, '$.ssh_id') AS UNSIGNED) as ssh_id, COUNT(*) AS c").
@@ -71,7 +69,6 @@ func ClusterNodeLoginFindFrequentSshIDs(clusterID int64) ([]int64, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	// Pre-allocate slice with estimated capacity
 	ids := make([]int64, 0, len(rows))
 	for _, r := range rows {
 		if r.SshID > 0 {

@@ -21,7 +21,7 @@ func GetAdminRecipientsInstancesList(page, size int) ([]model.AdminMediaInstance
 	return list, count, nil
 }
 
-func GetAdminRecipientsInstancesById(id int64) (*model.AdminMediaInstance, error) {
+func GetAdminRecipientsInstancesByID(id int64) (*model.AdminMediaInstance, error) {
 	var u model.AdminMediaInstance
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get recipients data")
@@ -29,7 +29,7 @@ func GetAdminRecipientsInstancesById(id int64) (*model.AdminMediaInstance, error
 	return &u, nil
 }
 
-func AdminRecipientsInstancesDeleteById(tx *gorm.DB, id int64) error {
+func AdminRecipientsInstancesDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
 	}

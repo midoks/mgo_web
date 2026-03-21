@@ -21,7 +21,7 @@ func GetAdminRecipientsGroupList(page, size int) ([]model.AdminMediaGroup, int64
 	return list, count, nil
 }
 
-func GetAdminRecipientsGroupById(id int64) (*model.AdminMediaGroup, error) {
+func GetAdminRecipientsGroupByID(id int64) (*model.AdminMediaGroup, error) {
 	var u model.AdminMediaGroup
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get admin recipient group by id")

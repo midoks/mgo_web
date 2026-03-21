@@ -31,7 +31,7 @@ func RecipientsInstancesAdd(c *gin.Context) {
 func RecipientsInstancesDetails(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesByID(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -42,7 +42,7 @@ func RecipientsInstancesDetails(c *gin.Context) {
 func RecipientsInstancesUpdate(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesByID(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -53,7 +53,7 @@ func RecipientsInstancesUpdate(c *gin.Context) {
 func RecipientsInstancesTest(c *gin.Context) {
 	id := c.Query("id")
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsInstancesById(idInt)
+	recipient_data, _ := db.GetAdminRecipientsInstancesByID(idInt)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -74,7 +74,7 @@ func PostRecipientsInstancesTest(c *gin.Context) {
 		return
 	}
 
-	recipient_data, _ := db.GetAdminRecipientsInstancesById(field.ID)
+	recipient_data, _ := db.GetAdminRecipientsInstancesByID(field.ID)
 	if recipient_data.MediaType == "telegram" {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -168,7 +168,7 @@ func RecipientsInstancesDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminRecipientsInstancesDeleteById(nil, field.ID)
+	err := db.AdminRecipientsInstancesDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

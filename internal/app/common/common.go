@@ -65,7 +65,7 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	data["login_uid"] = admin_id
 
 	menus := GetMenus()
-	if admin_data, err := db.GetAdminById(admin_id); err == nil {
+	if admin_data, err := db.GetAdminByID(admin_id); err == nil {
 		data["login_data"] = admin_data
 		// Build Menus filtered by user's auth codes, super_admin bypass
 		if !admin_data.SuperAdmin {

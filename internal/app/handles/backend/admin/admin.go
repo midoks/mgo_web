@@ -29,7 +29,7 @@ func Add(c *gin.Context) {
 	id := c.Query("id")
 	idint, _ := strconv.ParseInt(id, 10, 64)
 
-	admin_data, _ := db.GetAdminById(idint)
+	admin_data, _ := db.GetAdminByID(idint)
 	if admin_data == nil {
 		admin_data = &model.Admin{}
 	}
@@ -110,7 +110,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if err := db.AdminDeleteById(nil, field.ID); err != nil {
+	if err := db.AdminDeleteByID(nil, field.ID); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
