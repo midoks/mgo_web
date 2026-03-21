@@ -9,7 +9,6 @@ import (
 
 	"mgo/internal/app/common"
 	"mgo/internal/db"
-	// "mgo/internal/model"
 )
 
 func RecipientsRecipientsDetails(c *gin.Context) {
@@ -20,7 +19,6 @@ func RecipientsRecipientsDetails(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetRecipientsSubMenu()
 
-	fmt.Println(recipient_data)
 	data["id"] = id
 	data["Data"] = recipient_data
 	c.HTML(http.StatusOK, "backend/admin/recipients/recipients_details.tmpl", data)
