@@ -3,11 +3,11 @@ package db
 import (
 	"time"
 
-	"github.com/pkg/errors"
-	// "gorm.io/gorm"
+	"gorm.io/gorm"
 
 	"mgo/internal/model"
-	// utils "mgo/internal/utils"
+
+	"github.com/pkg/errors"
 )
 
 func GetClusterGroupList(page, size int) ([]model.ClusterGroup, int64, error) {
@@ -24,7 +24,10 @@ func GetClusterGroupList(page, size int) ([]model.ClusterGroup, int64, error) {
 	return list, count, nil
 }
 
-func AddClusterGroup(name string, clusterId int64) error {
+func AddClusterGroup(tx *gorm.DB, name string, clusterId int64) error {
+	if tx == nil {
+		tx = db
+	}
 	data := &model.ClusterGroup{
 		Name:      name,
 		ClusterId: clusterId,
@@ -32,19 +35,22 @@ func AddClusterGroup(name string, clusterId int64) error {
 
 	data.CreateTime = time.Now()
 	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Create(data).Error); err != nil {
+	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
 	return nil
 }
 
-func UpdateClusterGroup(name string, id int64) error {
+func UpdateClusterGroup(tx *gorm.DB, name string, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	data := &model.ClusterGroup{
 		Name: name,
 	}
 
 	data.UpdateTime = time.Now()
-	if err := db.Model(&model.ClusterGroup{}).
+	if err := tx.Model(&model.ClusterGroup{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {
 		return err
@@ -60,7 +66,10 @@ func GetClusterGroupById(id int64) (*model.ClusterGroup, error) {
 	return &data, nil
 }
 
-func ClusterGroupDeleteById(id int64) error {
+func ClusterGroupDeleteById(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.ClusterGroup
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }

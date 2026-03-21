@@ -143,7 +143,7 @@ func PostDeleteNode(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterNodeDeleteByID(field.ID)
+	err := db.ClusterNodeDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

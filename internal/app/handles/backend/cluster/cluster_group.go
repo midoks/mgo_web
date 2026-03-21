@@ -57,7 +57,7 @@ func PostClusterGroupsAdd(c *gin.Context) {
 
 	if field.ID != "" {
 		id, _ := strconv.ParseInt(field.ID, 10, 64)
-		err := db.UpdateClusterGroup(field.Name, id)
+		err := db.UpdateClusterGroup(nil, field.Name, id)
 		if err == nil {
 			common.SuccessResp(c)
 			return
@@ -66,12 +66,13 @@ func PostClusterGroupsAdd(c *gin.Context) {
 		return
 	}
 
-	err := db.AddClusterGroup(field.Name, field.ClusterID)
+	err := db.AddClusterGroup(nil, field.Name, field.ClusterID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
 	}
 	common.ErrorResp(c, err, 0)
+	return
 }
 
 func ClusterGroupsDelete(c *gin.Context) {
@@ -81,7 +82,7 @@ func ClusterGroupsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterGroupDeleteById(field.ID)
+	err := db.ClusterGroupDeleteById(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
 	// "time"
 
 	"github.com/gin-gonic/gin"
@@ -64,9 +65,9 @@ func PostAdd(c *gin.Context) {
 	}
 	codesStr := strings.Join(codes, ",")
 	if f.ID > 0 {
-		db.UpdateAdmin(f.ID, f.Username, f.Password, f.FullName, codesStr, f.AllowLogin, f.SuperAdmin)
+		db.UpdateAdmin(nil, f.ID, f.Username, f.Password, f.FullName, codesStr, f.AllowLogin, f.SuperAdmin)
 	} else {
-		db.AddAdmin(f.Username, f.Password, f.FullName, codesStr, f.AllowLogin, f.SuperAdmin)
+		db.AddAdmin(nil, f.Username, f.Password, f.FullName, codesStr, f.AllowLogin, f.SuperAdmin)
 	}
 	common.SuccessResp(c)
 }
@@ -89,7 +90,7 @@ func AdminTriggerStatus(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminTriggerStatus(field.ID)
+	err := db.AdminTriggerStatus(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
@@ -109,7 +110,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if err := db.AdminDeleteById(field.ID); err != nil {
+	if err := db.AdminDeleteById(nil, field.ID); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}

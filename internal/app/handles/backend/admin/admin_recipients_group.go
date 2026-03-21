@@ -95,7 +95,7 @@ func PostRecipientsGroupsDelete(c *gin.Context) {
 		return
 	}
 
-	if err := db.AdminRecipientsGroupDelete(field.ID); err != nil {
+	if err := db.AdminRecipientsGroupDelete(nil, field.ID); err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}

@@ -1,11 +1,10 @@
 package db
 
 import (
-	// "fmt"
 	"mgo/internal/model"
 
 	"github.com/pkg/errors"
-	// "gorm.io/gorm"
+	"gorm.io/gorm"
 )
 
 func GetClusterNodeLoginList(page, size int) ([]model.ClusterNodeLogin, int64, error) {
@@ -38,9 +37,12 @@ func GetClusterNodeLoginByNodeID(node_id int64) (*model.ClusterNodeLogin, error)
 	return &data, nil
 }
 
-func ClusterNodeLoginDeleteById(id int64) error {
+func ClusterNodeLoginDeleteById(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.ClusterNodeLogin
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }
 
 func ClusterNodeLoginFindFrequentSshIDs(clusterID int64) ([]int64, error) {

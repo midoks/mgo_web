@@ -2,10 +2,9 @@ package db
 
 import (
 	"github.com/pkg/errors"
-	// "gorm.io/gorm"
+	"gorm.io/gorm"
 
 	"mgo/internal/model"
-	// utils "mgo/internal/utils"
 )
 
 func GetClusterList(page, size int) ([]model.Cluster, int64, error) {
@@ -30,7 +29,10 @@ func GetClusterByID(id int64) (*model.Cluster, error) {
 	return &u, nil
 }
 
-func ClusterDeleteByID(id int64) error {
+func ClusterDeleteByID(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.Cluster
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }

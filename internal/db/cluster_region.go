@@ -3,6 +3,8 @@ package db
 import (
 	"time"
 
+	"gorm.io/gorm"
+
 	"mgo/internal/model"
 
 	"github.com/pkg/errors"
@@ -22,7 +24,10 @@ func GetClusterRegionList(page, size int) ([]model.ClusterRegion, int64, error) 
 	return list, count, nil
 }
 
-func AddClusterRegion(name string, mark string) error {
+func AddClusterRegion(tx *gorm.DB, name string, mark string) error {
+	if tx == nil {
+		tx = db
+	}
 	data := &model.ClusterRegion{
 		Name: name,
 		Mark: mark,
@@ -30,20 +35,23 @@ func AddClusterRegion(name string, mark string) error {
 
 	data.CreateTime = time.Now()
 	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Create(data).Error); err != nil {
+	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
 	return nil
 }
 
-func UpdateClusterRegion(name string, mark string, id int64) error {
+func UpdateClusterRegion(tx *gorm.DB, name string, mark string, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	data := &model.ClusterRegion{
 		Name: name,
 		Mark: mark,
 	}
 
 	data.UpdateTime = time.Now()
-	if err := db.Model(&model.ClusterRegion{}).
+	if err := tx.Model(&model.ClusterRegion{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {
 		return err
@@ -59,14 +67,20 @@ func GetClusterRegionByID(id int64) (*model.ClusterRegion, error) {
 	return &data, nil
 }
 
-func ClusterRegionDeleteByID(id int64) error {
+func ClusterRegionDeleteByID(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.ClusterRegion
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }
 
-func ClusterRegionsTriggerStatus(id int64) error {
+func ClusterRegionsTriggerStatus(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var data model.ClusterRegion
-	if err := db.First(&data, id).Error; err != nil {
+	if err := tx.First(&data, id).Error; err != nil {
 		return errors.Wrapf(err, "failed get cluster region")
 	}
 
@@ -80,7 +94,7 @@ func ClusterRegionsTriggerStatus(id int64) error {
 	data.UpdateTime = time.Now()
 	data.Status = status
 
-	if err := db.Model(&model.ClusterRegion{}).
+	if err := tx.Model(&model.ClusterRegion{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {
 		return err

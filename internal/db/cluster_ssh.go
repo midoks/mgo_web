@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/gorm"
+
 	"mgo/internal/app/entity"
 	"mgo/internal/model"
 	"mgo/internal/utils/cache"
@@ -91,7 +93,10 @@ func GetClusterSshByID(id int64) (*model.ClusterSsh, error) {
 	return &data, nil
 }
 
-func ClusterSshDeleteByID(id int64) error {
+func ClusterSshDeleteByID(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.ClusterSsh
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }

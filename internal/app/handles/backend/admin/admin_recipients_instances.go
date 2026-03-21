@@ -168,7 +168,7 @@ func RecipientsInstancesDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminRecipientsInstancesDeleteById(field.ID)
+	err := db.AdminRecipientsInstancesDeleteById(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

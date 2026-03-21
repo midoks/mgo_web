@@ -23,12 +23,12 @@ func PostLogClean(c *gin.Context) {
 		return
 	}
 	if field.Clean == "all" {
-		if err := db.LogDeleteAll(); err != nil {
+		if err := db.LogDeleteAll(nil); err != nil {
 			common.ErrorResp(c, err, 0)
 			return
 		}
 	} else {
-		if err := db.LogDeleteBeforeDays(int(field.Day)); err != nil {
+		if err := db.LogDeleteBeforeDays(nil, int(field.Day)); err != nil {
 			common.ErrorResp(c, err, 0)
 			return
 		}

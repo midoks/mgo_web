@@ -13,5 +13,5 @@ import (
 )
 
 func AddLog(uid int64, content string) error {
-	return db.AddLog(uid, content)
+	return db.AddLog(nil, uid, content)
 }

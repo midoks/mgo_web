@@ -137,15 +137,15 @@ func PostEdit(c *gin.Context) {
 	if f.Id > 0 {
 
 		if f.Password != "" {
-			db.AdminUpdatePass(f.Id, f.Password)
+			db.AdminUpdatePass(nil, f.Id, f.Password)
 		}
 
 		if f.Tel != "" {
-			db.AdminUpdateTel(f.Id, f.Tel)
+			db.AdminUpdateTel(nil, f.Id, f.Tel)
 		}
 
 		if f.Email != "" {
-			db.AdminUpdateEmail(f.Id, f.Email)
+			db.AdminUpdateEmail(nil, f.Id, f.Email)
 		}
 
 		common.SuccessResp(c)
@@ -160,7 +160,7 @@ func PostEdit(c *gin.Context) {
 	d.CreateTime = time.Now()
 	d.UpdateTime = time.Now()
 
-	err := db.CreateAdmin(d)
+	err := db.CreateAdmin(nil, d)
 	if err == nil {
 		common.SuccessResp(c)
 		return
@@ -197,7 +197,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterDeleteByID(field.ID)
+	err := db.ClusterDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

@@ -3,9 +3,10 @@ package db
 import (
 	"time"
 
-	"mgo/internal/model"
-
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
+
+	"mgo/internal/model"
 )
 
 func GetLogList(page, size int) ([]model.Log, int64, error) {
@@ -30,32 +31,44 @@ func GetLogById(id int64) (*model.Log, error) {
 	return &u, nil
 }
 
-func LogDeleteById(id int64) error {
+func LogDeleteById(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.Log
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }
 
-func AddLog(uid int64, content string) error {
+func AddLog(tx *gorm.DB, uid int64, content string) error {
+	if tx == nil {
+		tx = db
+	}
 	var u model.Log
 	u.Uid = uid
 	u.Content = content
 	u.CreateTime = time.Now()
 
-	return errors.WithStack(db.Create(&u).Error)
+	return errors.WithStack(tx.Create(&u).Error)
 }
 
 // LogDeleteAll 删除全部日志
-func LogDeleteAll() error {
+func LogDeleteAll(tx *gorm.DB) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.Log
-	return errors.WithStack(db.Where("1 = 1").Delete(&d).Error)
+	return errors.WithStack(tx.Where("1 = 1").Delete(&d).Error)
 }
 
 // LogDeleteBeforeDays 删除 N 天之前的日志
-func LogDeleteBeforeDays(days int) error {
+func LogDeleteBeforeDays(tx *gorm.DB, days int) error {
+	if tx == nil {
+		tx = db
+	}
 	if days <= 0 {
 		return nil
 	}
 	cutoff := time.Now().Add(-time.Duration(days) * 24 * time.Hour)
 	var d model.Log
-	return errors.WithStack(db.Where("create_time < ?", cutoff).Delete(&d).Error)
+	return errors.WithStack(tx.Where("create_time < ?", cutoff).Delete(&d).Error)
 }

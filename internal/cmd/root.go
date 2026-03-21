@@ -28,7 +28,7 @@ func runRoot(c *cli.Context) error {
 
 	pwd := c.String("password")
 	if pwd != "" {
-		err := db.AdminUpdatePass(1, pwd)
+		err := db.AdminUpdatePass(nil, 1, pwd)
 		if err != nil {
 			fmt.Println("update admin password fail!")
 			return err

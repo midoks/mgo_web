@@ -80,30 +80,52 @@ func PostRecipientsAdd(c *gin.Context) {
 		fmt.Println("json marshal error:", err)
 	}
 
+	// 设置默认的 ClusterID（如果 ClustersID 不为空）
+
 	common_data := &model.AdminRecipients{
 		AdminID:     field.AdminID,
 		MediaID:     field.MediaID,
 		Status:      field.Status,
 		Mark:        field.Mark,
 		RecipientID: field.RecipientID,
-		ClusterID:   field.ClusterID,
 		UpdateTime:  time.Now(),
 	}
 
+	tx := db.GetDb().Begin()
+
 	if field.ID > 0 {
-		if err := db.GetDb().Model(&model.AdminRecipients{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
+		if err := tx.Model(&model.AdminRecipients{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {
+			tx.Rollback()
 			common.ErrorResp(c, err, -1)
 			return
 		}
-		common.SuccessResp(c)
-		return
+
+		if _, err := db.UpdateAdminRecipientsClusterRelated(tx, field.ID, field.ClustersID); err != nil {
+			tx.Rollback()
+			common.ErrorResp(c, err, -1)
+			return
+		}
+	} else {
+		common_data.Status = true
+		common_data.CreateTime = time.Now()
+		if err := tx.Create(common_data).Error; err != nil {
+			tx.Rollback()
+			common.ErrorResp(c, err, -1)
+			return
+		}
+
+		if _, err := db.UpdateAdminRecipientsClusterRelated(tx, common_data.ID, field.ClustersID); err != nil {
+			tx.Rollback()
+			common.ErrorResp(c, err, -1)
+			return
+		}
 	}
-	common_data.Status = true
-	common_data.CreateTime = time.Now()
-	if err := db.GetDb().Create(common_data).Error; err != nil {
+
+	if err := tx.Commit().Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return
 	}
+
 	common.SuccessResp(c)
 }
 
@@ -124,7 +146,7 @@ func RecipientsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.AdminRecipientsDeleteById(field.ID)
+	err := db.AdminRecipientsDeleteById(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return

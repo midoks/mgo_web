@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
 
 	"mgo/internal/model"
 )
@@ -28,7 +29,10 @@ func GetAdminRecipientsGroupById(id int64) (*model.AdminMediaGroup, error) {
 	return &u, nil
 }
 
-func AdminRecipientsGroupDelete(id int64) error {
+func AdminRecipientsGroupDelete(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.AdminMediaGroup
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }

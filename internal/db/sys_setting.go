@@ -2,6 +2,8 @@ package db
 
 import (
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
+
 	"mgo/internal/model"
 )
 
@@ -13,7 +15,10 @@ func GetSysSettingByCode(code string) (*model.SysSetting, error) {
 	return &u, nil
 }
 
-func SysSettingDeleteByCode(code string) error {
+func SysSettingDeleteByCode(tx *gorm.DB, code string) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.SysSetting
-	return db.Where("code = ?", code).Delete(&d).Error
+	return tx.Where("code = ?", code).Delete(&d).Error
 }

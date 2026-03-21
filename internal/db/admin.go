@@ -40,15 +40,24 @@ func GetAdminByName(username string) (*model.Admin, error) {
 	return &info, nil
 }
 
-func AdminUpdateEmail(id int64, email string) error {
-	return db.Model(&model.Admin{ID: id}).Update("email", email).Error
+func AdminUpdateEmail(tx *gorm.DB, id int64, email string) error {
+	if tx == nil {
+		tx = db
+	}
+	return tx.Model(&model.Admin{ID: id}).Update("email", email).Error
 }
 
-func AdminUpdateTel(id int64, tel string) error {
-	return db.Model(&model.Admin{ID: id}).Update("tel", tel).Error
+func AdminUpdateTel(tx *gorm.DB, id int64, tel string) error {
+	if tx == nil {
+		tx = db
+	}
+	return tx.Model(&model.Admin{ID: id}).Update("tel", tel).Error
 }
 
-func AdminUpdatePass(id int64, password string) error {
+func AdminUpdatePass(tx *gorm.DB, id int64, password string) error {
+	if tx == nil {
+		tx = db
+	}
 	u := model.Admin{}
 	u.ID = id
 
@@ -58,29 +67,35 @@ func AdminUpdatePass(id int64, password string) error {
 		u.Salt = salt
 	}
 	u.UpdateTime = time.Now()
-	return db.Model(&u).Updates(map[string]interface{}{
+	return tx.Model(&u).Updates(map[string]interface{}{
 		"password":    u.Password,
 		"salt":        u.Salt,
 		"update_time": u.UpdateTime,
 	}).Error
 }
 
-func UpdateAdminModel(u *model.Admin) error {
+func UpdateAdminModel(tx *gorm.DB, u *model.Admin) error {
+	if tx == nil {
+		tx = db
+	}
 	if u.Password == "" {
-		if err := db.Model(u).Updates(map[string]interface{}{"password": u.Password, "update_time": u.UpdateTime}).Error; err != nil {
+		if err := tx.Model(u).Updates(map[string]interface{}{"password": u.Password, "update_time": u.UpdateTime}).Error; err != nil {
 			return errors.WithStack(err)
 		}
 	} else {
-		if err := db.Model(u).Updates(u).Error; err != nil {
+		if err := tx.Model(u).Updates(u).Error; err != nil {
 			return errors.WithStack(err)
 		}
 	}
 	return nil
 }
 
-func UpdateAdmin(id int64, username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
+func UpdateAdmin(tx *gorm.DB, id int64, username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
+	if tx == nil {
+		tx = db
+	}
 	data := &model.Admin{}
-	if err := db.First(data, id).Error; err != nil {
+	if err := tx.First(data, id).Error; err != nil {
 		return errors.WithStack(err)
 	}
 
@@ -97,13 +112,16 @@ func UpdateAdmin(id int64, username string, password string, full_name string, a
 	}
 
 	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Save(data).Error); err != nil {
+	if err := errors.WithStack(tx.Save(data).Error); err != nil {
 		return err
 	}
 	return nil
 }
 
-func AddAdmin(username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
+func AddAdmin(tx *gorm.DB, username string, password string, full_name string, auth string, allow_login bool, super_admin bool) error {
+	if tx == nil {
+		tx = db
+	}
 	salt := utils.RandString(16)
 
 	pass := model.TwoHashPwd(password, salt)
@@ -120,15 +138,18 @@ func AddAdmin(username string, password string, full_name string, auth string, a
 
 	data.CreateTime = time.Now()
 	data.UpdateTime = time.Now()
-	if err := errors.WithStack(db.Create(data).Error); err != nil {
+	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
 	return nil
 }
 
-func AdminTriggerStatus(id int64) error {
+func AdminTriggerStatus(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var data model.Admin
-	if err := db.First(&data, id).Error; err != nil {
+	if err := tx.First(&data, id).Error; err != nil {
 		return errors.Wrapf(err, "failed get cluster region")
 	}
 
@@ -142,7 +163,7 @@ func AdminTriggerStatus(id int64) error {
 	data.UpdateTime = time.Now()
 	data.Status = status
 
-	if err := db.Model(&model.Admin{}).
+	if err := tx.Model(&model.Admin{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {
 		return err
@@ -164,7 +185,7 @@ func InitAdmin(user string, pass string) error {
 
 			admin.CreateTime = time.Now()
 			admin.UpdateTime = time.Now()
-			if err := CreateAdmin(admin); err != nil {
+			if err := CreateAdmin(nil, admin); err != nil {
 				return err
 			}
 		}
@@ -172,11 +193,17 @@ func InitAdmin(user string, pass string) error {
 	return nil
 }
 
-func AdminDeleteById(id int64) error {
+func AdminDeleteById(tx *gorm.DB, id int64) error {
+	if tx == nil {
+		tx = db
+	}
 	var d model.Admin
-	return db.Where("id = ?", id).Delete(&d).Error
+	return tx.Where("id = ?", id).Delete(&d).Error
 }
 
-func CreateAdmin(u *model.Admin) error {
-	return errors.WithStack(db.Create(u).Error)
+func CreateAdmin(tx *gorm.DB, u *model.Admin) error {
+	if tx == nil {
+		tx = db
+	}
+	return errors.WithStack(tx.Create(u).Error)
 }

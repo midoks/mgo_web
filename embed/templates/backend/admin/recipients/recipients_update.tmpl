@@ -163,11 +163,7 @@ form.on("submit(submit_recipients)", function(data){
             delete field[k];
         }
     }
-    if (selected.length > 0) {
-        field['cluster_ids'] = selected.join(',');
-    } else {
-        field['cluster_ids'] = '';
-    }
+    field['cluster_ids'] = selected;
 
     if (field['status'] == "on"){
         field['status'] = 1;
@@ -175,17 +171,21 @@ form.on("submit(submit_recipients)", function(data){
         field['status'] = 0;
     }
 
-    console.log(field);
-
-    $.post("/{[$.admin_path]}/admin/recipients/add", field, function(res) {
-
-        showMsg(res.msg, function(){
-            layer.close(index);
-            if(res.code > -1){
-                parent.location.reload();
-            }
-        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
-    },'json');
+    $.ajax({
+        url: "/{[$.admin_path]}/admin/recipients/add",
+        type: "POST",
+        data: field,
+        traditional: true, // arrays -> cluster_ids=1&cluster_ids=2
+        dataType: "json",
+        success: function(res){
+            showMsg(res.msg, function(){
+                layer.close(index);
+                if(res.code > -1){
+                    parent.location.reload();
+                }
+            },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+        }
+    });
     return false;
 });
 

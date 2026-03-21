@@ -62,7 +62,7 @@ func PostClusterRegionsNodesAdd(c *gin.Context) {
 
 	if field.ID != "" {
 		id, _ := strconv.ParseInt(field.ID, 10, 64)
-		err := db.UpdateClusterRegion(field.Name, field.Mark, id)
+		err := db.UpdateClusterRegion(nil, field.Name, field.Mark, id)
 		if err == nil {
 			common.SuccessResp(c)
 			return
@@ -71,12 +71,13 @@ func PostClusterRegionsNodesAdd(c *gin.Context) {
 		return
 	}
 
-	err := db.AddClusterRegion(field.Name, field.Mark)
+	err := db.AddClusterRegion(nil, field.Name, field.Mark)
 	if err == nil {
 		common.SuccessResp(c)
 		return
 	}
 	common.ErrorResp(c, err, 0)
+	return
 }
 
 func ClusterRegionsDelete(c *gin.Context) {
@@ -86,7 +87,7 @@ func ClusterRegionsDelete(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterRegionDeleteByID(field.ID)
+	err := db.ClusterRegionDeleteByID(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
@@ -101,7 +102,7 @@ func ClusterRegionsTriggerStatus(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterRegionsTriggerStatus(field.ID)
+	err := db.ClusterRegionsTriggerStatus(nil, field.ID)
 	if err == nil {
 		common.SuccessResp(c)
 		return
