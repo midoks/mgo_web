@@ -14,7 +14,7 @@ import (
 func RecipientsRecipientsDetails(c *gin.Context) {
 	id := c.Query("id")
 	idint, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsById(idint)
+	recipient_data, _ := db.GetAdminRecipientsByID(idint)
 
 	data := common.CommonVer(c)
 	data["submenu"] = GetRecipientsSubMenu()
@@ -27,7 +27,7 @@ func RecipientsRecipientsDetails(c *gin.Context) {
 func RecipientsRecipientsUpdate(c *gin.Context) {
 	id := c.Query("id")
 	idint, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsById(idint)
+	recipient_data, _ := db.GetAdminRecipientsByID(idint)
 
 	data := common.CommonVer(c)
 	data["id"] = id
@@ -51,7 +51,7 @@ func RecipientsRecipientsUpdate(c *gin.Context) {
 func RecipientsRecipientsTest(c *gin.Context) {
 	id := c.Query("id")
 	idint, _ := strconv.ParseInt(id, 10, 64)
-	recipient_data, _ := db.GetAdminRecipientsById(idint)
+	recipient_data, _ := db.GetAdminRecipientsByID(idint)
 
 	data := common.CommonVer(c)
 	data["id"] = id

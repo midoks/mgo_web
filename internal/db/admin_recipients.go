@@ -21,7 +21,7 @@ func GetAdminRecipientsList(page, size int) ([]model.AdminRecipients, int64, err
 	return list, count, nil
 }
 
-func GetAdminRecipientsById(id int64) (*model.AdminRecipients, error) {
+func GetAdminRecipientsByID(id int64) (*model.AdminRecipients, error) {
 	var u model.AdminRecipients
 	if err := db.First(&u, id).Error; err != nil {
 		return nil, errors.Wrapf(err, "failed get recipients data")
