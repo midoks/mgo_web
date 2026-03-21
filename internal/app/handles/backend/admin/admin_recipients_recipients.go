@@ -21,6 +21,20 @@ func RecipientsRecipientsDetails(c *gin.Context) {
 	data["id"] = id
 	data["Data"] = recipient_data
 
+	// 获取关联的集群列表
+	clusterRelatedList, _ := db.GetAdminRecipientsClusterRelatedByRecipientID(idint)
+	var clusterList []map[string]interface{}
+	for _, related := range clusterRelatedList {
+		cluster, _ := db.GetClusterByID(related.ClusterID)
+		if cluster.ID > 0 {
+			clusterList = append(clusterList, map[string]interface{}{
+				"ID":   cluster.ID,
+				"Name": cluster.Name,
+			})
+		}
+	}
+	data["ClusterList"] = clusterList
+
 	c.HTML(http.StatusOK, "backend/admin/recipients/recipients_details.tmpl", data)
 }
 
