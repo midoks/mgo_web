@@ -2,8 +2,9 @@ package cluster
 
 import (
 	"errors"
-	// "fmt"
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -80,10 +81,18 @@ func NodeDatail(c *gin.Context) {
 }
 
 func NodeInstall(c *gin.Context) {
+	node_id := c.Query("node_id")
+	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
+
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
-	data["node_id"] = c.Query("node_id")
+	data["node_id"] = node_id
 	data["cluster_id"] = c.Query("cluster_id")
+
+	node_data, _ := db.GetClusterNodeByID(node_idint)
+	data["Data"] = node_data
+
+	fmt.Println(node_data)
 	c.HTML(http.StatusOK, "backend/cluster/node/install.tmpl", data)
 }
 
@@ -122,11 +131,12 @@ func PostCreateNode(c *gin.Context) {
 	}
 
 	nodeip := &model.ClusterNode{
-		Name:       field.Name,
-		Ip:         field.Ip,
-		ClusterID:  field.ClusterID,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
+		Name:        field.Name,
+		Ip:          field.Ip,
+		ClusterID:   field.ClusterID,
+		IsInstalled: false,
+		CreateTime:  time.Now(),
+		UpdateTime:  time.Now(),
 	}
 
 	if err := db.GetDb().Create(nodeip).Error; err != nil {
