@@ -51,13 +51,10 @@ func ClusterSshAdd(c *gin.Context) {
 
 func ClusterNodeSshPopAdd(c *gin.Context) {
 	data := common.CommonVer(c)
-
 	node_id := c.Query("node_id")
-
+	data["node_id"] = node_id
 	if node_id != "" {
-		data["node_id"] = node_id
 		node_idint, _ := strconv.ParseInt(node_id, 10, 64)
-
 		node_login_data, err := db.GetClusterNodeLoginByNodeID(node_idint)
 		if err == nil {
 			data["Data"] = node_login_data
