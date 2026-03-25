@@ -187,6 +187,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/ssh/details", backend_cluster.ClusterSshDetails)
 	backstage_admin.GET("/clusters/ssh/test", backend_cluster.ClusterSshTest)
 	backstage_admin.GET("/clusters/ssh/add", backend_cluster.ClusterSshAdd)
+	backstage_admin.GET("/clusters/ssh/node_pop_add", backend_cluster.ClusterNodeSshPopAdd)
 	backstage_admin.GET("/clusters/ssh/create", backend_cluster.ClusterSshCreate)
 	backstage_admin.POST("/clusters/ssh/create", backend_cluster.PostClusterSshCreate)
 	backstage_admin.GET("/clusters/ssh/update", backend_cluster.ClusterSshUpdate)

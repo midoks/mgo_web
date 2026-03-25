@@ -49,6 +49,32 @@ func ClusterSshAdd(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/ssh/add.tmpl", data)
 }
 
+func ClusterNodeSshPopAdd(c *gin.Context) {
+	data := common.CommonVer(c)
+
+	node_id := c.Query("node_id")
+	data["node_id"] = node_id
+	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
+
+	node_login_data, err := db.GetClusterNodeLoginByNodeID(node_idint)
+	if err == nil {
+		data["Data"] = node_login_data
+	}
+
+	node_login_param, err := node_login_data.GetParams()
+	if err == nil {
+		if node_login_param.SshID > 0 {
+			ssh_data, _ := db.GetClusterSshByID(node_login_param.SshID)
+			data["SshData"] = ssh_data
+		}
+	}
+	// 获取 SSH 认证列表
+	sshList, _ := db.GetClusterSshListByLimit(100)
+	data["SshList"] = sshList
+
+	c.HTML(http.StatusOK, "backend/cluster/ssh/node_pop_add.tmpl", data)
+}
+
 func ClusterSshCreate(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSshSubMenu()

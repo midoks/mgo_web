@@ -92,7 +92,11 @@ func NodeInstall(c *gin.Context) {
 	node_data, _ := db.GetClusterNodeByID(node_idint)
 	data["Data"] = node_data
 
+	node_ssh_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
+	data["SshData"] = node_ssh_data
+
 	fmt.Println(node_data)
+	fmt.Println(node_ssh_data)
 	c.HTML(http.StatusOK, "backend/cluster/node/install.tmpl", data)
 }
 
