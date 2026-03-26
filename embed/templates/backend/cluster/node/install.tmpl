@@ -34,8 +34,8 @@
                                     <div style="display:block;align-items:center;gap:8px;margin-bottom:12px;">
                                         <div style="color:#374151;">SSH地址</div>
                                         <div style="color:#9ca3af;">
-                                            <span>127.0.0.1:1000</span>
-                                            <a href="#" style="color:#1d4ed8;" onclick="Admin.open('修改SSH登录信息','/{[$.admin_path]}/clusters/ssh/node_pop_add?node_id={[.node_id]}',750,650)">未设置</a>
+                                            <span>{[if .SshData]}{[.SshData.GetParams.Host]}{[end]}:{[if .SshData]}{[.SshData.GetParams.Port]}{[end]}</span>
+                                            <a href="#" style="color:#1d4ed8;" onclick="Admin.open('修改SSH登录信息','/{[$.admin_path]}/clusters/ssh/node_pop_add?node_id={[.node_id]}',750,650)">[修改]</a>
                                         </div>
                                     </div>
 
