@@ -99,7 +99,7 @@ secret: "fmmJvqNSC16Szj20kusv5XKWGmVRcnU1"</code></pre>
                                         <div style="border:1px solid #e5e7eb;background:#f8fafc;color:#374151;border-radius:6px;padding:10px 12px;">建议安装在 /usr/local/mgo/node</div>
                                     </div>
 
-                                    <button type="button" class="layui-btn">修改当前节点为已安装状态</button>
+                                    <button type="button" class="layui-btn" lay-filter="mod_install" lay-submit>修改当前节点为已安装状态</button>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,23 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+form.on("submit(mod_install)", function(data){
+    var index = layer.load();
+    var field = [
+        "node_id":"{[.node_id]}",
+        "is_install":1,
+    ];
 
+    $.post("/{[$.admin_path]}/clusters/node/install_update_status", field, function(res) {
+        showMsg(res.msg, function(){
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+    },'json');
+    return false;
+});
 
 ///
 });
