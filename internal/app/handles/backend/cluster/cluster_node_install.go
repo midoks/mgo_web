@@ -52,6 +52,7 @@ func PostNodeInstallUpdateStatus(c *gin.Context) {
 			return
 		}
 		common.SuccessResp(c)
+		return
 	}
 	common.ErrorResp(c, errors.New("node_id error?"), -1)
 }
