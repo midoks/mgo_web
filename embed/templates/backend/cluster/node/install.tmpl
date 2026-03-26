@@ -50,14 +50,25 @@
                                         安装过程中发生错误： can not find node grant
                                     </div> 
                                     -->
+
+                                    {[/* 安装过程中，显示进度条 */]}
+
+                                    
                                     <form class="layui-form">
                                     {[if .Data.IsInstalled]}
                                         <button type="button" class="layui-btn layui-btn-primary" lay-filter="mod_reinstall" lay-submit>重新安装</button>
                                     {[else]}
                                         <button type="button" class="layui-btn layui-btn-primary" lay-filter="doinstall" lay-submit>开始安装</button>
-                                    
                                     {[end]}
                                     </form>
+
+                                    <div id="install-progress" style="display:none;margin-top:16px;">
+                                        <div style="margin-bottom:8px;color:#374151;">安装进度</div>
+                                        <div style="background:#e5e7eb;border-radius:6px;height:24px;overflow:hidden;">
+                                            <div id="progress-bar" style="background:#1d4ed8;height:100%;width:0%;transition:width 0.3s;"></div>
+                                        </div>
+                                        <div id="progress-text" style="margin-top:8px;color:#6b7280;font-size:14px;">准备中...</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,33 +153,15 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+var pollingInterval = null;
+
 form.on("submit(mod_install)", function(data){
     var index = layer.load();
     var field = {
         "id": "{[.node_id]}",
         "is_installed": "1"
     };
-    $.post("/{[$.admin_path]}/clusters/node/install_update_status", field, function(res) {
-        layer.msg(res.msg, {
-            icon: res.code > -1 ? 1 : 2,
-            shift: res.code > -1 ? 0 : 6,
-            time: 2000
-        }, function() {
-            layer.close(index);
-            if(res.code > -1){
-                parent.location.reload();
-            }
-        });
-    }, 'json');
-    return false;
-});
 
-form.on("submit(mod_reinstall)", function(data){
-    var index = layer.load();
-    var field = {
-        "id": "{[.node_id]}",
-        "is_installed": "0"
-    };
     $.post("/{[$.admin_path]}/clusters/node/install_update_status", field, function(res) {
         layer.msg(res.msg, {
             icon: res.code > -1 ? 1 : 2,
@@ -189,20 +182,84 @@ form.on("submit(doinstall)", function(data){
     var field = {
         "id": "{[.node_id]}"
     };
+    
+    // 显示进度条
+    $('#install-progress').show();
+    $('#progress-bar').css('width', '0%');
+    $('#progress-text').text('正在准备安装...');
+    
     $.post("/{[$.admin_path]}/clusters/node/doinstall", field, function(res) {
-        layer.msg(res.msg, {
-            icon: res.code > -1 ? 1 : 2,
-            shift: res.code > -1 ? 0 : 6,
-            time: 2000
-        }, function() {
-            layer.close(index);
-            if(res.code > -1){
-                parent.location.reload();
-            }
-        });
-    }, 'json');
+        layer.close(index);
+        if(res.code > -1){
+            // 开始轮询获取安装状态
+            startPolling();
+        } else {
+            layer.msg(res.msg, {
+                icon: 2,
+                shift: 6,
+                time: 2000
+            });
+        }
+    }, 'json').fail(function() {
+        layer.close(index);
+        $('#progress-bar').css('width', '0%');
+        $('#progress-bar').css('background', '#ef4444');
+        $('#progress-text').text('安装失败，请检查SSH配置和网络连接');
+    });
+    
     return false;
 });
+
+// 开始轮询获取安装状态
+function startPolling() {
+    var nodeId = "{[.node_id]}";
+    
+    // 清除之前的轮询
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+    }
+    
+    // 开始轮询
+    pollingInterval = setInterval(function() {
+        $.get("/{[$.admin_path]}/clusters/node/install_status", {node_id: nodeId}, function(res) {
+            if(res.code > -1 && res.data) {
+                var status = res.data;
+                
+                // 更新进度条
+                $('#progress-bar').css('width', status.progress + '%');
+                $('#progress-text').text(status.message);
+                
+                // 根据状态更新进度条颜色
+                if (status.status === 'failed') {
+                    $('#progress-bar').css('background', '#ef4444');
+                    clearInterval(pollingInterval);
+                    layer.msg('安装失败: ' + status.message, {
+                        icon: 2,
+                        shift: 6,
+                        time: 3000
+                    });
+                } else if (status.status === 'success') {
+                    $('#progress-bar').css('background', '#22c55e');
+                    clearInterval(pollingInterval);
+                    layer.msg('安装成功完成！', {
+                        icon: 1,
+                        shift: 0,
+                        time: 2000
+                    }, function() {
+                        parent.location.reload();
+                    });
+                }
+            }
+        }, 'json').fail(function() {
+            clearInterval(pollingInterval);
+            layer.msg('获取安装状态失败', {
+                icon: 2,
+                shift: 6,
+                time: 2000
+            });
+        });
+    }, 1000); // 每秒轮询一次
+}
 
 ///
 });
