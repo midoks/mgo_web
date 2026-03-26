@@ -184,6 +184,26 @@ form.on("submit(mod_reinstall)", function(data){
     return false;
 });
 
+form.on("submit(doinstall)", function(data){
+    var index = layer.load();
+    var field = {
+        "id": "{[.node_id]}"
+    };
+    $.post("/{[$.admin_path]}/clusters/node/doinstall", field, function(res) {
+        layer.msg(res.msg, {
+            icon: res.code > -1 ? 1 : 2,
+            shift: res.code > -1 ? 0 : 6,
+            time: 2000
+        }, function() {
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        });
+    }, 'json');
+    return false;
+});
+
 ///
 });
 </script>

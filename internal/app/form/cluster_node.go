@@ -1,5 +1,9 @@
 package form
 
+type ClusterNodeDone struct {
+	ID int64 `form:"id"`
+}
+
 type ClusterNodeUpdateStatus struct {
 	ID          int64  `form:"id"`
 	IsInstalled string `form:"is_installed"`

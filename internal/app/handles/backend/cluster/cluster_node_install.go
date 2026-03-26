@@ -56,3 +56,17 @@ func PostNodeInstallUpdateStatus(c *gin.Context) {
 	}
 	common.ErrorResp(c, errors.New("node_id error?"), -1)
 }
+
+// 开始安装
+func PostNodeInstallDone(c *gin.Context) {
+	var field form.ClusterNodeDone
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	if field.ID > 0 {
+		common.SuccessResp(c)
+		return
+	}
+	common.ErrorResp(c, errors.New("node_id error?"), -1)
+}
