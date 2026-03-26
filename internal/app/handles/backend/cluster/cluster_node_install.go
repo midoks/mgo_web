@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
 	// "strings"
 	// "time"
 
@@ -31,6 +32,9 @@ func NodeInstall(c *gin.Context) {
 
 		node_ssh_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
 		data["SshData"] = node_ssh_data
+		fmt.Println(node_data)
+		fmt.Println(node_ssh_data)
+
 	}
 
 	c.HTML(http.StatusOK, "backend/cluster/node/install.tmpl", data)
@@ -43,7 +47,7 @@ func PostNodeInstallUpdateStatus(c *gin.Context) {
 		return
 	}
 	if field.ID > 0 {
-		if err := db.GetDb().Model(&model.ClusterNode{ID: field.ID}).Update("is_installed", field.IsInstalled).Error; err != nil {
+		if err := db.GetDb().Model(&model.ClusterNode{}).Where("id = ?", field.ID).Update("is_installed", field.IsInstalled).Error; err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
