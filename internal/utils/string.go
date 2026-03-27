@@ -349,23 +349,6 @@ func IsNumeric(val interface{}) bool {
 	return false
 }
 
-func CheckStandardMail(src string) bool {
-	_, err := mail.ParseAddress(src)
-	if err != nil {
-		// fmt.Println("mmm:", err)
-		return false
-	}
-	// fmt.Println("mmm:", smail.Address, smail, err)
-	if src[0:1] == "<" && src[len(src)-1:] == ">" {
-		return true
-	}
-	return false
-}
-
-func GetRealMail(src string) string {
-	return src[1 : len(src)-1]
-}
-
 func ToEditorLang(lang string) string {
 	tupleLang := map[string]string{
 		"zh-CN": "zh-cn",

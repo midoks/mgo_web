@@ -66,6 +66,10 @@ func PostNodeSettings(c *gin.Context) {
 		return
 	}
 
+	if field.ID > 0 {
+
+	}
+
 	common_data := &model.ClusterNode{
 		Name:       field.Name,
 		UpdateTime: time.Now(),

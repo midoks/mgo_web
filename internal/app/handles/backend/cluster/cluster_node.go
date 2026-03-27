@@ -114,11 +114,16 @@ func PostCreateNode(c *gin.Context) {
 		return
 	}
 
+	secret := utils.RandString(32)
+	unique_id := utils.RandString(32)
+
 	nodeip := &model.ClusterNode{
 		Name:        field.Name,
 		Ip:          field.Ip,
 		ClusterID:   field.ClusterID,
 		IsInstalled: false,
+		Secret:      secret,
+		UniqueID:    unique_id,
 		CreateTime:  time.Now(),
 		UpdateTime:  time.Now(),
 	}
