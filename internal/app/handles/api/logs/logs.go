@@ -13,6 +13,15 @@ import (
 
 // 上报日志
 func LogsAdd(c *gin.Context) {
+	// 打印请求头信息
+	fmt.Println("=== Request Headers ===")
+	for key, values := range c.Request.Header {
+		for _, value := range values {
+			fmt.Printf("header|%s: %s\n", key, value)
+		}
+	}
+	fmt.Println("=======================")
+
 	// 获取原始POST数据
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {

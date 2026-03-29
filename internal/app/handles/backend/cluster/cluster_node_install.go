@@ -78,8 +78,6 @@ func NodeInstall(c *gin.Context) {
 
 		node_ssh_data, _ := db.GetClusterNodeLoginByNodeID(node_idint)
 		data["SshData"] = node_ssh_data
-		fmt.Println(node_data)
-		fmt.Println(node_ssh_data)
 
 	}
 

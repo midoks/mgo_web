@@ -81,14 +81,6 @@ func NodeDatail(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/node/detail.tmpl", data)
 }
 
-func NodeLogs(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetNodeSubMenu()
-	data["node_id"] = c.Query("node_id")
-	data["cluster_id"] = c.Query("cluster_id")
-	c.HTML(http.StatusOK, "backend/cluster/node/logs.tmpl", data)
-}
-
 func NodeList(c *gin.Context) {
 	var field form.ClusterNodeList
 	if err := c.ShouldBind(&field); err != nil {

@@ -1,5 +1,10 @@
 package form
 
+type ClusterNodeQuery struct {
+	ID int64 `form:"id"`
+	Page
+}
+
 type ClusterNodeDone struct {
 	ID int64 `form:"id"`
 }
