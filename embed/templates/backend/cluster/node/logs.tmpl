@@ -13,11 +13,51 @@
                     </ul>
                 </div>
 
-                <div class="cluster-boards" style="margin-top: 10px;">
+                <div class="layui-form toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+                <form class="layui-form" action="" id="log_form" onclick="return false;">
 
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input name="times" id="date_range" class="layui-input date-icon" type="text" placeholder="请选择日期范围" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <input type="text" name="key" placeholder="请输入关键字" autocomplete="off" class="layui-input" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <select name="level" id="level" class="layui-input h30">
+                                <option value="">[级别]</option>
+                                <option value="error">错误</option>
+                                <option value="warn">警告</option>
+                                <option value="info">信息</option>
+                                <option value="success">成功</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <div class="layui-input-inline mr0">
+                            <select name="tag" id="tag" class="layui-input h30">
+                                <option value="">[标签]</option>
+                                <option value="logs">访问日志</option>
+                                <option value="port">端口监听</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline mr0">
+                        <button class="layui-btn layui-btn-sm" id="table-sreach" data-id="list" lay-submit lay-filter="table-sreach"><i class="layui-icon">&#xe615;</i>查询
+                        </button>
+                    </div>
+                </form>
                 </div>
 
-
+                <div id="list"></div>
                 <!-- end -->
             </div>
         </div>
@@ -32,6 +72,31 @@ var admin = layui.admin
 ,$ = layui.$
 ,form = layui.form
 ,table = layui.table;
+
+table.render({
+    elem: '#list',
+    url: '/{[.admin_path]}/clusters/node/logs',
+    title: '数据表',
+    cols: [[
+        {field:'name', title:'集群名称', toolbar: '#nameTpl',},
+        {field:'num', title:'节点数'},
+        {field:'num_online', title:'在线节点数'},
+        {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
+     ]],
+    page: true
+});
+
+
+table.on('tool(list)', function(obj){
+    switch(obj.event){
+    };
+});
+
+table.on('toolbar', function(obj){
+    switch(obj.event){
+    };
+});
+
 
 
 ///
