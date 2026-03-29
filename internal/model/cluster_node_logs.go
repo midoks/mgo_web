@@ -6,7 +6,7 @@ type ClusterNodeLogs struct {
 	Description string `json:"description"`                               // description
 	NodeID      int64  `json:"node_id" 		gorm:"index" binding:"required"` // node_id
 	Level       string `json:"level"`                                     // level
-	Tag         string `json:"tag" gorm:"size:255;COMMENT:'标签'"`          // tag
+	Tag         string `json:"tag" 			gorm:"size:255;COMMENT:'标签'"`       // tag
 	IsFixed     int    `json:"is_fixed"`                                  // is_fixed
 	IsRead      int    `json:"is_read"`                                   // is_read
 	Hash        string `json:"hash" 		gorm:"size:32;COMMENT:'信息内容Hash'"`  // hash
