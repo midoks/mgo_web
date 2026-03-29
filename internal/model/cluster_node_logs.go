@@ -11,6 +11,6 @@ type ClusterNodeLogs struct {
 	NodeID      int64     `json:"node_id" gorm:"index" binding:"required"` // node_id
 	Level       string    `json:"level"`                                   // level
 	Tag         string    `json:"tag"`                                     // tag
-	IsRead      bool      `json:"is_read" gorm:"index"`                    // is_read
+	NodeTime    time.Time `json:"node_time"`                               // node_time
 	CreateTime  time.Time `json:"create_time"`                             // create_time
 }
