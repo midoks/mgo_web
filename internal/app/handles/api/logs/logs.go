@@ -19,8 +19,7 @@ func LogsAdd(c *gin.Context) {
 		fmt.Println("Error reading body:", err)
 	} else {
 		fmt.Println("Raw POST data:", string(body))
-		// 重置请求体，以便后续绑定
-		c.Request.Body = io.NopCloser(bytes.NewReader(body))
+		c.Request.Body = io.NopCloser(bytes.NewReader(body)) // 重置请求体，以便后续绑定
 	}
 
 	var field form.ApiLogs
