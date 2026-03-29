@@ -15,6 +15,7 @@ import (
 
 	"mgo/embed"
 	"mgo/internal/app/handles"
+	api_logs "mgo/internal/app/handles/api/logs"
 	backend "mgo/internal/app/handles/backend"
 	backend_admin "mgo/internal/app/handles/backend/admin"
 	backend_cluster "mgo/internal/app/handles/backend/cluster"
@@ -216,6 +217,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/system/database", backend_system.Database)
 	backstage_admin.GET("/system/db", backend_system.Db)
 
+	api := r.Group("/api")
+	api.POST("/logs", api_logs.LogsAdd)
 }
 
 func initRuoteInstall(r *gin.Engine) {

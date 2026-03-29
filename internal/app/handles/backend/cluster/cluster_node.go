@@ -14,6 +14,7 @@ import (
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
+	tools "mgo/internal/utils"
 )
 
 func GetNodeSubMenu() []form.SubMenu {
@@ -114,8 +115,8 @@ func PostCreateNode(c *gin.Context) {
 		return
 	}
 
-	secret := utils.RandString(32)
-	unique_id := utils.RandString(32)
+	secret := tools.RandString(32)
+	unique_id := tools.RandString(32)
 
 	nodeip := &model.ClusterNode{
 		Name:        field.Name,

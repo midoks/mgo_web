@@ -10,7 +10,6 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
-	"net/mail"
 	"os"
 	"strconv"
 	"strings"
