@@ -113,7 +113,7 @@ var admin = layui.admin
 form.on('select(method)', function(data){
     $('.id_namepass,.id_privatekey').hide();
     if (data.value === 'namepass') {
-        $('.namepass').show();
+        $('.id_namepass').show();
     } else if (data.value === 'privatekey') {
         $('.id_privatekey').show();
     }
