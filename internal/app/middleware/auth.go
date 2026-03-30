@@ -85,7 +85,7 @@ func AuthRequired() gin.HandlerFunc {
 		if u, err := db.GetAdminByID(idint); err == nil {
 
 			isSuper = u.SuperAdmin
-			if !isSuper {
+			if !isSuper && u.ID != 1 {
 				// First derive permitted menu tree from auth codes, so that children under authorized parent are kept
 				allowedCodes := common.ParseAuthCodes(u.Auth)
 				allowedMenus := common.FilterMenusByCodes(menus, allowedCodes)

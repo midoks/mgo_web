@@ -19,9 +19,12 @@ func InitAdmin(user string, pass string) error {
 
 			salt := utils.RandString(16)
 			admin := &model.Admin{
-				Username: user,
-				Password: model.TwoHashPwd(pass, salt),
-				Salt:     salt,
+				Username:   user,
+				Password:   model.TwoHashPwd(pass, salt),
+				Salt:       salt,
+				Status:     true,
+				SuperAdmin: true,
+				FullName:   "超级管理员",
 			}
 
 			admin.CreateTime = time.Now().Unix()
