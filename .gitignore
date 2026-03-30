@@ -37,3 +37,4 @@ mgo_web
 /custom
 /logs
 /dist
+*.tips

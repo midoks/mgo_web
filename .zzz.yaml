@@ -1,6 +1,6 @@
 dev: false
 title: zzz
-frequency: 5
+frequency: 2
 dirfilter:
 - tmp
 - .git
@@ -19,6 +19,7 @@ action:
   # - go mod vendor
   - find . -name ".DS_Store" -print -delete
   - gofmt -w ./
+  - ps -ef|grep 'mgo_web web'| grep -v grep | awk '{print $2}' | xargs kill -9
   after:
   - ps -ef|grep 'mgo_web web'| grep -v grep | awk '{print $2}' | xargs kill -9
   - ./mgo_web web &

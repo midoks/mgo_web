@@ -43,6 +43,14 @@ func GetClusterNodeByID(id int64) (*model.ClusterNode, error) {
 	return &data, nil
 }
 
+func GetClusterNodeByUniqueIdAndSecret(unique_id string, secret string) (*model.ClusterNode, error) {
+	var data model.ClusterNode
+	if err := db.Where("unique_id = ?", unique_id).Where("secret = ?", secret).First(&data).Error; err != nil {
+		return nil, errors.Wrapf(err, "failed get cluster node")
+	}
+	return &data, nil
+}
+
 func ClusterNodeDeleteByID(tx *gorm.DB, id int64) error {
 	if tx == nil {
 		tx = db
