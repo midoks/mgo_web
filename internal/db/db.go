@@ -154,6 +154,7 @@ func Init(d *gorm.DB) {
 		new(model.ClusterNode),
 		new(model.ClusterNodeLogs),
 		new(model.ClusterNodeLogin),
+		new(model.ClusterNodeIpaddr),
 		new(model.ClusterSsh),
 		new(model.Log),
 		new(model.User),
