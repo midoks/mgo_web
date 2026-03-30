@@ -157,8 +157,8 @@ func PostEdit(c *gin.Context) {
 		d.Salt = salt
 		d.Password = model.TwoHashPwd(d.Password, salt)
 	}
-	d.CreateTime = time.Now()
-	d.UpdateTime = time.Now()
+	d.CreateTime = time.Now().Unix()
+	d.UpdateTime = time.Now().Unix()
 
 	err := db.CreateAdmin(nil, d)
 	if err == nil {
@@ -178,8 +178,8 @@ func PostCreate(c *gin.Context) {
 
 	cluster := &model.Cluster{
 		Name:       field.Name,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
+		CreateTime: time.Now().Unix(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Create(cluster).Error; err != nil {

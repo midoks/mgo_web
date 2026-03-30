@@ -63,7 +63,7 @@ func PostRecipientsGroupsAdd(c *gin.Context) {
 		update_data := &model.AdminMediaGroup{
 			Name:       field.Name,
 			Status:     field.Status,
-			UpdateTime: time.Now(),
+			UpdateTime: time.Now().Unix(),
 		}
 
 		if err := db.GetDb().Model(&model.AdminMediaGroup{}).Where("id = ?", field.ID).Updates(update_data).Error; err != nil {
@@ -77,8 +77,8 @@ func PostRecipientsGroupsAdd(c *gin.Context) {
 	add_data := &model.AdminMediaGroup{
 		Name:       field.Name,
 		Status:     field.Status,
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
+		CreateTime: time.Now().Unix(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Create(add_data).Error; err != nil {

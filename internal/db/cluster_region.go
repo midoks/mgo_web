@@ -33,8 +33,8 @@ func AddClusterRegion(tx *gorm.DB, name string, mark string) error {
 		Mark: mark,
 	}
 
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
+	data.CreateTime = time.Now().Unix()
+	data.UpdateTime = time.Now().Unix()
 	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func UpdateClusterRegion(tx *gorm.DB, name string, mark string, id int64) error 
 		Mark: mark,
 	}
 
-	data.UpdateTime = time.Now()
+	data.UpdateTime = time.Now().Unix()
 	if err := tx.Model(&model.ClusterRegion{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {
@@ -91,7 +91,7 @@ func ClusterRegionsTriggerStatus(tx *gorm.DB, id int64) error {
 		status = 1
 	}
 
-	data.UpdateTime = time.Now()
+	data.UpdateTime = time.Now().Unix()
 	data.Status = status
 
 	if err := tx.Model(&model.ClusterRegion{}).

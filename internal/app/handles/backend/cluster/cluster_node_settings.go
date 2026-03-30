@@ -72,7 +72,7 @@ func PostNodeSettings(c *gin.Context) {
 
 	common_data := &model.ClusterNode{
 		Name:       field.Name,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Model(&model.ClusterNode{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {

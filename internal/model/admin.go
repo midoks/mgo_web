@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/pkg/errors"
 
@@ -11,17 +10,17 @@ import (
 )
 
 type Admin struct {
-	ID         int64     `json:"id" gorm:"primaryKey"`                      // unique key
-	Username   string    `json:"username" gorm:"unique" binding:"required"` // username
-	Password   string    `json:"password"`                                  // password
-	Salt       string    `json:"salt"`                                      // salt
-	SuperAdmin bool      `json:"super_admin"`                               // super_admin
-	AllowLogin bool      `json:"allow_login"`                               // allow_login
-	FullName   string    `json:"full_name"`                                 // full_name
-	Auth       string    `json:"auth"`                                      // auth
-	Status     bool      `json:"status"`                                    // status
-	CreateTime time.Time `json:"create_time"`                               // create_time
-	UpdateTime time.Time `json:"update_time"`                               // update_time
+	ID         int64  `json:"id" gorm:"primaryKey"`                      // unique key
+	Username   string `json:"username" gorm:"unique" binding:"required"` // username
+	Password   string `json:"password"`                                  // password
+	Salt       string `json:"salt"`                                      // salt
+	SuperAdmin bool   `json:"super_admin"`                               // super_admin
+	AllowLogin bool   `json:"allow_login"`                               // allow_login
+	FullName   string `json:"full_name"`                                 // full_name
+	Auth       string `json:"auth"`                                      // auth
+	Status     bool   `json:"status"`                                    // status
+	CreateTime int64  `json:"create_time"`                               // create_time
+	UpdateTime int64  `json:"update_time"`                               // update_time
 }
 
 func (u *Admin) ValidatePwdStaticHash(password string) error {

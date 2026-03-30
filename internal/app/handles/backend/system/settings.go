@@ -61,7 +61,7 @@ func PostProfile(c *gin.Context) {
 
 	common_data := &model.Admin{
 		FullName:   field.Name,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 	data := common.CommonVer(c)
 	adminID := data["login_uid"]
@@ -91,7 +91,7 @@ func PostLogin(c *gin.Context) {
 	}
 	common_data := &model.Admin{
 		FullName:   field.Name,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if field.Password != "" || field.Password2 != "" {

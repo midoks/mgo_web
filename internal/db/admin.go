@@ -66,7 +66,7 @@ func AdminUpdatePass(tx *gorm.DB, id int64, password string) error {
 		u.Password = model.TwoHashPwd(password, salt)
 		u.Salt = salt
 	}
-	u.UpdateTime = time.Now()
+	u.UpdateTime = time.Now().Unix()
 	return tx.Model(&u).Updates(map[string]interface{}{
 		"password":    u.Password,
 		"salt":        u.Salt,
@@ -111,7 +111,7 @@ func UpdateAdmin(tx *gorm.DB, id int64, username string, password string, full_n
 		data.Salt = salt
 	}
 
-	data.UpdateTime = time.Now()
+	data.UpdateTime = time.Now().Unix()
 	if err := errors.WithStack(tx.Save(data).Error); err != nil {
 		return err
 	}
@@ -136,8 +136,8 @@ func AddAdmin(tx *gorm.DB, username string, password string, full_name string, a
 		Auth:       auth,
 	}
 
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
+	data.CreateTime = time.Now().Unix()
+	data.UpdateTime = time.Now().Unix()
 	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
@@ -160,7 +160,7 @@ func AdminTriggerStatus(tx *gorm.DB, id int64) error {
 		status = true
 	}
 
-	data.UpdateTime = time.Now()
+	data.UpdateTime = time.Now().Unix()
 	data.Status = status
 
 	if err := tx.Model(&model.Admin{}).
@@ -183,8 +183,8 @@ func InitAdmin(user string, pass string) error {
 				Salt:     salt,
 			}
 
-			admin.CreateTime = time.Now()
-			admin.UpdateTime = time.Now()
+			admin.CreateTime = time.Now().Unix()
+			admin.UpdateTime = time.Now().Unix()
 			if err := CreateAdmin(nil, admin); err != nil {
 				return err
 			}

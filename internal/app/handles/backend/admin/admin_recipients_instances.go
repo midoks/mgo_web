@@ -106,7 +106,7 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		Status:     field.Status,
 		Mark:       field.Mark,
 		HashLife:   field.HashLife,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if field.MediaType == "telegram" {
@@ -148,7 +148,7 @@ func PostRecipientsInstancesAdd(c *gin.Context) {
 		return
 	}
 	common_data.Status = true
-	common_data.CreateTime = time.Now()
+	common_data.CreateTime = time.Now().Unix()
 	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return

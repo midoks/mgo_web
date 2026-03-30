@@ -27,7 +27,7 @@ func PostNodeLoginAdd(c *gin.Context) {
 	common_data := &model.ClusterNodeLogin{
 		Name:       "ssh",
 		NodeID:     field.NodeID,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	common_data.SetParams(model.ClusterNodeLoginParams{
@@ -48,7 +48,7 @@ func PostNodeLoginAdd(c *gin.Context) {
 		return
 	}
 	common_data.Status = true
-	common_data.CreateTime = time.Now()
+	common_data.CreateTime = time.Now().Unix()
 	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return

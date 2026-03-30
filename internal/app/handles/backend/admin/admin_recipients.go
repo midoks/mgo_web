@@ -87,7 +87,7 @@ func PostRecipientsAdd(c *gin.Context) {
 		Status:      field.Status,
 		Mark:        field.Mark,
 		RecipientID: field.RecipientID,
-		UpdateTime:  time.Now(),
+		UpdateTime:  time.Now().Unix(),
 	}
 
 	tx := db.GetDb().Begin()
@@ -106,7 +106,7 @@ func PostRecipientsAdd(c *gin.Context) {
 		}
 	} else {
 		common_data.Status = true
-		common_data.CreateTime = time.Now()
+		common_data.CreateTime = time.Now().Unix()
 		if err := tx.Create(common_data).Error; err != nil {
 			tx.Rollback()
 			common.ErrorResp(c, err, -1)

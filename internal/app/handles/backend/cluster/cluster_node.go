@@ -117,8 +117,8 @@ func PostCreateNode(c *gin.Context) {
 		IsInstalled: false,
 		Secret:      secret,
 		UniqueID:    unique_id,
-		CreateTime:  time.Now(),
-		UpdateTime:  time.Now(),
+		CreateTime:  time.Now().Unix(),
+		UpdateTime:  time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Create(nodeip).Error; err != nil {

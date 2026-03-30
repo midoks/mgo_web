@@ -2,16 +2,15 @@ package model
 
 import (
 	"encoding/json"
-	"time"
 )
 
 type SysSetting struct {
-	ID         int64     `json:"id" gorm:"primaryKey"` // unique key
-	Code       string    `json:"code" gorm:"unique"`   // code
-	Uid        int64     `json:"uid"`                  // uid
-	Value      string    `json:"value"`                // value
-	UpdateTime time.Time `json:"update_time"`          // update_time
-	CreateTime time.Time `json:"create_time"`          // create_time
+	ID         int64  `json:"id" gorm:"primaryKey"` // unique key
+	Code       string `json:"code" gorm:"unique"`   // code
+	Uid        int64  `json:"uid"`                  // uid
+	Value      string `json:"value"`                // value
+	UpdateTime int64  `json:"update_time"`          // update_time
+	CreateTime int64  `json:"create_time"`          // create_time
 }
 
 type SysSettingLogValue struct {

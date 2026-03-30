@@ -56,8 +56,8 @@ func UpdateAdminRecipientsClusterRelated(tx *gorm.DB, recipient_id int64, cluste
 				RecipientID: recipientIDStr,
 				ClusterID:   cid,
 				Status:      true,
-				CreateTime:  time.Now(),
-				UpdateTime:  time.Now(),
+				CreateTime:  time.Now().Unix(),
+				UpdateTime:  time.Now().Unix(),
 			}
 			if err := tx.Create(&newRelation).Error; err != nil {
 				return false, errors.Wrap(err, "创建新关联失败")

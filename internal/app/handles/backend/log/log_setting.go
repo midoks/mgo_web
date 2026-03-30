@@ -36,7 +36,7 @@ func PostSettting(c *gin.Context) {
 
 	common_data := &model.SysSetting{
 		Code:       LOGSYSNAME,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	common_data.Uid = 0
@@ -59,7 +59,7 @@ func PostSettting(c *gin.Context) {
 		return
 	}
 
-	common_data.CreateTime = time.Now()
+	common_data.CreateTime = time.Now().Unix()
 	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return

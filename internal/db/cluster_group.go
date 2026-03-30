@@ -33,8 +33,8 @@ func AddClusterGroup(tx *gorm.DB, name string, clusterId int64) error {
 		ClusterId: clusterId,
 	}
 
-	data.CreateTime = time.Now()
-	data.UpdateTime = time.Now()
+	data.CreateTime = time.Now().Unix()
+	data.UpdateTime = time.Now().Unix()
 	if err := errors.WithStack(tx.Create(data).Error); err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func UpdateClusterGroup(tx *gorm.DB, name string, id int64) error {
 		Name: name,
 	}
 
-	data.UpdateTime = time.Now()
+	data.UpdateTime = time.Now().Unix()
 	if err := tx.Model(&model.ClusterGroup{}).
 		Where("id = ?", id).
 		Updates(&data).Error; err != nil {

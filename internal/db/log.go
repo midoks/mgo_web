@@ -46,7 +46,7 @@ func AddLog(tx *gorm.DB, uid int64, content string) error {
 	var u model.Log
 	u.Uid = uid
 	u.Content = content
-	u.CreateTime = time.Now()
+	u.CreateTime = time.Now().Unix()
 
 	return errors.WithStack(tx.Create(&u).Error)
 }
@@ -66,7 +66,7 @@ func LogDeleteBeforeDays(tx *gorm.DB, days int) error {
 	if days <= 0 {
 		return nil
 	}
-	cutoff := time.Now().Add(-time.Duration(days) * 24 * time.Hour)
+	cutoff := time.Now().Add(-time.Duration(days) * 24 * time.Hour).Unix()
 	var d model.Log
 	return errors.WithStack(tx.Where("create_time < ?", cutoff).Delete(&d).Error)
 }

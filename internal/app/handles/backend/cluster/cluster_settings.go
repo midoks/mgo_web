@@ -67,7 +67,7 @@ func PostClusterSettings(c *gin.Context) {
 
 	common_data := &model.Cluster{
 		Name:       field.Name,
-		UpdateTime: time.Now(),
+		UpdateTime: time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Model(&model.Cluster{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {

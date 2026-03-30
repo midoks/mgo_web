@@ -24,8 +24,8 @@ func InitAdmin(user string, pass string) error {
 				Salt:     salt,
 			}
 
-			admin.CreateTime = time.Now()
-			admin.UpdateTime = time.Now()
+			admin.CreateTime = time.Now().Unix()
+			admin.UpdateTime = time.Now().Unix()
 			if err := db.CreateAdmin(nil, admin); err != nil {
 				return err
 			}

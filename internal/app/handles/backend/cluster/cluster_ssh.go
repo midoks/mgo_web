@@ -155,7 +155,7 @@ func PostClusterSshCreate(c *gin.Context) {
 		Privatekey:     field.Privatekey,
 		PrivatekeyPass: field.PrivatekeyPass,
 		Mark:           field.Mark,
-		UpdateTime:     time.Now(),
+		UpdateTime:     time.Now().Unix(),
 	}
 
 	if field.ID > 0 {
@@ -166,7 +166,7 @@ func PostClusterSshCreate(c *gin.Context) {
 		common.SuccessResp(c)
 		return
 	}
-	common_data.CreateTime = time.Now()
+	common_data.CreateTime = time.Now().Unix()
 	if err := db.GetDb().Create(common_data).Error; err != nil {
 		common.ErrorResp(c, err, -1)
 		return

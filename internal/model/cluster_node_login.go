@@ -3,17 +3,16 @@ package model
 import (
 	"encoding/json"
 	"strconv"
-	"time"
 )
 
 type ClusterNodeLogin struct {
-	ID         int64     `json:"id" gorm:"primaryKey"`        // unique key
-	Name       string    `json:"name"`                        // name
-	NodeID     int64     `json:"node_id" gorm:"unique;index"` // node_id
-	Params     string    `json:"ip"`                          // params
-	Status     bool      `json:"status" gorm:"index"`         // status
-	CreateTime time.Time `json:"create_time"`                 // create_time
-	UpdateTime time.Time `json:"update_time"`                 // update_time
+	ID         int64  `json:"id" gorm:"primaryKey"`        // unique key
+	Name       string `json:"name"`                        // name
+	NodeID     int64  `json:"node_id" gorm:"unique;index"` // node_id
+	Params     string `json:"ip"`                          // params
+	Status     bool   `json:"status" gorm:"index"`         // status
+	CreateTime int64  `json:"create_time"`                 // create_time
+	UpdateTime int64  `json:"update_time"`                 // update_time
 }
 
 type ClusterNodeLoginParams struct {
