@@ -34,7 +34,7 @@ func GetSubMenu() []form.SubMenu {
 		{
 			Number: 4,
 			Name:   "安装升级",
-			Link:   "clusters/cluster/install",
+			Link:   "clusters/cluster/upgrade",
 		},
 		{
 			Number: 5,
@@ -84,6 +84,13 @@ func ClusterInstall(c *gin.Context) {
 	data["submenu"] = GetSubMenu()
 	data["cluster_id"] = c.Query("cluster_id")
 	c.HTML(http.StatusOK, "backend/cluster/install.tmpl", data)
+}
+
+func ClusterUpgrade(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSubMenu()
+	data["cluster_id"] = c.Query("cluster_id")
+	c.HTML(http.StatusOK, "backend/cluster/install_upgrade.tmpl", data)
 }
 
 func ClusterDelete(c *gin.Context) {

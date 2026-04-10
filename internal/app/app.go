@@ -168,6 +168,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/clusters/cluster/groups_delete", backend_cluster.ClusterGroupsDelete)
 
 	backstage_admin.GET("/clusters/cluster/install", backend_cluster.ClusterInstall)
+	backstage_admin.GET("/clusters/cluster/upgrade", backend_cluster.ClusterUpgrade)
 
 	// 边缘节点 - 设置
 	backstage_admin.GET("/clusters/cluster/settings", backend_cluster.ClusterSettings)

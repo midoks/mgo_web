@@ -48,6 +48,10 @@
                     },
                     {
                         "code":"clusters",
+                        "path": "/clusters/cluster/upgrade"
+                    },
+                    {
+                        "code":"clusters",
                         "path": "/clusters/cluster/settings"
                     },
                     {
