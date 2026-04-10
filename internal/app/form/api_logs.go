@@ -10,5 +10,5 @@ type ApiLogs struct {
 	// request 	-> 应用请求
 	Type string `json:"type"`
 
-	Data interface{} `json:"data"`
+	Data string `json:"data"`
 }

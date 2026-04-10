@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -37,7 +38,7 @@ func LogsAdd(c *gin.Context) {
 	}
 
 	fmt.Println(node_data)
-	DebugInfo(c)
+	// DebugInfo(c)
 
 	// node_model := &model.ClusterNodeLogs{
 	// 	Name:       field.Name,
@@ -56,6 +57,7 @@ func LogsAdd(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("field:", field)
+	now := time.Now().Unix()
+	fmt.Println("field:", now, field)
 	common.SuccessResp(c)
 }
