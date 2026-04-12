@@ -75,7 +75,7 @@
                 <tr>
                     <td>允许公开访问</td>
                     <td>
-                        <input type="checkbox" name="allow_public" lay-text="" checked> 
+                        <input type="checkbox" name="allow_public" checked> 
                         <p class="layui-font-12 pt5">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
                     </td>
                 </tr>
@@ -92,15 +92,23 @@
                 <tr class="more_table hide">
                     <td>允许健康检查</td>
                     <td>
-                        <input type="checkbox" name="allow_public" lay-text="" checked> 
+                        <input type="checkbox" name="can_health_check" checked> 
                         <p class="layui-font-12 pt5">选中后，表示可以在集群的“健康检查”当中对当前IP进行健康检查。</p>
+                    </td>
+                </tr>
+
+                <tr class="more_table hide">
+                    <td>启用当前IP</td>
+                    <td>
+                        <input type="checkbox" name="is_on" checked> 
+                        <p class="layui-font-12 pt5">选中表示当前IP有效。</p>
                     </td>
                 </tr>
 
                 <tr class="more_table hide">
                     <td>备注</td>
                     <td>
-                        <textarea id="editor2" name="mark" class="layui-textarea" style="min-height:100px;" placeholder=""></textarea>
+                        <textarea id="editor2" name="description" class="layui-textarea" style="min-height:100px;" placeholder=""></textarea>
                     </td>
                 </tr>
             </tbody>
@@ -127,7 +135,29 @@ var admin = layui.admin
 
 //监听全局表单提交
 form.on('submit(select)', function(data){
-    // console.log(data);
+    var field = data.field;
+    
+
+    if (field['allow_public'] == "on"){
+        field['allow_public'] = 1;
+    } else {
+        field['allow_public'] = 0;
+    }
+
+    if (field['can_health_check'] == "on"){
+        field['can_health_check'] = 1;
+    } else {
+        field['can_health_check'] = 0;
+    }
+
+    if (field['is_on'] == "on"){
+        field['is_on'] = 1;
+    } else {
+        field['is_on'] = 0;
+    }
+
+    console.log(field);
+
     var val = $('input[name=ip]').val();
     if (val && parent && parent.$) {
 
@@ -140,6 +170,9 @@ form.on('submit(select)', function(data){
         content += '</span></div>';
 
         parent.$('#ip_btn').append(content);
+
+        var ip_addr_data = parent.$('input[name="ip_addresses_json"]').val();
+        parent.$('input[name="ip_addresses_json"]').val("ccc");
 
         parent.window.loadIpBtn();
         var idx = parent.layer.getFrameIndex(window.name);
