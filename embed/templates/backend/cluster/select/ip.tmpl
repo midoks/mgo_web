@@ -130,9 +130,17 @@ form.on('submit(select)', function(data){
     // console.log(data);
     var val = $('input[name=ip]').val();
     if (val && parent && parent.$) {
-        parent.$('#ip_btn').html('<div><span id="region_selected" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;"><span class="ip">'+ val +'</span><a  class="remove" style="padding-left:3px;cursor:pointer;">X</a></span></div>');
 
-        parent.$('#ip_origin').hide();
+        var content = '<div class="ip_row" style="display:inline-block;">';
+        content += '<span class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">';
+
+        content += '<span class="ip">'+ val +'</span>';
+        content += '<a class="edit" onclick="Admin.open(\'修改IP地址\',\'/{[$.admin_path]}/clusters/select/ip\',700,450)" style="cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
+        content += '<a class="remove" style="cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
+        content += '</span></div>';
+
+        parent.$('#ip_btn').append(content);
+
         parent.window.loadIpBtn();
         var idx = parent.layer.getFrameIndex(window.name);
         parent.layer.close(idx);

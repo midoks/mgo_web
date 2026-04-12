@@ -37,6 +37,7 @@
                                 <td>
                                     <div id="ip">
                                         <span id="ip_btn"></span>
+                                        <span class="line" style="display:none;margin: 8px 0px;"></span>
                                         <span id="ip_origin">
                                             <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="Admin.open('添加IP地址','/{[$.admin_path]}/clusters/select/ip',700,450)">
                                             <i class="layui-icon layui-icon-add-circle"></i>
@@ -201,9 +202,15 @@ window.loadGroupBtn = function(){
 }
 
 window.loadIpBtn = function(){
+    $('#ip_origin').show();
+    $('#ip .line').css('display','block');
+
     $('#ip_btn .remove').bind('click',function(){
         $(this).parent().parent().remove();
-        $('#ip_origin').show();
+        var len = $('#ip_btn .ip_row').length();
+        if (len < 2){
+            $('#ip .line').css('display','none');
+        }
     });
 }
 
@@ -240,7 +247,6 @@ form.on('submit(submit_step2)', function(data){
     },'json');
     return true;
 });
-
 
 
 ///
