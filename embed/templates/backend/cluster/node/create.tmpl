@@ -207,8 +207,8 @@ window.loadIpBtn = function(){
 
     $('#ip_btn .remove').bind('click',function(){
         $(this).parent().parent().remove();
-        var len = $('#ip_btn .ip_row').length();
-        if (len < 2){
+        var len = $('#ip_btn .ip_row').length;
+        if (len < 1){
             $('#ip .line').css('display','none');
         }
     });
