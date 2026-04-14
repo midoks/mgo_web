@@ -172,7 +172,22 @@ form.on('submit(select)', function(data){
         parent.$('#ip_btn').append(content);
 
         var ip_addr_data = parent.$('input[name="ip_addresses_json"]').val();
-        parent.$('input[name="ip_addresses_json"]').val("ccc");
+        var ip_array = [];
+        
+        if (ip_addr_data) {
+            try {
+                ip_array = JSON.parse(ip_addr_data);
+                if (!Array.isArray(ip_array)) {
+                    ip_array = [];
+                }
+            } catch (e) {
+                ip_array = [];
+            }
+        }
+        
+        ip_array.push(field);
+        var data = JSON.stringify(ip_array);
+        parent.$('input[name="ip_addresses_json"]').val(data);
 
         parent.window.loadIpBtn();
         var idx = parent.layer.getFrameIndex(window.name);
