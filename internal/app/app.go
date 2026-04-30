@@ -228,7 +228,7 @@ func initRuoteInstall(r *gin.Engine) {
 	installGroup := r.Group("/install")
 	installGroup.Use(middleware.CheckInstalledAfter())
 	installGroup.GET("/index", install.HomePage)
-	installGroup.POST("/install_step1", install.PostInstallStep1)
+	installGroup.POST("/step1", install.PostInstallStep1)
 	installGroup.POST("/dbtest", install.MyDbtest)
 }
 
