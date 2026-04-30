@@ -1,14 +1,12 @@
 package handles
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	"mgo/internal/app/common"
 	"mgo/internal/conf"
-	"mgo/internal/op"
 )
 
 func AdminPage(c *gin.Context) {
