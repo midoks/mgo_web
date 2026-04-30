@@ -48,7 +48,7 @@ go mod vendor
 
 # cd /usr/local/uptimepk_dev/mgo_web && go build -o mgo_web main.go 
 # cd /usr/local/uptimepk_dev/mgo_web && go build -o mgo_web main.go && ./mgo_web web
-cd $TAGRT_DIR/mgo_web && go build -o mgo main.go 
+cd $TAGRT_DIR/mgo_web && go build -o mgo_web main.go 
 systemctl daemon-reload
 
 
