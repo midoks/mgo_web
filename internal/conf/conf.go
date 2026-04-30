@@ -3,208 +3,18 @@ package conf
 import (
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
+	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v3"
 
 	"mgo/embed"
 )
 
-var File *yaml.Node
+var appConfig AppConfig
 
-func ReadConf() (*yaml.Node, error) {
-	data, err := embed.Conf.ReadFile("conf/app.yaml")
-	if err != nil {
-		return nil, errors.Wrap(err, "read file 'conf/app.yaml'")
-	}
-
-	File = &yaml.Node{}
-	err = yaml.Unmarshal(data, File)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse 'conf/app.yaml'")
-	}
-
-	return File, nil
-}
-
-func InstallConf(data map[string]string) error {
-	cfg := &Config{
-		AppName:   App.Name,
-		BrandName: App.BrandName,
-		RunUser:   App.RunUser,
-		RunMode:   "prod",
-		General: GeneralConfig{
-			MenuFile: "menu.json",
-		},
-		Log: LogConfig{
-			Format:   "text",
-			RootPath: "logs",
-		},
-		Session: SessionConfig{
-			Provider:       "memory",
-			ProviderConfig: "data/sessions",
-			CookieName:     "mgo_web",
-			CookieSecure:   false,
-			GCInterval:     3600,
-			MaxLifeTime:    86400,
-			CSRFCookieName: "_csrf",
-		},
-		Web: WebConfig{
-			HTTPPort:  9999,
-			AdminPath: "mgo",
-		},
-		Security: SecurityConfig{
-			InstallLock:             true,
-			SecretKey:               randString(10),
-			LoginRememberDays:       7,
-			CookieRememberName:      "mgo_incredible",
-			CookieUsername:          "mgo_awesome",
-			CookieSecure:            false,
-			EnableLoginStatusCookie: true,
-			LoginStatusCookieName:   "login_status",
-		},
-	}
-
-	if strings.EqualFold(data["type"], "mysql") {
-		cfg.Database = DatabaseConfig{
-			Type:        "mysql",
-			Hostname:    data["hostname"],
-			Hostport:    int64(parseInt(data["hostport"])),
-			Name:        data["dbname"],
-			User:        data["username"],
-			Password:    data["password"],
-			TablePrefix: data["table_prefix"],
-		}
-	} else if strings.EqualFold(data["type"], "sqlite3") {
-		cfg.Database = DatabaseConfig{
-			Type:        "sqlite3",
-			Path:        data["dbpath"],
-			TablePrefix: data["table_prefix"],
-		}
-	}
-
-	customConf := filepath.Join(CustomDir(), "conf", "app.yaml")
-
-	if !isExist(filepath.Dir(customConf)) {
-		os.MkdirAll(filepath.Dir(customConf), os.ModePerm)
-	}
-
-	return SaveConfData(cfg, customConf)
-}
-
-func InitConf(customConf string) error {
-	data, err := embed.Conf.ReadFile("conf/app.yaml")
-	if err != nil {
-		return errors.Wrap(err, "read embedded config")
-	}
-
-	File = &yaml.Node{}
-	err = yaml.Unmarshal(data, File)
-	if err != nil {
-		return errors.Wrap(err, "parse 'conf/app.yaml'")
-	}
-
-	if customConf == "" {
-		customConf = filepath.Join(CustomDir(), "conf", "app.yaml")
-	} else {
-		customConf, err = filepath.Abs(customConf)
-		if err != nil {
-			return errors.Wrap(err, "get absolute path")
-		}
-	}
-	CustomConf = customConf
-
-	if isFile(customConf) {
-		customData, err := os.ReadFile(customConf)
-		if err != nil {
-			return errors.Wrapf(err, "read %q", customConf)
-		}
-		customNode := &yaml.Node{}
-		if err = yaml.Unmarshal(customData, customNode); err != nil {
-			return errors.Wrapf(err, "parse %q", customConf)
-		}
-		mergeYaml(File, customNode)
-	}
-
-	err = renderSection(File)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func renderSection(node *yaml.Node) error {
-	m := make(map[string]yaml.Node)
-	if err := node.Decode(&m); err != nil {
-		return errors.Wrap(err, "decode yaml node")
-	}
-
-	if app, ok := m["app_name"]; ok {
-		App.Name = app.Value
-	}
-	if app, ok := m["brand_name"]; ok {
-		App.BrandName = app.Value
-	}
-	if app, ok := m["run_user"]; ok {
-		App.RunUser = app.Value
-	}
-	if app, ok := m["run_mode"]; ok {
-		App.RunMode = app.Value
-	}
-
-	if general, ok := m["general"]; ok {
-		if err := general.Decode(&General); err != nil {
-			return errors.Wrap(err, "mapping general section")
-		}
-	}
-
-	if log, ok := m["log"]; ok {
-		if err := log.Decode(&Log); err != nil {
-			return errors.Wrap(err, "mapping log section")
-		}
-	}
-
-	if database, ok := m["database"]; ok {
-		if err := database.Decode(&Database); err != nil {
-			return errors.Wrap(err, "mapping database section")
-		}
-	}
-
-	if session, ok := m["session"]; ok {
-		if err := session.Decode(&Session); err != nil {
-			return errors.Wrap(err, "mapping session section")
-		}
-	}
-
-	if security, ok := m["security"]; ok {
-		if err := security.Decode(&Security); err != nil {
-			return errors.Wrap(err, "mapping security section")
-		}
-	}
-
-	if web, ok := m["web"]; ok {
-		if err := web.Decode(&Web); err != nil {
-			return errors.Wrap(err, "mapping web section")
-		}
-	}
-
-	return nil
-}
-
-func mergeYaml(base, overlay *yaml.Node) {
-}
-
-func SaveConf(node *yaml.Node, path string) error {
-	data, err := yaml.Marshal(node)
-	if err != nil {
-		return errors.Wrap(err, "marshal yaml")
-	}
-	return os.WriteFile(path, data, 0644)
-}
-
-type Config struct {
+type AppConfig struct {
 	AppName   string         `yaml:"app_name"`
 	BrandName string         `yaml:"brand_name"`
 	RunUser   string         `yaml:"run_user"`
@@ -215,6 +25,18 @@ type Config struct {
 	Web       WebConfig      `yaml:"web"`
 	Database  DatabaseConfig `yaml:"database"`
 	Security  SecurityConfig `yaml:"security"`
+}
+
+type AppConfigCustom struct {
+	AppName   string         `yaml:"app_name"`
+	BrandName string         `yaml:"brand_name"`
+	RunUser   string         `yaml:"run_user"`
+	RunMode   string         `yaml:"run_mode"`
+	Log       LogConfig      `yaml:"log"`
+	Session   SessionConfig  `yaml:"session"`
+	Web       WebConfig      `yaml:"web"`
+	Security  SecurityConfig `yaml:"security"`
+	Database  DatabaseConfig `yaml:"database"`
 }
 
 type GeneralConfig struct {
@@ -267,20 +89,178 @@ type SecurityConfig struct {
 	LoginStatusCookieName   string `yaml:"login_status_cookie_name"`
 }
 
-func SaveConfData(cfg *Config, path string) error {
-	data, err := yaml.Marshal(cfg)
+func ReadConf() error {
+	data, err := embed.Conf.ReadFile("conf/app.yaml")
 	if err != nil {
-		return errors.Wrap(err, "marshal config")
+		return errors.Wrap(err, "read file 'conf/app.yaml'")
 	}
-	return os.WriteFile(path, data, 0644)
+
+	err = yaml.Unmarshal(data, &appConfig)
+	if err != nil {
+		return errors.Wrap(err, "parse 'conf/app.yaml'")
+	}
+	return nil
 }
 
-func parseInt(s string) int {
-	var result int
-	for _, c := range s {
-		if c >= '0' && c <= '9' {
-			result = result*10 + int(c-'0')
+func InstallConf(data map[string]string) error {
+	err := ReadConf()
+	if err != nil {
+		return err
+	}
+
+	err = renderSection()
+	if err != nil {
+		return err
+	}
+
+	customConf := filepath.Join(CustomDir(), "conf", "app.yaml")
+
+	if !isExist(filepath.Dir(customConf)) {
+		err = os.MkdirAll(filepath.Dir(customConf), os.ModePerm)
+		if err != nil {
+			return errors.Wrap(err, "MkdirAll")
 		}
 	}
-	return result
+
+	appConfig.AppName = App.Name
+	appConfig.BrandName = App.BrandName
+	appConfig.RunUser = App.RunUser
+	appConfig.RunMode = "prod"
+
+	appConfig.Log.RootPath = Log.RootPath
+	admin_path := "mgo"
+	appConfig.Web.AdminPath = admin_path
+
+	if strings.EqualFold(data["type"], "mysql") {
+		appConfig.Database.Type = "mysql"
+		appConfig.Database.Hostname = data["hostname"]
+		hostport, _ := strconv.ParseInt(data["hostport"], 10, 64)
+		appConfig.Database.Hostport = hostport
+		appConfig.Database.Name = data["dbname"]
+		appConfig.Database.User = data["username"]
+		appConfig.Database.Password = data["password"]
+		appConfig.Database.TablePrefix = data["table_prefix"]
+	} else if strings.EqualFold(data["type"], "sqlite3") {
+		appConfig.Database.Type = "sqlite3"
+		appConfig.Database.Path = data["dbpath"]
+		appConfig.Database.TablePrefix = data["table_prefix"]
+	}
+
+	appConfig.Security.InstallLock = true
+	appConfig.Security.SecretKey = randString(32)
+
+	saveConfig := AppConfigCustom{
+		AppName:   appConfig.AppName,
+		BrandName: appConfig.BrandName,
+		RunUser:   appConfig.RunUser,
+		RunMode:   appConfig.RunMode,
+		Log:       appConfig.Log,
+		Session:   appConfig.Session,
+		Web:       appConfig.Web,
+		Security:  appConfig.Security,
+		Database:  appConfig.Database,
+	}
+
+	yamlData, err := yaml.Marshal(saveConfig)
+	if err != nil {
+		return errors.Wrap(err, "marshal yaml config")
+	}
+
+	if err := os.WriteFile(customConf, yamlData, os.ModePerm); err != nil {
+		return errors.Wrap(err, "write custom config file")
+	}
+
+	err = InitConf("")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func InitConf(customConf string) error {
+	data, err := embed.Conf.ReadFile("conf/app.yaml")
+	if err != nil {
+		return errors.Wrap(err, "read embedded config")
+	}
+
+	err = yaml.Unmarshal(data, &appConfig)
+	if err != nil {
+		return errors.Wrap(err, "parse 'conf/app.yaml'")
+	}
+
+	if customConf == "" {
+		customConf = filepath.Join(CustomDir(), "conf", "app.yaml")
+	} else {
+		customConf, err = filepath.Abs(customConf)
+		if err != nil {
+			return errors.Wrap(err, "get absolute path")
+		}
+	}
+	CustomConf = customConf
+
+	if isFile(customConf) {
+		customData, err := os.ReadFile(customConf)
+		if err != nil {
+			return errors.Wrapf(err, "read custom config %q", customConf)
+		}
+
+		err = yaml.Unmarshal(customData, &appConfig)
+		if err != nil {
+			return errors.Wrapf(err, "parse custom config %q", customConf)
+		}
+	}
+
+	err = renderSection()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func renderSection() error {
+	App.Name = appConfig.AppName
+	App.BrandName = appConfig.BrandName
+	App.RunUser = appConfig.RunUser
+	App.RunMode = appConfig.RunMode
+
+	General.MenuFile = appConfig.General.MenuFile
+
+	Web.HTTPAddr = appConfig.Web.HTTPAddr
+	Web.HTTPPort = appConfig.Web.HTTPPort
+	Web.AdminPath = appConfig.Web.AdminPath
+	Web.EnableGzip = appConfig.Web.EnableGzip
+
+	Log.Format = appConfig.Log.Format
+	Log.RootPath = appConfig.Log.RootPath
+
+	Database.Type = appConfig.Database.Type
+	Database.Path = appConfig.Database.Path
+	Database.DSN = appConfig.Database.DSN
+	Database.TablePrefix = appConfig.Database.TablePrefix
+	Database.Hostname = appConfig.Database.Hostname
+	Database.Hostport = appConfig.Database.Hostport
+	Database.Name = appConfig.Database.Name
+	Database.User = appConfig.Database.User
+	Database.Password = appConfig.Database.Password
+	Database.SSLMode = appConfig.Database.SSLMode
+
+	Security.InstallLock = appConfig.Security.InstallLock
+	Security.SecretKey = appConfig.Security.SecretKey
+	Security.LoginRememberDays = appConfig.Security.LoginRememberDays
+	Security.CookieRememberName = appConfig.Security.CookieRememberName
+	Security.CookieUsername = appConfig.Security.CookieUsername
+	Security.CookieSecure = appConfig.Security.CookieSecure
+	Security.EnableLoginStatusCookie = appConfig.Security.EnableLoginStatusCookie
+	Security.LoginStatusCookieName = appConfig.Security.LoginStatusCookieName
+
+	Session.Provider = appConfig.Session.Provider
+	Session.ProviderConfig = appConfig.Session.ProviderConfig
+	Session.CookieName = appConfig.Session.CookieName
+	Session.CookieSecure = appConfig.Session.CookieSecure
+	Session.GCInterval = appConfig.Session.GCInterval
+	Session.MaxLifeTime = appConfig.Session.MaxLifeTime
+	Session.CSRFCookieName = appConfig.Session.CSRFCookieName
+
+	return nil
 }

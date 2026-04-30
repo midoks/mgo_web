@@ -1,4 +1,4 @@
-package server
+package system
 
 import (
 	"errors"
@@ -38,13 +38,13 @@ func GetSysBaseSubMenu() []form.ClusterSubMenu {
 func Home(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/settings.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/settings/index.tmpl", data)
 }
 
 func Profile(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/settings_profile.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/settings/profile.tmpl", data)
 }
 
 func PostProfile(c *gin.Context) {
@@ -117,7 +117,7 @@ func PostLogin(c *gin.Context) {
 func LoginLogs(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/settings_login_logs.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/settings/login_logs.tmpl", data)
 }
 
 func LoginLogsList(c *gin.Context) {

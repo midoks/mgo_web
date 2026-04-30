@@ -280,6 +280,26 @@
                     {
                         "code":"system_database",
                         "path": "/system/db"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/database"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/database/index"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/database/cleans"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/database/update"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/database/clean_setting"
                     }
                 ]
             }

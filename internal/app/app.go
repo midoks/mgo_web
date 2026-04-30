@@ -217,8 +217,25 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.POST("/system/settings/login", backend_system.PostLogin)
 	backstage_admin.GET("/system/settings/login/logs", backend_system.LoginLogs)
 	backstage_admin.GET("/system/settings/login/logs/list", backend_system.LoginLogsList)
+
 	backstage_admin.GET("/system/database", backend_system.Database)
+	backstage_admin.GET("/system/database/index", backend_system.Database)
+	backstage_admin.GET("/system/database/update", backend_system.DatabaseUpdate)
+	backstage_admin.GET("/system/database/cleans", backend_system.DatabaseClean)
+	backstage_admin.POST("/system/database/clean", backend_system.PostDatabaseClean)
+	backstage_admin.POST("/system/database/delete", backend_system.PostDatabaseDelete)
+
+	backstage_admin.GET("/system/database/clean_setting", backend_system.DatabaseCleanSetting)
+	backstage_admin.POST("/system/database/clean_setting", backend_system.PostDatabaseCleanSetting)
+
 	backstage_admin.GET("/system/db", backend_system.Db)
+	backstage_admin.GET("/system/db/list", backend_system.DbNodeList)
+	backstage_admin.GET("/system/db/add", backend_system.DbNodeAdd)
+	backstage_admin.POST("/system/db/add", backend_system.PostDbNodeAdd)
+	backstage_admin.GET("/system/db/details", backend_system.DbNodeDetails)
+	backstage_admin.GET("/system/db/clean", backend_system.DbNodeClean)
+	backstage_admin.GET("/system/db/logs", backend_system.DbNodeLogs)
+	backstage_admin.GET("/system/db/update", backend_system.DbNodeUpdate)
 }
 
 func initRuoteInstall(r *gin.Engine) {

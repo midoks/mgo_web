@@ -21,3 +21,7 @@ type Page struct {
 type ID struct {
 	ID int64 `form:"id"`
 }
+
+type DatabaseCommon struct {
+	TableName string `form:"table_name"`
+}

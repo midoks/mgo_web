@@ -7,6 +7,13 @@ import (
 	"mgo/internal/model"
 )
 
+const (
+	SettingAdminUI = "admin_ui"
+	SettingWebUI   = "web_ui"
+	SettingDbConf  = "db_conf"
+	SettingLog     = "log_sys"
+)
+
 func GetSysSettingByCode(code string) (*model.SysSetting, error) {
 	var u model.SysSetting
 	if err := db.Where("code = ?", code).First(&u).Error; err != nil {
