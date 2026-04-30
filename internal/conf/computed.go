@@ -26,18 +26,21 @@ var (
 	appPathOnce sync.Once
 )
 
-// AppPath returns the absolute path of the application's binary.
 func AppPath() string {
 	appPathOnce.Do(func() {
 		var err error
-		appPath, err = exec.LookPath(os.Args[0])
+		appPath, err = os.Executable()
 		if err != nil {
-			panic("look executable path: " + err.Error())
+			execPath, err := exec.LookPath(os.Args[0])
+			if err != nil {
+				return
+			}
+			appPath = execPath
 		}
 
 		appPath, err = filepath.Abs(appPath)
 		if err != nil {
-			panic("get absolute executable path: " + err.Error())
+			return
 		}
 	})
 
