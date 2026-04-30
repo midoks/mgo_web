@@ -15,7 +15,7 @@ var Uninstall = cli.Command{
 	Description: `uninstall mgo systemd service from Linux`,
 	Action:      runUninstall,
 	Flags: []cli.Flag{
-		stringFlag("name, n", "mgo", "service name"),
+		stringFlag("name, n", "mgo_web", "service name"),
 		boolFlag("purge", "remove service file as well"),
 	},
 }

@@ -18,7 +18,7 @@ var Install = cli.Command{
 	Action:      runInstall,
 	Flags: []cli.Flag{
 		stringFlag("config, c", "", "custom configuration file path"),
-		stringFlag("name, n", "mgo", "service name"),
+		stringFlag("name, n", "mgo_web", "service name"),
 		stringFlag("user, u", "root", "run as user"),
 		stringFlag("dir, d", ".", "installation directory"),
 	},

@@ -53,8 +53,8 @@ systemctl daemon-reload
 
 
 cd $TAGRT_DIR/mgo_web && ./mgo_web install
-systemctl restart mgo_web
+systemctl restart mgo
 
 cd $TAGRT_DIR/mgo_web && ./mgo_web -v
 
-systemctl status mgo_web
+systemctl status mgo
