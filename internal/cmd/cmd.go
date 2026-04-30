@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"os"
+	"os/exec"
 	"time"
 
 	"github.com/urfave/cli"
@@ -37,4 +39,11 @@ func durationFlag(name string, value time.Duration, usage string) cli.DurationFl
 		Value: value,
 		Usage: usage,
 	}
+}
+
+func runCommand(name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
