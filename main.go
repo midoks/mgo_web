@@ -35,6 +35,8 @@ func main() {
 	app.Commands = []cli.Command{
 		cmd.Web,
 		cmd.Root,
+		cmd.Install,
+		cmd.Uninstall,
 	}
 
 	if err := app.Run(os.Args); err != nil {
