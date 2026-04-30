@@ -32,7 +32,7 @@ After=network.target
 Type=simple
 User={{.User}}
 WorkingDirectory={{.Dir}}
-ExecStart={{.Dir}}/mgo web
+ExecStart={{.Dir}}/mgo_web web
 Restart=always
 RestartSec=5
 
