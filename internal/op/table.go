@@ -20,8 +20,8 @@ func init() {
 	}
 
 	tableTypes = map[string]tableTypeInfo{
-		tablePrefix + "_logs_": {Type: "监控日志", Actions: []string{"delete", "clean"}},
-		tablePrefix + "logs":   {Type: "系统日志", Actions: []string{"clean"}},
+		tablePrefix + "logs_": {Type: "监控日志", Actions: []string{"delete", "clean"}},
+		tablePrefix + "logs":  {Type: "系统日志", Actions: []string{"clean"}},
 	}
 }
 

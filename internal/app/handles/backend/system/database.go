@@ -74,12 +74,12 @@ func Database(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/system/database/index.tmpl", data)
 }
 
-func DatabaseUpdate(c *gin.Context) {
-	data := common.CommonVer(c)
-	data["submenu"] = GetSysAdvancedSubMenu()
-	data["database_submenu"] = GetSysAdvancedDatabaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/database/update.tmpl", data)
-}
+// func DatabaseUpdate(c *gin.Context) {
+// 	data := common.CommonVer(c)
+// 	data["submenu"] = GetSysAdvancedSubMenu()
+// 	data["database_submenu"] = GetSysAdvancedDatabaseSubMenu()
+// 	c.HTML(http.StatusOK, "backend/system/database/update.tmpl", data)
+// }
 
 func DatabaseClean(c *gin.Context) {
 	data := common.CommonVer(c)

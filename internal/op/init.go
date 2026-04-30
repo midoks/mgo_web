@@ -75,7 +75,7 @@ func InitSettingAdminData() error {
 	}
 
 	common_data.SetAdminUIValue(model.SysSettingAdminUIValue{
-		ProductName: "uptimepk",
+		ProductName: "testspeed",
 		SystemName:  "测速面板",
 	})
 	common_data.UpdateTime = time.Now().Unix()
