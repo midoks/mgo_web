@@ -1,7 +1,7 @@
 package install
 
 import (
-	// "fmt"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +9,7 @@ import (
 	"mgo/internal/app/common"
 	"mgo/internal/conf"
 	"mgo/internal/db"
+	"mgo/internal/log"
 	"mgo/internal/op"
 )
 
@@ -72,7 +73,13 @@ func PostInstallStep1(c *gin.Context) {
 
 	if conf.Security.InstallLock {
 		db.InitDb()
-		op.InitAdmin(init_account, init_pass)
+
+		if err := op.InitAdmin(init_account, init_pass); err != nil {
+			log.Error(fmt.Sprintf("InitAdmin error:%v", err))
+		}
+		if err := op.InitSetting(); err != nil {
+			log.Error(fmt.Sprintf("InitSetting error:%v", err))
+		}
 	}
 
 	common.SuccessResp(c, gin.H{"token": "安装成功!"})
