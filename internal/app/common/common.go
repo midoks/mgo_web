@@ -10,6 +10,7 @@ import (
 
 	"mgo/internal/conf"
 	"mgo/internal/db"
+
 	// utils "mgo/internal/utils"
 
 	"github.com/gin-contrib/sessions"
@@ -80,9 +81,11 @@ func CommonVer(c *gin.Context) map[string]interface{} {
 	data["CurrentPath"] = c.Request.URL.Path
 	data["ActiveMenu"] = FindMenuCodeByPath(c.Request.URL.Path, conf.Web.AdminPath)
 
-	setting_admin_ui_data, err := db.GetSysSettingByCode(db.SettingAdminUI)
-	if err == nil {
-		data["setting_admin_ui"] = setting_admin_ui_data
+	if db.GetDb() != nil {
+		setting_admin_ui_data, err := db.GetSysSettingByCode(db.SettingAdminUI)
+		if err == nil {
+			data["setting_admin_ui"] = setting_admin_ui_data
+		}
 	}
 	return data
 }

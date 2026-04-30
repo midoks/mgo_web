@@ -28,6 +28,11 @@ import (
 )
 
 func initTemp(r *gin.Engine) {
+	defer func() {
+		if r := recover(); r != nil {
+		}
+	}()
+
 	// Define template functions
 	funcMap := template.FuncMap{
 		"safe": func(str string) template.HTML {
@@ -63,10 +68,10 @@ func initTemp(r *gin.Engine) {
 		short := strings.TrimPrefix(name, "templates/")
 		content, err := embed.Templates.ReadFile(name)
 		if err != nil {
-			panic(err)
+			continue
 		}
 		if _, err := tpl.New(short).Parse(string(content)); err != nil {
-			panic(err)
+			continue
 		}
 	}
 
@@ -263,12 +268,15 @@ func initRuoteFrontend(r *gin.Engine) {
 }
 
 func initRuote(r *gin.Engine) {
+	defer func() {
+		if r := recover(); r != nil {
+		}
+	}()
 	// Static files from embedded filesystem subdir "static"
 	staticFS, err := fs.Sub(embed.Static, "static")
-	if err != nil {
-		panic(err)
+	if err == nil {
+		r.StaticFS("/static", http.FS(staticFS))
 	}
-	r.StaticFS("/static", http.FS(staticFS))
 
 	initRuoteAdmin(r)
 	initRuoteInstall(r)
@@ -298,7 +306,7 @@ func Run() {
 		r.Use(gzip.Gzip(gzip.DefaultCompression))
 	}
 
-	// r.Use(gin.Recovery())
+	r.Use(gin.Recovery())
 	r.SetTrustedProxies(nil)
 
 	initTemp(r)

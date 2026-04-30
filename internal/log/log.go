@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
@@ -28,7 +29,16 @@ var (
 
 var stdErrFileHandler *os.File
 
+func isExist(p string) bool {
+	_, err := os.Stat(p)
+	return !os.IsNotExist(err)
+}
+
 func RewriteStderrFile() error {
+	logDir := filepath.Dir(CrashLogFile)
+	if !isExist(logDir) {
+		os.MkdirAll(logDir, 0755)
+	}
 	file, err := os.OpenFile(CrashLogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		return err
@@ -43,8 +53,10 @@ func RewriteStderrFile() error {
 		}
 	}
 
-	if err = syscall.Dup2(int(file.Fd()), int(os.Stderr.Fd())); err != nil {
-		return err
+	if runtime.GOOS == "linux" {
+		if err = syscall.Dup2(int(file.Fd()), int(os.Stderr.Fd())); err != nil {
+			// Ignore error on Linux
+		}
 	}
 
 	runtime.SetFinalizer(stdErrFileHandler, func(fd *os.File) {
