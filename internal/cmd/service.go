@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"go/build"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"text/template"
@@ -65,18 +65,26 @@ func runInstall(c *cli.Context) error {
 	binary := c.String("binary")
 
 	if binary == "" {
-		execPath, err := exec.LookPath(os.Args[0])
+		exePath, err := os.Executable()
 		if err != nil {
-			binary = build.Default.GOPATH + "/bin/mgo"
-		} else {
-			binary = execPath
+			return fmt.Errorf("cannot get executable path")
 		}
+		binary = exePath
+	}
+
+	absPath, err := filepath.Abs(binary)
+	if err != nil {
+		return fmt.Errorf("cannot resolve binary path")
+	}
+
+	if _, err := os.Stat(absPath); os.IsNotExist(err) {
+		return fmt.Errorf("binary not found at: %s", absPath)
 	}
 
 	cfg := serviceConfig{
 		Name:   name,
 		User:   user,
-		Binary: binary,
+		Binary: absPath,
 	}
 
 	t, _ := template.New("service").Parse(serviceTemplate)
@@ -84,12 +92,20 @@ func runInstall(c *cli.Context) error {
 	t.Execute(&sb, cfg)
 
 	servicePath := fmt.Sprintf("/etc/systemd/system/%s.service", name)
-	os.WriteFile(servicePath, []byte(sb.String()), 0644)
+	if err := os.WriteFile(servicePath, []byte(sb.String()), 0644); err != nil {
+		return fmt.Errorf("write service file failed")
+	}
 
-	exec.Command("systemctl", "daemon-reload").Run()
-	exec.Command("systemctl", "enable", name).Run()
+	if err := exec.Command("systemctl", "daemon-reload").Run(); err != nil {
+		return fmt.Errorf("systemctl daemon-reload failed")
+	}
+
+	if err := exec.Command("systemctl", "enable", name).Run(); err != nil {
+		return fmt.Errorf("systemctl enable failed")
+	}
 
 	fmt.Printf("Installed: %s\n", name)
+	fmt.Printf("Binary: %s\n", absPath)
 	fmt.Printf("Start: systemctl start %s\n", name)
 	return nil
 }
