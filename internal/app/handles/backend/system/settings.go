@@ -14,8 +14,8 @@ import (
 	utils "mgo/internal/utils"
 )
 
-func GetSysBaseSubMenu() []form.ClusterSubMenu {
-	menu := []form.ClusterSubMenu{
+func GetSysBaseSubMenu() []form.SubMenu {
+	menu := []form.SubMenu{
 		{
 			Number: 1,
 			Name:   "管理员界面设置",
@@ -23,11 +23,16 @@ func GetSysBaseSubMenu() []form.ClusterSubMenu {
 		},
 		{
 			Number: 2,
+			Name:   "前端界面设置",
+			Link:   "system/settings/web",
+		},
+		{
+			Number: 3,
 			Name:   "个人资料",
 			Link:   "system/settings/profile",
 		},
 		{
-			Number: 3,
+			Number: 4,
 			Name:   "登录设置",
 			Link:   "system/settings/login",
 		},
@@ -39,6 +44,88 @@ func Home(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
 	c.HTML(http.StatusOK, "backend/system/settings/index.tmpl", data)
+}
+
+func PostHome(c *gin.Context) {
+	var field form.SettingAdminUI
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	common_data := &model.SysSetting{
+		Code: db.SettingAdminUI,
+		Uid:  0,
+	}
+
+	common_data.SetAdminUIValue(model.SysSettingAdminUIValue{
+		ProductName: field.ProductName,
+		SystemName:  field.SystemName,
+	})
+	common_data.UpdateTime = time.Now().Unix()
+	_, err := db.GetSysSettingByCode(db.SettingAdminUI)
+	if err == nil {
+		if err := db.GetDb().Model(&model.SysSetting{}).Where("code = ?", db.SettingAdminUI).Updates(common_data).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		common.SuccessResp(c)
+		return
+	}
+
+	common_data.CreateTime = time.Now().Unix()
+	if err := db.GetDb().Create(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
+}
+
+func Web(c *gin.Context) {
+	data := common.CommonVer(c)
+	data["submenu"] = GetSysBaseSubMenu()
+
+	setting_web_ui_data, err := db.GetSysSettingByCode(db.SettingWebUI)
+	if err == nil {
+		data["setting_web_ui"] = setting_web_ui_data
+	}
+	c.HTML(http.StatusOK, "backend/system/settings/web.tmpl", data)
+}
+
+func PostWeb(c *gin.Context) {
+	var field form.SettingWebUI
+	var err error
+	if err = c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	common_data := &model.SysSetting{
+		Code: db.SettingWebUI,
+		Uid:  0,
+	}
+
+	common_data.SetWebUIValue(model.SysSettingWebUIValue{
+		Name:     field.Name,
+		Subtitle: field.Subtitle,
+	})
+	common_data.UpdateTime = time.Now().Unix()
+	_, err = db.GetSysSettingByCode(db.SettingWebUI)
+	if err == nil {
+		if err = db.GetDb().Model(&model.SysSetting{}).Where("code = ?", db.SettingWebUI).Updates(common_data).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+		common.SuccessResp(c)
+		return
+	}
+
+	common_data.CreateTime = time.Now().Unix()
+	if err = db.GetDb().Create(common_data).Error; err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessResp(c)
 }
 
 func Profile(c *gin.Context) {
@@ -75,7 +162,7 @@ func PostProfile(c *gin.Context) {
 func Login(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysBaseSubMenu()
-	c.HTML(http.StatusOK, "backend/system/settings_login.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/settings/login.tmpl", data)
 }
 
 func PostLogin(c *gin.Context) {
