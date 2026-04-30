@@ -1,6 +1,5 @@
 {[template "install/header.tmpl" .]}
 
-
 <style type="text/css">
 .layui-table td, .layui-table th{text-align:left;}
 .layui-table tbody tr.no{background-color:#f00;color:#fff;}
@@ -9,7 +8,6 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>数据库配置</legend>
     </fieldset>
-    <!-- <form class="layui-form layui-form-pane" action="?step=2" method="post"> -->
     <form class="layui-form layui-form-pane" action="/install/step1" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label">数据库类型</label>
@@ -71,7 +69,7 @@
         <div class="layui-form-item" id="table_prefix" style="display: block;">
             <label class="layui-form-label">数据库前缀</label>
             <div class="layui-input-inline w200">
-                <input type="text" class="layui-input" name="prefix" lay-verify="title" value="mg_">
+                <input type="text" class="layui-input" name="table_prefix" lay-verify="title" value="mg_">
             </div>
             <div class="layui-form-mid layui-word-aux">建议使用默认,数据库前缀必须带_</div>
         </div>
@@ -203,7 +201,11 @@ form.on('submit(install)', function(data){
         data: _form.serialize(),
         dataType:'json',
         success: function(res) {
-            layer.msg(res.msg, {icon: res.code>0?1:2});
+            showMsg(res.msg, function(){
+                if (res.code == 200){
+                    location.href = "/{[.admin_path]}/index"
+                }
+            }, {icon: res.code>0?1:2}, 3000);
         }
     });
     return false;

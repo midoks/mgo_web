@@ -219,9 +219,6 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/system/settings/login/logs/list", backend_system.LoginLogsList)
 	backstage_admin.GET("/system/database", backend_system.Database)
 	backstage_admin.GET("/system/db", backend_system.Db)
-
-	api := r.Group("/api")
-	api.POST("/logs", api_logs.LogsAdd)
 }
 
 func initRuoteInstall(r *gin.Engine) {
@@ -232,6 +229,16 @@ func initRuoteInstall(r *gin.Engine) {
 	installGroup.POST("/dbtest", install.MyDbtest)
 }
 
+func initRuoteFrontend(r *gin.Engine) {
+	api := r.Group("/api")
+	api.POST("/logs", api_logs.LogsAdd)
+
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+	r.Use(middleware.CheckInstalled()).GET("/", handles.Home)
+}
+
 func initRuote(r *gin.Engine) {
 	// Static files from embedded filesystem subdir "static"
 	staticFS, err := fs.Sub(embed.Static, "static")
@@ -239,13 +246,10 @@ func initRuote(r *gin.Engine) {
 		panic(err)
 	}
 	r.StaticFS("/static", http.FS(staticFS))
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
 
 	initRuoteAdmin(r)
 	initRuoteInstall(r)
-	// r.GET("/", handles.Home)
+	initRuoteFrontend(r)
 }
 
 func Run() {

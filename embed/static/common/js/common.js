@@ -120,7 +120,7 @@ var tps = '';
 $('.layui-input,.layui-textarea').click(function(){
     if($(this).attr('placeholder') != tps){
         tps = $(this).attr('placeholder');
-        if (tps != ''){
+        if (tps && tps != ''){
             layer.tips(tps, $(this),{tips:1});
         }
     }

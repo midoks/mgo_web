@@ -78,8 +78,9 @@ func InstallConf(data map[string]string) error {
 		}
 	} else if strings.EqualFold(data["type"], "sqlite3") {
 		cfg.Database = DatabaseConfig{
-			Type: "sqlite3",
-			Path: data["dbpath"],
+			Type:        "sqlite3",
+			Path:        data["dbpath"],
+			TablePrefix: data["table_prefix"],
 		}
 	}
 

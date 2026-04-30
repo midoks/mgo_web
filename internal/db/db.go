@@ -104,7 +104,7 @@ func InitDb() {
 			dB, err = gorm.Open(postgres.Open(dsn), gormConfig)
 		}
 	default:
-		// log.Fatalf("not supported database type: %s", database.Type)
+		log.Fatalf("not supported database type: %s", database.Type)
 		return
 	}
 
