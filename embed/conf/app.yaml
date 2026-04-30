@@ -30,7 +30,7 @@ web:
   admin_path: "mgo"
   tls_min_version: TLS12
   unix_socket_permission: 666
-  local_root_url: "http://0.0.0.0:9999/"
+  local_root_url: "http://0.0.0.0:9292/"
   disable_router_log: true
   enable_gzip: true
   load_assets_from_disk: false
