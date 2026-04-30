@@ -83,7 +83,12 @@ func CleanTableByName(name string) error {
 	for prefix, typeInfo := range tableTypes {
 		if len(name) >= len(prefix) && name[:len(prefix)] == prefix {
 			if contains(typeInfo.Actions, "clean") {
-				sql := fmt.Sprintf("TRUNCATE TABLE %s", name)
+				var sql string
+				if conf.Database.Type == "sqlite3" {
+					sql = fmt.Sprintf("DELETE FROM %s", name)
+				} else {
+					sql = fmt.Sprintf("TRUNCATE TABLE %s", name)
+				}
 				if err := db.GetDb().Exec(sql).Error; err != nil {
 					return err
 				}
@@ -99,18 +104,34 @@ func CleanTableByName(name string) error {
 func GetTableList() ([]TableInfo, error) {
 	var tempTables []tableInfoTemp
 
-	// 查询所有表的信息
-	query := `
-		SELECT
-			table_name,
-			ROUND((data_length + index_length) / 1024 / 1024, 2) as size
-		FROM
-			information_schema.tables
-		WHERE
-			table_schema = DATABASE()
-		ORDER BY
-			size DESC
-	`
+	var query string
+	if conf.Database.Type == "sqlite3" {
+		// SQLite 使用 sqlite_master 表
+		query = `
+			SELECT 
+				name as table_name,
+				0 as size
+			FROM 
+				sqlite_master 
+			WHERE 
+				type = 'table'
+			ORDER BY 
+				name
+		`
+	} else {
+		// MySQL 使用 information_schema.tables
+		query = `
+			SELECT
+				table_name,
+				ROUND((data_length + index_length) / 1024 / 1024, 2) as size
+			FROM
+				information_schema.tables
+			WHERE
+				table_schema = DATABASE()
+			ORDER BY
+				size DESC
+		`
+	}
 
 	if err := db.GetDb().Raw(query).Scan(&tempTables).Error; err != nil {
 		return nil, fmt.Errorf("获取表信息失败: %v", err)

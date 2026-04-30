@@ -93,6 +93,14 @@ func DatabaseClean(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/system/database/cleans.tmpl", data)
 }
 
+func DatabaseList(c *gin.Context) {
+	tables, err := op.GetTableList()
+	if err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+	common.SuccessLayuiResp(c, int64(len(tables)), "ok", tables)
+}
 func PostDatabaseClean(c *gin.Context) {
 	var field form.DatabaseCommon
 	var err error

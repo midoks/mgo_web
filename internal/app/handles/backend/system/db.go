@@ -16,7 +16,7 @@ import (
 func Db(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysAdvancedSubMenu()
-	c.HTML(http.StatusOK, "backend/system/db.tmpl", data)
+	c.HTML(http.StatusOK, "backend/system/db/index.tmpl", data)
 }
 
 func DbNodeAdd(c *gin.Context) {
