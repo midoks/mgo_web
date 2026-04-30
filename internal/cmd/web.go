@@ -20,8 +20,11 @@ var Web = cli.Command{
 }
 
 func runWeb(c *cli.Context) error {
+
 	conf.InitConf(c.String("config"))
+
 	log.Init()
+	log.RewriteStderrFile()
 
 	if conf.Security.InstallLock {
 		db.InitDb()

@@ -1,10 +1,14 @@
 package log
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
+	"runtime"
 	"strings"
+	"sync"
+	"syscall"
 
 	go_logger "github.com/phachon/go-logger"
 
@@ -12,9 +16,42 @@ import (
 )
 
 var (
-	logFileName = "mgo.log"
-	logger      *go_logger.Logger
+	logFileName  = "mgo.log"
+	logger       *go_logger.Logger
+	CrashLogFile = "logs/crash.log"
 )
+
+var (
+	errorLogMutex sync.Mutex
+	crashLogMutex sync.Mutex
+)
+
+var stdErrFileHandler *os.File
+
+func RewriteStderrFile() error {
+	file, err := os.OpenFile(CrashLogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+	stdErrFileHandler = file
+
+	// 分析panic
+	data, err := os.ReadFile(CrashLogFile)
+	if err == nil {
+		var index = bytes.Index(data, []byte("panic:"))
+		if index >= 0 {
+		}
+	}
+
+	if err = syscall.Dup2(int(file.Fd()), int(os.Stderr.Fd())); err != nil {
+		return err
+	}
+
+	runtime.SetFinalizer(stdErrFileHandler, func(fd *os.File) {
+		fd.Close()
+	})
+	return nil
+}
 
 func Init() {
 	logger = go_logger.NewLogger()
