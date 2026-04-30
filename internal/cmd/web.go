@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli"
 
 	"mgo/internal/app"
@@ -22,16 +20,11 @@ var Web = cli.Command{
 }
 
 func runWeb(c *cli.Context) error {
-	fmt.Println("1. Before InitConf")
 	conf.InitConf(c.String("config"))
-	fmt.Println("2. After InitConf, InstallLock:", conf.Security.InstallLock)
-
 	log.Init()
-	fmt.Println("3. After log.Init")
 
 	if conf.Security.InstallLock {
 		db.InitDb()
-		fmt.Println("4. After db.InitDb")
 	}
 
 	app.Run()
