@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"log"
 	"os"
 
@@ -13,10 +16,14 @@ import (
 const (
 	Version = "1.0"
 	AppName = "mgo"
+	CodeDev = true
 )
 
 func init() {
 	conf.App.Version = Version
+	if CodeDev {
+		conf.App.Version = fmt.Sprintf("%s%d", Version, time.Now().Unix())
+	}
 	conf.App.Name = AppName
 }
 

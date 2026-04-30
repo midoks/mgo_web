@@ -35,6 +35,7 @@ go.work.sum
 *.DS_Store
 mgo_web
 /custom
+/custom_*
 /logs
 /dist
 *.tips

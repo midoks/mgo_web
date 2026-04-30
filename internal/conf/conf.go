@@ -1,118 +1,111 @@
 package conf
 
 import (
-	// "fmt"
-	// "net/url"
 	"os"
 	"path/filepath"
-	// "strconv"
 	"strings"
 
 	"github.com/pkg/errors"
-	"gopkg.in/ini.v1"
+	"gopkg.in/yaml.v3"
 
 	"mgo/embed"
 )
 
-var File *ini.File
+var File *yaml.Node
 
-func ReadConf() (*ini.File, error) {
-	cfg := ini.Empty()
-	data, err := embed.Conf.ReadFile("conf/app.conf")
+func ReadConf() (*yaml.Node, error) {
+	data, err := embed.Conf.ReadFile("conf/app.yaml")
 	if err != nil {
-		return cfg, errors.Wrap(err, "read file 'conf/app.conf'")
+		return nil, errors.Wrap(err, "read file 'conf/app.yaml'")
 	}
 
-	File, err := ini.LoadSources(ini.LoadOptions{
-		IgnoreInlineComment: true,
-	}, data)
-
-	File.NameMapper = ini.TitleUnderscore
+	File = &yaml.Node{}
+	err = yaml.Unmarshal(data, File)
 	if err != nil {
-		return cfg, errors.Wrap(err, "parse 'conf/app.conf'")
+		return nil, errors.Wrap(err, "parse 'conf/app.yaml'")
 	}
 
-	return cfg, nil
+	return File, nil
 }
 
 func InstallConf(data map[string]string) error {
-	File, err := ReadConf()
-	if err != nil {
-		return err
+	cfg := &Config{
+		AppName:   App.Name,
+		BrandName: App.BrandName,
+		RunUser:   App.RunUser,
+		RunMode:   "prod",
+		General: GeneralConfig{
+			MenuFile: "menu.json",
+		},
+		Log: LogConfig{
+			Format:   "text",
+			RootPath: "logs",
+		},
+		Session: SessionConfig{
+			Provider:       "memory",
+			ProviderConfig: "data/sessions",
+			CookieName:     "mgo_web",
+			CookieSecure:   false,
+			GCInterval:     3600,
+			MaxLifeTime:    86400,
+			CSRFCookieName: "_csrf",
+		},
+		Web: WebConfig{
+			HTTPPort:  9999,
+			AdminPath: "mgo",
+		},
+		Security: SecurityConfig{
+			InstallLock:             true,
+			SecretKey:               randString(10),
+			LoginRememberDays:       7,
+			CookieRememberName:      "mgo_incredible",
+			CookieUsername:          "mgo_awesome",
+			CookieSecure:            false,
+			EnableLoginStatusCookie: true,
+			LoginStatusCookieName:   "login_status",
+		},
 	}
 
-	err = renderSection(File)
-	if err != nil {
-		return err
+	if strings.EqualFold(data["type"], "mysql") {
+		cfg.Database = DatabaseConfig{
+			Type:        "mysql",
+			Hostname:    data["hostname"],
+			Hostport:    int64(parseInt(data["hostport"])),
+			Name:        data["dbname"],
+			User:        data["username"],
+			Password:    data["password"],
+			TablePrefix: data["table_prefix"],
+		}
+	} else if strings.EqualFold(data["type"], "sqlite3") {
+		cfg.Database = DatabaseConfig{
+			Type: "sqlite3",
+			Path: data["dbpath"],
+		}
 	}
 
-	customConf := filepath.Join(CustomDir(), "conf", "app.conf")
+	customConf := filepath.Join(CustomDir(), "conf", "app.yaml")
 
 	if !isExist(filepath.Dir(customConf)) {
 		os.MkdirAll(filepath.Dir(customConf), os.ModePerm)
 	}
 
-	File.Section("").Key("app_name").SetValue(App.Name)
-	File.Section("").Key("brand_name").SetValue(App.BrandName)
-	File.Section("").Key("run_user").SetValue(App.RunUser)
-	File.Section("").Key("run_mode").SetValue("prod")
-
-	// File.Section("log").Key("format").SetValue(Log.Format)
-	File.Section("log").Key("root_path").SetValue(Log.RootPath)
-
-	File.Section("web").Key("http_port").SetValue("9999")
-	// admin_path := fmt.Sprintf("/mgo_%s", randString(6))
-	admin_path := "mgo"
-	File.Section("web").Key("admin_path").SetValue(admin_path)
-
-	if strings.EqualFold(data["type"], "mysql") {
-		File.Section("database").Key("type").SetValue("mysql")
-		File.Section("database").Key("hostname").SetValue(data["hostname"])
-		File.Section("database").Key("hostport").SetValue(data["hostport"])
-		File.Section("database").Key("name").SetValue(data["dbname"])
-		File.Section("database").Key("user").SetValue(data["username"])
-		File.Section("database").Key("password").SetValue(data["password"])
-		File.Section("database").Key("table_prefix").SetValue(data["table_prefix"])
-	} else if strings.EqualFold(data["type"], "sqlite3") {
-		File.Section("database").Key("type").SetValue("sqlite3")
-		File.Section("database").Key("path").SetValue(data["dbpath"])
-	}
-
-	File.Section("security").Key("install_lock").SetValue("true")
-	File.Section("security").Key("secret_key").SetValue(randString(10))
-
-	if err := File.SaveTo(customConf); err != nil {
-		return err
-	}
-
-	// write custom configuration file, rewrite initialization read
-	err = InitConf("")
-	if err != nil {
-		return err
-	}
-	return nil
+	return SaveConfData(cfg, customConf)
 }
 
-// Init initializes the configuration system
 func InitConf(customConf string) error {
-	data, err := embed.Conf.ReadFile("conf/app.conf")
+	data, err := embed.Conf.ReadFile("conf/app.yaml")
 	if err != nil {
 		return errors.Wrap(err, "read embedded config")
 	}
 
-	// Load embedded configuration
-	File, err = ini.LoadSources(ini.LoadOptions{
-		IgnoreInlineComment: true,
-	}, data)
-
-	File.NameMapper = ini.TitleUnderscore
+	File = &yaml.Node{}
+	err = yaml.Unmarshal(data, File)
 	if err != nil {
-		return errors.Wrap(err, "parse 'conf/app.conf'")
+		return errors.Wrap(err, "parse 'conf/app.yaml'")
 	}
 
-	// Determine custom config path
 	if customConf == "" {
-		customConf = filepath.Join(CustomDir(), "conf", "app.conf")
+		customConf = filepath.Join(CustomDir(), "conf", "app.yaml")
 	} else {
 		customConf, err = filepath.Abs(customConf)
 		if err != nil {
@@ -121,11 +114,16 @@ func InitConf(customConf string) error {
 	}
 	CustomConf = customConf
 
-	// Append custom configuration if exists
 	if isFile(customConf) {
-		if err = File.Append(customConf); err != nil {
-			return errors.Wrapf(err, "append %q", customConf)
+		customData, err := os.ReadFile(customConf)
+		if err != nil {
+			return errors.Wrapf(err, "read %q", customConf)
 		}
+		customNode := &yaml.Node{}
+		if err = yaml.Unmarshal(customData, customNode); err != nil {
+			return errors.Wrapf(err, "parse %q", customConf)
+		}
+		mergeYaml(File, customNode)
 	}
 
 	err = renderSection(File)
@@ -136,47 +134,152 @@ func InitConf(customConf string) error {
 	return nil
 }
 
-func renderSection(File *ini.File) error {
-	// Map default section to App struct
-	if err := File.Section(ini.DefaultSection).MapTo(&App); err != nil {
-		return errors.Wrap(err, "mapping default section")
+func renderSection(node *yaml.Node) error {
+	m := make(map[string]yaml.Node)
+	if err := node.Decode(&m); err != nil {
+		return errors.Wrap(err, "decode yaml node")
 	}
 
-	// ****************************
-	// ----- general settings -----
-	// ****************************
-
-	if err := File.Section("general").MapTo(&General); err != nil {
-		return errors.Wrap(err, "mapping [general] section")
+	if app, ok := m["app_name"]; ok {
+		App.Name = app.Value
+	}
+	if app, ok := m["brand_name"]; ok {
+		App.BrandName = app.Value
+	}
+	if app, ok := m["run_user"]; ok {
+		App.RunUser = app.Value
+	}
+	if app, ok := m["run_mode"]; ok {
+		App.RunMode = app.Value
 	}
 
-	// ****************************
-	// ----- Web settings -----
-	// ****************************
-
-	if err := File.Section("web").MapTo(&Web); err != nil {
-		return errors.Wrap(err, "mapping [web] section")
+	if general, ok := m["general"]; ok {
+		if err := general.Decode(&General); err != nil {
+			return errors.Wrap(err, "mapping general section")
+		}
 	}
 
-	// ***************************
-	// ----- Log settings -----
-	// ***************************
-	if err := File.Section("log").MapTo(&Log); err != nil {
-		return errors.Wrap(err, "mapping [log] section")
+	if log, ok := m["log"]; ok {
+		if err := log.Decode(&Log); err != nil {
+			return errors.Wrap(err, "mapping log section")
+		}
 	}
 
-	// ***************************
-	// ----- Security settings -----
-	// ***************************
-	if err := File.Section("database").MapTo(&Database); err != nil {
-		return errors.Wrap(err, "mapping [database] section")
+	if database, ok := m["database"]; ok {
+		if err := database.Decode(&Database); err != nil {
+			return errors.Wrap(err, "mapping database section")
+		}
 	}
 
-	// ***************************
-	// ----- Security settings -----
-	// ***************************
-	if err := File.Section("security").MapTo(&Security); err != nil {
-		return errors.Wrap(err, "mapping [security] section")
+	if session, ok := m["session"]; ok {
+		if err := session.Decode(&Session); err != nil {
+			return errors.Wrap(err, "mapping session section")
+		}
 	}
+
+	if security, ok := m["security"]; ok {
+		if err := security.Decode(&Security); err != nil {
+			return errors.Wrap(err, "mapping security section")
+		}
+	}
+
+	if web, ok := m["web"]; ok {
+		if err := web.Decode(&Web); err != nil {
+			return errors.Wrap(err, "mapping web section")
+		}
+	}
+
 	return nil
+}
+
+func mergeYaml(base, overlay *yaml.Node) {
+}
+
+func SaveConf(node *yaml.Node, path string) error {
+	data, err := yaml.Marshal(node)
+	if err != nil {
+		return errors.Wrap(err, "marshal yaml")
+	}
+	return os.WriteFile(path, data, 0644)
+}
+
+type Config struct {
+	AppName   string         `yaml:"app_name"`
+	BrandName string         `yaml:"brand_name"`
+	RunUser   string         `yaml:"run_user"`
+	RunMode   string         `yaml:"run_mode"`
+	General   GeneralConfig  `yaml:"general"`
+	Log       LogConfig      `yaml:"log"`
+	Session   SessionConfig  `yaml:"session"`
+	Web       WebConfig      `yaml:"web"`
+	Database  DatabaseConfig `yaml:"database"`
+	Security  SecurityConfig `yaml:"security"`
+}
+
+type GeneralConfig struct {
+	MenuFile string `yaml:"menu_file"`
+}
+
+type LogConfig struct {
+	Format   string `yaml:"format"`
+	RootPath string `yaml:"root_path"`
+}
+
+type SessionConfig struct {
+	Provider       string `yaml:"provider"`
+	ProviderConfig string `yaml:"provider_config"`
+	CookieName     string `yaml:"cookie_name"`
+	CookieSecure   bool   `yaml:"cookie_secure"`
+	GCInterval     int64  `yaml:"gc_interval"`
+	MaxLifeTime    int64  `yaml:"max_life_time"`
+	CSRFCookieName string `yaml:"csrf_cookie_name"`
+}
+
+type WebConfig struct {
+	HTTPAddr   string `yaml:"http_addr"`
+	HTTPPort   int    `yaml:"http_port"`
+	AdminPath  string `yaml:"admin_path"`
+	EnableGzip bool   `yaml:"enable_gzip"`
+}
+
+type DatabaseConfig struct {
+	Type        string `yaml:"type"`
+	Path        string `yaml:"path"`
+	DSN         string `yaml:"dsn"`
+	TablePrefix string `yaml:"table_prefix"`
+	Hostname    string `yaml:"hostname"`
+	Hostport    int64  `yaml:"hostport"`
+	Name        string `yaml:"name"`
+	User        string `yaml:"user"`
+	Password    string `yaml:"password"`
+	SSLMode     string `yaml:"ssl_mode"`
+}
+
+type SecurityConfig struct {
+	InstallLock             bool   `yaml:"install_lock"`
+	SecretKey               string `yaml:"secret_key"`
+	LoginRememberDays       int    `yaml:"login_remember_days"`
+	CookieRememberName      string `yaml:"cookie_remember_name"`
+	CookieUsername          string `yaml:"cookie_username"`
+	CookieSecure            bool   `yaml:"cookie_secure"`
+	EnableLoginStatusCookie bool   `yaml:"enable_login_status_cookie"`
+	LoginStatusCookieName   string `yaml:"login_status_cookie_name"`
+}
+
+func SaveConfData(cfg *Config, path string) error {
+	data, err := yaml.Marshal(cfg)
+	if err != nil {
+		return errors.Wrap(err, "marshal config")
+	}
+	return os.WriteFile(path, data, 0644)
+}
+
+func parseInt(s string) int {
+	var result int
+	for _, c := range s {
+		if c >= '0' && c <= '9' {
+			result = result*10 + int(c-'0')
+		}
+	}
+	return result
 }

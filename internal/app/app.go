@@ -9,6 +9,7 @@ import (
 
 	// "time"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -74,14 +75,14 @@ func initTemp(r *gin.Engine) {
 
 // 后台/backstage
 func initRuoteAdmin(r *gin.Engine) {
-	// fmt.Println("conf.Web.AdminPath:", conf.Web.AdminPath)
 	backstage := r.Group(conf.Web.AdminPath)
+	backstage.Use(middleware.CheckInstalled())
 	backstage.GET("/login", backend.LoginPage)
 	backstage.POST("/login", backend.PostLogin)
 	backstage.GET("/logout", backend.LoginOut)
 
 	backstage_admin := backstage.Group("")
-	backstage_admin.Use(middleware.AuthRequired())
+	backstage_admin.Use(middleware.CheckInstalled(), middleware.AuthRequired())
 
 	// 管理员
 	backstage_admin.GET("", backend.HomePage)
@@ -224,8 +225,11 @@ func initRuoteAdmin(r *gin.Engine) {
 }
 
 func initRuoteInstall(r *gin.Engine) {
-	r.GET("/install", install.HomePage)
-	r.POST("/install_step1", install.PostInstallStep1)
+	installGroup := r.Group("/install")
+	installGroup.Use(middleware.CheckInstalledAfter())
+	installGroup.GET("/index", install.HomePage)
+	installGroup.POST("/install_step1", install.PostInstallStep1)
+	installGroup.POST("/dbtest", install.MyDbtest)
 }
 
 func initRuote(r *gin.Engine) {
@@ -241,43 +245,37 @@ func initRuote(r *gin.Engine) {
 
 	initRuoteAdmin(r)
 	initRuoteInstall(r)
-	r.GET("/", handles.Home)
+	// r.GET("/", handles.Home)
 }
 
 func Run() {
+	if conf.App.RunMode == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.New()
 
 	// 初始化 session 存储
-	store := cookie.NewStore([]byte("mgo"))
-	r.Use(sessions.Sessions("app", store))
+	store := cookie.NewStore([]byte(conf.Security.SecretKey))
+	// 设置 cookie 选项
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   int(conf.Session.MaxLifeTime),
+		HttpOnly: true,
+		Secure:   conf.Session.CookieSecure,
+		SameSite: http.SameSiteLaxMode,
+	})
+	r.Use(sessions.Sessions(conf.Session.CookieName, store))
 
-	// if conf.App.Debug {
-	// 	r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
-	// 		p := param.Path
-	// 		if strings.Contains(p, ".js") || strings.Contains(p, ".css") {
-	// 			return ""
-	// 		}
-	// 		if strings.Contains(p, ".woff2") {
-	// 			return ""
-	// 		}
-	// 		return fmt.Sprintf("%s - [%s] \"%s %s %s\" %d %s \"%s\"\n",
-	// 			param.ClientIP,
-	// 			param.TimeStamp.Format(time.RFC1123),
-	// 			param.Method,
-	// 			p,
-	// 			param.Request.Proto,
-	// 			param.StatusCode,
-	// 			param.Latency,
-	// 			param.ErrorMessage,
-	// 		)
-	// 	}))
-	// }
+	if conf.Web.EnableGzip {
+		r.Use(gzip.Gzip(gzip.DefaultCompression))
+	}
 
 	// r.Use(gin.Recovery())
 	r.SetTrustedProxies(nil)
 
 	initTemp(r)
 	initRuote(r)
-
+	// fmt.Println("conf.Web.HTTPPort:", conf.Web.HTTPPort)
 	r.Run(fmt.Sprintf(":%d", conf.Web.HTTPPort))
 }
