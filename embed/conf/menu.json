@@ -283,10 +283,6 @@
                     },
                     {
                         "code":"system_database",
-                        "path": "/system/db"
-                    },
-                    {
-                        "code":"system_database",
                         "path": "/system/database"
                     },
                     {
@@ -304,6 +300,26 @@
                     {
                         "code":"system_database",
                         "path": "/system/database/clean_setting"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db"
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db/details" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db/clean" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db/update" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/db/logs" 
                     }
                 ]
             }

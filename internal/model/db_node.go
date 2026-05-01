@@ -6,6 +6,7 @@ type DbNode struct {
 	Host       string `json:"host"`                 // host
 	Port       int64  `json:"port"`                 // port
 	Dbname     string `json:"dbname"`               // dbname
+	DbType     string `json:"db_type"`              // db_type: mysql/postgresql/sqlite3
 	Username   string `json:"username"`             // username
 	Password   string `json:"password"`             // password
 	Order      int64  `json:"order"`                // order
