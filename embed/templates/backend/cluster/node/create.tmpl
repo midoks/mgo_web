@@ -36,6 +36,7 @@
                                 <td>IP地址</td>
                                 <td>
                                     <div id="ip">
+                                        <input type="hidden" name="ip_addresses_json" value="[]">
                                         <span id="ip_btn"></span>
                                         <span class="line" style="display:none;margin: 8px 0px;"></span>
                                         <span id="ip_origin">
@@ -137,8 +138,8 @@
                                 <div class="ssh">
                                     <span class="ssh_btn"></span>
                                     <span class="ssh_origin">
-                                        <a class="mlink" onclick="Admin.open('选择区域','/{[$.admin_path]}/clusters/select/region',500,330)">[选择已用认证]</a>
-                                        <a class="mlink" onclick="Admin.open('添加区域','/{[$.admin_path]}/clusters/ssh/create',500,330)">[添加新认证]</a>
+                                        <a class="mlink" onclick="Admin.open('选择已用认证','/{[$.admin_path]}/clusters/select/ssh',700,500)">[选择已用认证]</a>
+                                        <a class="mlink" onclick="Admin.open('添加新认证','/{[$.admin_path]}/clusters/ssh/add',700,500)">[添加新认证]</a>
                                     </span>
                                 <div>
                                 </td>
@@ -206,6 +207,10 @@ window.loadIpBtn = function(){
     $('#ip .line').css('display','block');
 
     $('#ip_btn .remove').bind('click',function(){
+        
+
+
+        
         $(this).parent().parent().remove();
         var len = $('#ip_btn .ip_row').length;
         if (len < 1){
