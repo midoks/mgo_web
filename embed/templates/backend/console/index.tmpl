@@ -218,14 +218,11 @@
         border: 1px solid #e8e8e8;
         border-radius: 4px;
         overflow: hidden;
+        background: #fff;
     }
     
     .chart-table.gauge-table {
         grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .gauge-table .chart-cell:nth-child(4n+1) {
-        border-left: 1px solid #e8e8e8;
     }
     
     .chart-row {
@@ -233,20 +230,28 @@
     }
     
     .chart-cell {
-        border: 1px solid #e8e8e8;
-        border-top: none;
-        border-left: none;
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
         padding: 15px;
-        background: #fff;
         position: relative;
     }
     
-    .chart-cell:first-child {
-        border-left: 1px solid #e8e8e8;
+    .chart-cell:nth-child(2n) {
+        border-right: none;
     }
     
-    .chart-row:first-child .chart-cell {
-        border-top: 1px solid #e8e8e8;
+    .gauge-table .chart-cell:nth-child(4n) {
+        border-right: none;
+    }
+    
+    .gauge-table .chart-cell:nth-child(4n-1),
+    .gauge-table .chart-cell:nth-child(4n-2),
+    .gauge-table .chart-cell:nth-child(4n-3) {
+        border-right: 1px solid #e8e8e8;
+    }
+    
+    .chart-row:last-child .chart-cell {
+        border-bottom: none;
     }
     
     .chart-label {
