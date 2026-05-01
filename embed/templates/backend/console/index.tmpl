@@ -5,6 +5,7 @@
         font-size: 32px;
         font-weight: bold;
         color: #1890ff;
+        line-height: 1.2;
     }
     
     .dashboard-stat-unit {
@@ -29,6 +30,81 @@
         color: #f5222d;
         font-size: 12px;
         margin-top: 4px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .stats-grid .stat-card {
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+        transition: all 0.3s ease;
+    }
+    
+    .stats-grid .stat-card:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-color: #d9d9d9;
+    }
+    
+    .stats-grid .stat-card .stat-label {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 8px;
+    }
+    
+    .stats-grid .stat-card .stat-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1890ff;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+    }
+    
+    .stats-grid .stat-card .stat-value .stat-unit {
+        font-size: 13px;
+        color: #666;
+        font-weight: normal;
+        margin-left: 4px;
+    }
+    
+    .stats-grid .stat-card .stat-trend {
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    
+    .stats-grid .stat-card .stat-trend.up {
+        color: #52c41a;
+    }
+    
+    .stats-grid .stat-card .stat-trend.down {
+        color: #f5222d;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .stats-grid .stat-card .stat-value {
+            font-size: 22px;
+        }
+    }
+    
+    @media screen and (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
     }
     
     .chart-container {
@@ -244,111 +320,49 @@
     </ul>
     <div class="layui-tab-content" style="padding: 15px;">
         <div class="layui-tab-item layui-show">
-            <!-- 统计卡片 - 第一行 -->
-            <div class="layui-row layui-col-space15">
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body" style="text-align: center;">
-                            <div class="dashboard-stat-value">13</div>
-                            <div class="dashboard-stat-unit">个</div>
-                            <div class="dashboard-stat-label">集群</div>
-                        </div>
-                    </div>
+            <!-- 统计卡片 - 响应式网格布局 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">集群</div>
+                    <div class="stat-value">13<span class="stat-unit">个</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body" style="text-align: center;">
-                            <div class="dashboard-stat-value">103</div>
-                            <div class="dashboard-stat-unit">个</div>
-                            <div class="dashboard-stat-label">边缘节点</div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">边缘节点</div>
+                    <div class="stat-value">103<span class="stat-unit">个</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body" style="text-align: center;">
-                            <div class="dashboard-stat-value">1</div>
-                            <div class="dashboard-stat-unit">个</div>
-                            <div class="dashboard-stat-label">API节点</div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">API节点</div>
+                    <div class="stat-value">1<span class="stat-unit">个</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body" style="text-align: center;">
-                            <div class="dashboard-stat-value">8</div>
-                            <div class="dashboard-stat-unit">个</div>
-                            <div class="dashboard-stat-label">用户</div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">用户</div>
+                    <div class="stat-value">8<span class="stat-unit">个</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body" style="text-align: center;">
-                            <div class="dashboard-stat-value">267</div>
-                            <div class="dashboard-stat-unit">个</div>
-                            <div class="dashboard-stat-label">网站</div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">网站</div>
+                    <div class="stat-value">267<span class="stat-unit">个</span></div>
                 </div>
-            </div>
-
-            <!-- 流量统计 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div style="text-align: center;">
-                                <div class="dashboard-stat-value">9.74</div>
-                                <div class="dashboard-stat-unit">TiB</div>
-                                <div class="dashboard-stat-label">本周流量</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">本周流量</div>
+                    <div class="stat-value">9.74<span class="stat-unit">TiB</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div style="text-align: center;">
-                                <div class="dashboard-stat-value">2.21</div>
-                                <div class="dashboard-stat-unit">TiB</div>
-                                <div class="dashboard-stat-label">昨日流量</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">昨日流量</div>
+                    <div class="stat-value">2.21<span class="stat-unit">TiB</span></div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div style="text-align: center;">
-                                <div class="dashboard-stat-value">3,262,949</div>
-                                <div class="dashboard-stat-label">当天独立IP</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">当天独立IP</div>
+                    <div class="stat-value">3,262,949</div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div style="text-align: center;">
-                                <div class="dashboard-stat-value">1.11</div>
-                                <div class="dashboard-stat-unit">TiB</div>
-                                <div class="dashboard-trend-up">+22.76%</div>
-                                <div class="dashboard-stat-label">当天流量</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">当天流量</div>
+                    <div class="stat-value">1.11<span class="stat-unit">TiB</span></div>
+                    <div class="stat-trend up">+22.76%</div>
                 </div>
-                <div class="layui-col-md2">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <div style="text-align: center;">
-                                <div style="font-size: 13px; color: #666; margin-bottom: 5px;">加拿大 魁北克 蒙特利尔</div>
-                                <div style="font-size: 12px; color: #999;">2026-04-26</div>
-                                <div class="dashboard-stat-label" style="margin-top: 10px;">上次登录</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-label">上次登录</div>
+                    <div style="font-size: 12px; color: #666; text-align: center;">加拿大 魁北克 蒙特利尔</div>
+                    <div style="font-size: 11px; color: #999;">2026-04-26</div>
                 </div>
             </div>
 
@@ -409,7 +423,7 @@
                     <div class="layui-card map-card-container">
                         <div class="layui-card-header" style="font-weight: 600;">全球分布</div>
                         <div class="layui-card-body">
-                            <div id="world-map" class="map-container" style="width: 400px;"></div>
+                            <div id="world-map" class="map-container" style="width: 410px;"></div>
                             
                             <!-- 悬浮的国家/地区排行 -->
                             <div class="floating-rank-card">
