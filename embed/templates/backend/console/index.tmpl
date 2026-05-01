@@ -32,94 +32,176 @@
         margin-top: 4px;
     }
     
-    .stats-grid {
+    .stats-table {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 15px;
+        gap: 0;
         margin-bottom: 15px;
-    }
-    
-    .stats-grid .stat-card {
-        background: #fff;
         border: 1px solid #e8e8e8;
         border-radius: 4px;
-        padding: 15px;
+        overflow: hidden;
+        row-gap: 0;
+    }
+    
+    .stats-cell {
+        border: 1px solid #e8e8e8;
+        border-top: none;
+        border-left: none;
+        padding: 20px 15px;
+        position: relative;
+        min-height: 90px;
+        background: #fff;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100px;
-        transition: all 0.3s ease;
-        box-sizing: border-box;
     }
     
-    .stats-grid .stat-card:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border-color: #d9d9d9;
+    .stats-cell:nth-child(-n+5) {
+        border-top: 1px solid #e8e8e8;
     }
     
-    .stats-grid .stat-card .stat-label {
-        font-size: 13px;
+    .stats-cell:nth-child(5n+1) {
+        border-left: 1px solid #e8e8e8;
+    }
+    
+    .stats-cell .stat-label {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 12px;
         color: #999;
-        margin-bottom: 8px;
-        order: 1;
     }
     
-    .stats-grid .stat-card .stat-value {
+    .stats-cell .stat-value-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .stats-cell .stat-value {
         font-size: 28px;
         font-weight: bold;
-        color: #1890ff;
+        color: #333;
         display: flex;
         align-items: baseline;
         justify-content: center;
-        order: 2;
+        gap: 4px;
     }
     
-    .stats-grid .stat-card .stat-value .stat-unit {
-        font-size: 13px;
-        color: #666;
+    .stats-cell .stat-value .stat-number {
+        color: #333;
+    }
+    
+    .stats-cell .stat-value .stat-unit {
+        font-size: 14px;
+        color: #999;
         font-weight: normal;
-        margin-left: 4px;
     }
     
-    .stats-grid .stat-card .stat-trend {
-        font-size: 12px;
+    .stats-cell .stat-trend-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-top: 4px;
-        order: 3;
     }
     
-    .stats-grid .stat-card .stat-trend.up {
+    .stats-cell .stat-trend {
+        font-size: 12px;
+    }
+    
+    .stats-cell .stat-trend.up {
         color: #52c41a;
     }
     
-    .stats-grid .stat-card .stat-trend.down {
+    .stats-cell .stat-trend.down {
         color: #f5222d;
     }
     
-    @media screen and (max-width: 1200px) {
-        .stats-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
+    .stats-cell .stat-detail {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+        text-align: center;
+    }
+    
+    .stats-cell .refresh-icon {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 14px;
+        color: #1890ff;
+        cursor: pointer;
+    }
+    
+    .stats-cell.login-cell .stat-value-wrap {
+        margin-top: 20px;
+    }
+    
+    .stats-cell.login-cell .login-content {
+        font-size: 13px;
+        color: #333;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .stats-cell.login-cell .login-date {
+        font-size: 12px;
+        color: #999;
+        margin-top: 4px;
     }
     
     @media screen and (max-width: 992px) {
-        .stats-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    
-    @media screen and (max-width: 768px) {
-        .stats-grid {
+        .stats-table {
+            display: grid;
             grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+            row-gap: 8px;
         }
-        .stats-grid .stat-card .stat-value {
-            font-size: 22px;
+        
+        .stats-row {
+            display: contents;
+        }
+        
+        .stats-cell {
+            border: 1px solid #e8e8e8;
+            border-top: none;
+            border-left: none;
+        }
+        
+        .stats-row:first-child .stats-cell {
+            border-top: 1px solid #e8e8e8;
+        }
+        
+        .stats-cell:first-child {
+            border-left: 1px solid #e8e8e8;
+        }
+        
+        .stats-cell .stat-value {
+            font-size: 24px;
+        }
+        
+        .stats-cell:last-child:nth-child(odd) {
+            grid-column: span 2;
         }
     }
     
     @media screen and (max-width: 480px) {
-        .stats-grid {
+        .stats-table {
             grid-template-columns: 1fr;
+        }
+        
+        .stats-cell:last-child:nth-child(odd) {
+            grid-column: span 1;
+        }
+        
+        .stats-cell .stat-value {
+            font-size: 22px;
         }
     }
     
@@ -336,49 +418,73 @@
     </ul>
     <div class="layui-tab-content" style="padding: 15px;">
         <div class="layui-tab-item layui-show">
-            <!-- 统计卡片 - 响应式网格布局 -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">集群</div>
-                    <div class="stat-value">13<span class="stat-unit">个</span></div>
+            <!-- 统计卡片 - 表格布局 -->
+            <div class="stats-table">
+                <div class="stats-cell">
+                    <span class="stat-label">集群</span>
+                    <span class="refresh-icon">⟳</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">13</span><span class="stat-unit">个</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">边缘节点</div>
-                    <div class="stat-value">103<span class="stat-unit">个</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">边缘节点</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">103</span><span class="stat-unit">个</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">API节点</div>
-                    <div class="stat-value">1<span class="stat-unit">个</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">API节点</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">1</span><span class="stat-unit">个</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">用户</div>
-                    <div class="stat-value">8<span class="stat-unit">个</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">用户</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">8</span><span class="stat-unit">个</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">网站</div>
-                    <div class="stat-value">267<span class="stat-unit">个</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">网站</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">267</span><span class="stat-unit">个</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">本周流量</div>
-                    <div class="stat-value">9.74<span class="stat-unit">TiB</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">本周流量</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">9.74</span><span class="stat-unit">TiB</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">昨日流量</div>
-                    <div class="stat-value">2.21<span class="stat-unit">TiB</span></div>
+                <div class="stats-cell">
+                    <span class="stat-label">昨日流量</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">2.21</span><span class="stat-unit">TiB</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">当天独立IP</div>
-                    <div class="stat-value">3,262,949</div>
+                <div class="stats-cell">
+                    <span class="stat-label">当天独立IP</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">3,262,949</span></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">当天流量</div>
-                    <div class="stat-value">1.11<span class="stat-unit">TiB</span></div>
-                    <div class="stat-trend up">+22.76%</div>
+                <div class="stats-cell">
+                    <span class="stat-label">当天流量</span>
+                    <div class="stat-value-wrap">
+                        <div class="stat-value"><span class="stat-number">1.11</span><span class="stat-unit">TiB</span></div>
+                        <div class="stat-trend-wrap">
+                            <span>/</span>
+                            <span class="stat-trend up">+22.76%</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">上次登录</div>
-                    <div style="font-size: 12px; color: #666; text-align: center;">加拿大 魁北克 蒙特利尔</div>
-                    <div style="font-size: 11px; color: #999;">2026-04-26</div>
+                <div class="stats-cell login-cell">
+                    <span class="stat-label">上次登录</span>
+                    <div class="stat-value-wrap">
+                        <div class="login-content">加拿大 魁北克 蒙特利尔</div>
+                        <div class="login-date">2026-04-26</div>
+                    </div>
                 </div>
             </div>
 
