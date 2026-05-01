@@ -89,6 +89,9 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin := backstage.Group("")
 	backstage_admin.Use(middleware.CheckInstalled(), middleware.AuthRequired())
 
+	// 控制台
+	backstage_admin.GET("/console", backend.ConsoleIndex)
+
 	// 管理员
 	backstage_admin.GET("", backend.HomePage)
 	backstage_admin.GET("/index", handles.Home)
