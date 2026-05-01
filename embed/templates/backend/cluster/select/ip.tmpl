@@ -181,11 +181,27 @@ form.on('submit(select)', function(data){
                     ip_array = [];
                 }
             } catch (e) {
-                ip_array = [];
+                console.log(e);
             }
         }
+
+        if (ip_array.length>0){
+            var is_has = false;
+            for (var i = 0; i < ip_array.length; i++) {
+                if (ip_array[i].ip == field["ip"]){
+                    is_has = true;
+                }
+            }
+
+            if (!is_has){
+                ip_array.push(field);
+            }
+
+        } else {
+            ip_array.push(field);
+        }
         
-        ip_array.push(field);
+        
         var data = JSON.stringify(ip_array);
         parent.$('input[name="ip_addresses_json"]').val(data);
 

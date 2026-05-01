@@ -136,7 +136,44 @@ window.loadIpBtn = function(){
     $('#ip_origin').show();
     $('#ip .line').css('display','block');
 
+
+
     $('#ip_btn .remove').bind('click',function(){
+
+        var delete_ip = $(this).parent().parent().find(".ip").text();
+
+        var ip_addr_data = $('input[name="ip_addresses_json"]').val();
+        var ip_array = [];
+        
+        if (ip_addr_data) {
+            try {
+                ip_array = JSON.parse(ip_addr_data);
+                if (!Array.isArray(ip_array)) {
+                    ip_array = [];
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        if (ip_array.length>0){
+            var is_has = false;
+            for (var i = 0; i < ip_array.length; i++) {
+                if (ip_array[i].ip == delete_ip){
+                    is_has = true;
+                    delete ip_array[i];
+                }
+            }
+
+            if (!is_has){
+                ip_array.push(field);
+            }
+        }
+
+        // console.log(ip_array);
+        var data = JSON.stringify(ip_array);
+        $('input[name="ip_addresses_json"]').val(data);
+
         $(this).parent().parent().remove();
         var len = $('#ip_btn .ip_row').length;
         if (len < 1){
