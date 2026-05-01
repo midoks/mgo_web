@@ -93,11 +93,149 @@
         color: #999;
         font-size: 12px;
     }
+    
+    .map-card-container {
+        position: relative;
+    }
+    
+    .floating-rank-card {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 150px;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        max-height: 280px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .floating-rank-card .layui-card-body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 160px;
+    }
+    
+    .floating-rank-card .layui-card-header {
+        padding: 8px 10px;
+        flex-shrink: 0;
+    }
+    
+    .floating-rank-card .rank-list li {
+        padding: 6px 0;
+    }
+    
+    .floating-rank-card .rank-name {
+        font-size: 12px;
+    }
+    
+    .floating-rank-card .rank-value {
+        font-size: 13px;
+        margin-right: 5px;
+    }
+    
+    .floating-rank-card .rank-percent {
+        font-size: 11px;
+    }
+    
+    .floating-rank-card .layui-card-body::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .floating-rank-card .layui-card-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+    
+    .floating-rank-card .layui-card-body::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+    
+    .floating-rank-card .layui-card-body::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+    
+    .rank-help-icon {
+        float: right;
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        background: #e8f4fd;
+        color: #1890ff;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: help;
+    }
+    
+    .rank-list-progress {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .rank-list-progress li {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .rank-list-progress li:last-child {
+        border-bottom: none;
+    }
+    
+    .rank-progress-bar {
+        height: 4px;
+        background: #f0f0f0;
+        border-radius: 2px;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+    
+    .rank-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #1890ff, #40a9ff);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+    }
+    
+    .rank-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .rank-info .rank-name {
+        font-size: 11px;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .rank-detail {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+    }
+    
+    .rank-detail .rank-value {
+        font-size: 10px;
+        font-weight: bold;
+        color: #666;
+    }
+    
+    .rank-detail .rank-percent {
+        font-size: 11px;
+        color: #999;
+    }
 </style>
 
 <!-- 标签页导航 -->
 <div class="layui-tab layui-tab-card" lay-filter="console-tabs">
-    <ul class="layui-tab-title" style="padding:0 15px;">
+    <ul class="layui-tab-title" style="padding:0 15px 0;">
         <li class="layui-this">概况</li>
         <li>WAF</li>
         <li>DNS</li>
@@ -268,52 +406,92 @@
             <!-- 地图和排行 -->
             <div class="layui-row layui-col-space15" style="margin-top: 15px;">
                 <div class="layui-col-md6">
-                    <div class="layui-card">
+                    <div class="layui-card map-card-container">
                         <div class="layui-card-header" style="font-weight: 600;">全球分布</div>
                         <div class="layui-card-body">
-                            <div id="world-map" class="map-container"></div>
+                            <div id="world-map" class="map-container" style="width: 400px;"></div>
+                            
+                            <!-- 悬浮的国家/地区排行 -->
+                            <div class="floating-rank-card">
+                                <div class="layui-card">
+                                    <div class="layui-card-header" style="font-weight: 600; font-size: 13px; padding: 10px;">
+                                        <span>国家/地区排行</span>
+                                        <span class="rank-help-icon">?</span>
+                                    </div>
+                                    <div class="layui-card-body" style="padding: 10px;">
+                                        <ul class="rank-list-progress" style="margin-bottom: 0;">
+                                            <li>
+                                                <div class="rank-progress-bar">
+                                                    <div class="rank-progress-fill" style="width: 99.53%;"></div>
+                                                </div>
+                                                <div class="rank-info">
+                                                    <span class="rank-name">中国</span>
+                                                    <span class="rank-detail">
+                                                        <span class="rank-value">99.53%</span>
+                                                        <span class="rank-percent">(1012.1GiB)</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="rank-progress-bar">
+                                                    <div class="rank-progress-fill" style="width: 0.12%;"></div>
+                                                </div>
+                                                <div class="rank-info">
+                                                    <span class="rank-name">美国</span>
+                                                    <span class="rank-detail">
+                                                        <span class="rank-value">0.12%</span>
+                                                        <span class="rank-percent">(1.22GiB)</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="rank-progress-bar">
+                                                    <div class="rank-progress-fill" style="width: 0.10%;"></div>
+                                                </div>
+                                                <div class="rank-info">
+                                                    <span class="rank-name">日本</span>
+                                                    <span class="rank-detail">
+                                                        <span class="rank-value">0.10%</span>
+                                                        <span class="rank-percent">(1.02GiB)</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="rank-progress-bar">
+                                                    <div class="rank-progress-fill" style="width: 0.08%;"></div>
+                                                </div>
+                                                <div class="rank-info">
+                                                    <span class="rank-name">韩国</span>
+                                                    <span class="rank-detail">
+                                                        <span class="rank-value">0.08%</span>
+                                                        <span class="rank-percent">(819MiB)</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="rank-progress-bar">
+                                                    <div class="rank-progress-fill" style="width: 0.05%;"></div>
+                                                </div>
+                                                <div class="rank-info">
+                                                    <span class="rank-name">新加坡</span>
+                                                    <span class="rank-detail">
+                                                        <span class="rank-value">0.05%</span>
+                                                        <span class="rank-percent">(512MiB)</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-md3">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">国家/地区排行</div>
-                        <div class="layui-card-body">
-                            <ul class="rank-list">
-                                <li>
-                                    <span class="rank-name">中国</span>
-                                    <span class="rank-value">99.53%</span>
-                                    <span class="rank-percent">(1012.1GiB)</span>
-                                </li>
-                                <li>
-                                    <span class="rank-name">美国</span>
-                                    <span class="rank-value">0.12%</span>
-                                    <span class="rank-percent">(1.22GiB)</span>
-                                </li>
-                                <li>
-                                    <span class="rank-name">日本</span>
-                                    <span class="rank-value">0.10%</span>
-                                    <span class="rank-percent">(1.02GiB)</span>
-                                </li>
-                                <li>
-                                    <span class="rank-name">韩国</span>
-                                    <span class="rank-value">0.08%</span>
-                                    <span class="rank-percent">(819MiB)</span>
-                                </li>
-                                <li>
-                                    <span class="rank-name">新加坡</span>
-                                    <span class="rank-value">0.05%</span>
-                                    <span class="rank-percent">(512MiB)</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-md3">
+                <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header" style="font-weight: 600;">24小时流量趋势</div>
                         <div class="layui-card-body">
-                            <div id="traffic-chart" class="chart-container" style="height: 180px;"></div>
+                            <div id="traffic-chart" class="chart-container" style="height: 280px;"></div>
                         </div>
                     </div>
                 </div>
