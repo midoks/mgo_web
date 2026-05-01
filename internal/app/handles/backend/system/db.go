@@ -13,6 +13,12 @@ import (
 	"mgo/internal/model"
 )
 
+type DbNodeWithInfo struct {
+	model.DbNode
+	DbVersion string `json:"db_version"`
+	DbUsage   string `json:"db_usage"`
+}
+
 func Db(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetSysAdvancedSubMenu()
@@ -101,7 +107,24 @@ func DbNodeList(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
-	common.SuccessLayuiResp(c, count, "ok", result)
+
+	var listWithInfo []DbNodeWithInfo
+	for _, node := range result {
+		nodeWithInfo := DbNodeWithInfo{
+			DbNode: node,
+		}
+		// 总是尝试获取数据库信息，支持通过端口自动推断类型
+		if info, err := db.GetDbNodeInfo(&node); err == nil {
+			nodeWithInfo.DbVersion = info.Version
+			nodeWithInfo.DbUsage = info.Usage
+		} else {
+			nodeWithInfo.DbVersion = "连接失败"
+			nodeWithInfo.DbUsage = "连接失败"
+		}
+		listWithInfo = append(listWithInfo, nodeWithInfo)
+	}
+
+	common.SuccessLayuiResp(c, count, "ok", listWithInfo)
 }
 
 func PostDbNodeAdd(c *gin.Context) {
@@ -114,13 +137,14 @@ func PostDbNodeAdd(c *gin.Context) {
 
 	common_data := &model.DbNode{
 		Name:       field.Name,
-		Host:       field.Host, // 暂时设为0，需要根据实际情况转换
+		Host:       field.Host,
 		Port:       int64(field.Port),
 		Dbname:     field.Dbname,
+		DbType:     field.DbType,
 		Username:   field.Username,
 		Password:   field.Password,
-		Order:      0, // 默认值
-		Weigth:     0, // 默认值
+		Order:      0,
+		Weigth:     0,
 		Status:     field.Status,
 		UpdateTime: time.Now().Unix(),
 	}

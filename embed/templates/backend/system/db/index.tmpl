@@ -4,7 +4,7 @@
     <div class="layui-col-md12" style="padding: 5px;">
         <div class="layui-card">
             <div class="layui-card-body">
-                                
+
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         {[range $menu := .submenu]}
@@ -12,7 +12,6 @@
                         {[end]}
                     </ul>
                 </div>
-
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
@@ -38,14 +37,14 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/system/db/list',
+    url: '/{[$.admin_path]}/system/db/list',
     title: '数据表',
     cols: [[
         {field:'name', title:'节点名称'},
         {field:'host', title:'连接地址', toolbar:"#hostTpl"},
-        {field:'dbname', title:'数据库名'},
-        {field:'dbname', title:'数据库版本'},
-        {field:'dbname', title:'用量'},
+        {field:'dbname', title:'数据库名称'},
+        {field:'db_version', title:'数据库版本'},
+        {field:'db_usage', title:'用量'},
         {field:'status', title:'状态', toolbar:"#statusTpl"},
         {title:'操作', toolbar: '#cmdTpl', width:120, fixed: 'right'}
      ]],
@@ -67,7 +66,7 @@ table.render({
 <script type="text/html" id="hostTpl">{{d.host}}:{{d.port}}</script>
 
 <script type="text/html" id="cmdTpl">
-<a class="layui-btn layui-btn-xs" href="/{[.admin_path]}/system/db/details?id={{d.id}}">详情</a>
+<a class="layui-btn layui-btn-xs" href="/{[$.admin_path]}/system/db/details?id={{d.id}}">详情</a>
 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">删除</a>
 </script>
 
