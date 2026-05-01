@@ -244,6 +244,10 @@
                     },
                     {
                         "code":"system_settings",
+                        "path": "/system/settings/web"
+                    },
+                    {
+                        "code":"system_settings",
                         "path": "/system/settings/profile"
                     },
                     {
