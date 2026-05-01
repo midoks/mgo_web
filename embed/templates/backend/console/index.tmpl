@@ -210,6 +210,170 @@
         width: 100%;
     }
     
+    .chart-table {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0;
+        margin-top: 15px;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .chart-table.gauge-table {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .gauge-table .chart-cell:nth-child(4n+1) {
+        border-left: 1px solid #e8e8e8;
+    }
+    
+    .chart-row {
+        display: contents;
+    }
+    
+    .chart-cell {
+        border: 1px solid #e8e8e8;
+        border-top: none;
+        border-left: none;
+        padding: 15px;
+        background: #fff;
+        position: relative;
+    }
+    
+    .chart-cell:first-child {
+        border-left: 1px solid #e8e8e8;
+    }
+    
+    .chart-row:first-child .chart-cell {
+        border-top: 1px solid #e8e8e8;
+    }
+    
+    .chart-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        display: block;
+    }
+    
+    .chart-value {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-top: -20px;
+    }
+    
+    .chart-detail {
+        font-size: 12px;
+        color: #999;
+        text-align: center;
+        margin-top: 4px;
+    }
+    
+    .chart-cell.map-cell {
+        position: relative;
+    }
+    
+    .chart-cell.map-cell .map-container {
+        width: 100%;
+        height: 280px;
+    }
+    
+    .chart-cell.map-cell .floating-rank-card {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        width: 200px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .chart-cell.map-cell .rank-header {
+        padding: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #333;
+        background: #fafafa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .chart-cell.map-cell .rank-help-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #1890ff;
+        color: #fff;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: help;
+    }
+    
+    .chart-cell.map-cell .rank-list {
+        padding: 10px;
+        max-height: 160px;
+        overflow-y: auto;
+    }
+    
+    .chart-cell.map-cell .rank-item {
+        margin-bottom: 8px;
+    }
+    
+    .chart-cell.map-cell .rank-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .chart-cell.map-cell .rank-progress-bar {
+        height: 4px;
+        background: #f0f0f0;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 4px;
+    }
+    
+    .chart-cell.map-cell .rank-progress-fill {
+        height: 100%;
+        background: linear-gradient(to right, #1890ff, #40a9ff);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+    }
+    
+    .chart-cell.map-cell .rank-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .chart-cell.map-cell .rank-name {
+        font-size: 12px;
+        color: #333;
+    }
+    
+    .chart-cell.map-cell .rank-detail {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .chart-cell.map-cell .rank-value {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1890ff;
+    }
+    
+    .chart-cell.map-cell .rank-percent {
+        font-size: 11px;
+        color: #999;
+    }
+    
     .pie-chart-container {
         height: 200px;
         width: 100%;
@@ -488,227 +652,169 @@
                 </div>
             </div>
 
-            <!-- 仪表盘 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md3">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="text-align: center; font-weight: 600;">总流量</div>
-                        <div class="layui-card-body">
-                            <div id="gauge-traffic" class="gauge-container"></div>
-                            <div style="text-align: center; margin-top: -20px;">
-                                <div style="font-size: 16px; font-weight: bold; color: #333;">212.7637 Mbps</div>
-                            </div>
-                        </div>
+            <!-- 仪表盘 - 表格风格 -->
+            <div class="chart-table gauge-table">
+                <div class="chart-row">
+                    <div class="chart-cell">
+                        <div class="chart-label">总流量</div>
+                        <div id="gauge-traffic" class="gauge-container"></div>
+                        <div class="chart-value">212.7637 Mbps</div>
                     </div>
-                </div>
-                <div class="layui-col-md3">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="text-align: center; font-weight: 600;">平均CPU用量</div>
-                        <div class="layui-card-body">
-                            <div id="gauge-cpu" class="gauge-container"></div>
-                            <div style="text-align: center; margin-top: -20px;">
-                                <div style="font-size: 16px; font-weight: bold; color: #333;">1.50%</div>
-                                <div style="font-size: 12px; color: #999;">共815核</div>
-                            </div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">平均CPU用量</div>
+                        <div id="gauge-cpu" class="gauge-container"></div>
+                        <div class="chart-value">1.50%</div>
+                        <div class="chart-detail">共815核</div>
                     </div>
-                </div>
-                <div class="layui-col-md3">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="text-align: center; font-weight: 600;">平均内存用量</div>
-                        <div class="layui-card-body">
-                            <div id="gauge-memory" class="gauge-container"></div>
-                            <div style="text-align: center; margin-top: -20px;">
-                                <div style="font-size: 16px; font-weight: bold; color: #333;">23.84%</div>
-                                <div style="font-size: 12px; color: #999;">共1.24TiB</div>
-                            </div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">平均内存用量</div>
+                        <div id="gauge-memory" class="gauge-container"></div>
+                        <div class="chart-value">23.84%</div>
+                        <div class="chart-detail">共1.24TiB</div>
                     </div>
-                </div>
-                <div class="layui-col-md3">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="text-align: center; font-weight: 600;">平均负载</div>
-                        <div class="layui-card-body">
-                            <div id="gauge-load" class="gauge-container"></div>
-                            <div style="text-align: center; margin-top: -20px;">
-                                <div style="font-size: 16px; font-weight: bold; color: #333;">0.13/min</div>
-                                <div style="font-size: 12px; color: #999;">0.12/5min</div>
-                            </div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">平均负载</div>
+                        <div id="gauge-load" class="gauge-container"></div>
+                        <div class="chart-value">0.13/min</div>
+                        <div class="chart-detail">0.12/5min</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 地图和排行 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md6">
-                    <div class="layui-card map-card-container">
-                        <div class="layui-card-header" style="font-weight: 600;">全球分布</div>
-                        <div class="layui-card-body">
-                            <div id="world-map" class="map-container" style="width: 410px;"></div>
-                            
-                            <!-- 悬浮的国家/地区排行 -->
-                            <div class="floating-rank-card">
-                                <div class="layui-card">
-                                    <div class="layui-card-header" style="font-weight: 600; font-size: 13px; padding: 10px;">
-                                        <span>国家/地区排行</span>
-                                        <span class="rank-help-icon">?</span>
+            <!-- 地图和排行 - 表格风格 -->
+            <div class="chart-table">
+                <div class="chart-row">
+                    <div class="chart-cell map-cell">
+                        <div class="chart-label">全球分布</div>
+                        <div id="world-map" class="map-container"></div>
+                        <div class="floating-rank-card">
+                            <div class="rank-header">
+                                <span>国家/地区排行</span>
+                                <span class="rank-help-icon">?</span>
+                            </div>
+                            <div class="rank-list">
+                                <div class="rank-item">
+                                    <div class="rank-progress-bar">
+                                        <div class="rank-progress-fill" style="width: 99.53%;"></div>
                                     </div>
-                                    <div class="layui-card-body" style="padding: 10px;">
-                                        <ul class="rank-list-progress" style="margin-bottom: 0;">
-                                            <li>
-                                                <div class="rank-progress-bar">
-                                                    <div class="rank-progress-fill" style="width: 99.53%;"></div>
-                                                </div>
-                                                <div class="rank-info">
-                                                    <span class="rank-name">中国</span>
-                                                    <span class="rank-detail">
-                                                        <span class="rank-value">99.53%</span>
-                                                        <span class="rank-percent">(1012.1GiB)</span>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="rank-progress-bar">
-                                                    <div class="rank-progress-fill" style="width: 0.12%;"></div>
-                                                </div>
-                                                <div class="rank-info">
-                                                    <span class="rank-name">美国</span>
-                                                    <span class="rank-detail">
-                                                        <span class="rank-value">0.12%</span>
-                                                        <span class="rank-percent">(1.22GiB)</span>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="rank-progress-bar">
-                                                    <div class="rank-progress-fill" style="width: 0.10%;"></div>
-                                                </div>
-                                                <div class="rank-info">
-                                                    <span class="rank-name">日本</span>
-                                                    <span class="rank-detail">
-                                                        <span class="rank-value">0.10%</span>
-                                                        <span class="rank-percent">(1.02GiB)</span>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="rank-progress-bar">
-                                                    <div class="rank-progress-fill" style="width: 0.08%;"></div>
-                                                </div>
-                                                <div class="rank-info">
-                                                    <span class="rank-name">韩国</span>
-                                                    <span class="rank-detail">
-                                                        <span class="rank-value">0.08%</span>
-                                                        <span class="rank-percent">(819MiB)</span>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="rank-progress-bar">
-                                                    <div class="rank-progress-fill" style="width: 0.05%;"></div>
-                                                </div>
-                                                <div class="rank-info">
-                                                    <span class="rank-name">新加坡</span>
-                                                    <span class="rank-detail">
-                                                        <span class="rank-value">0.05%</span>
-                                                        <span class="rank-percent">(512MiB)</span>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                    <div class="rank-info">
+                                        <span class="rank-name">中国</span>
+                                        <span class="rank-detail">
+                                            <span class="rank-value">99.53%</span>
+                                            <span class="rank-percent">(1012.1GiB)</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-progress-bar">
+                                        <div class="rank-progress-fill" style="width: 0.12%;"></div>
+                                    </div>
+                                    <div class="rank-info">
+                                        <span class="rank-name">美国</span>
+                                        <span class="rank-detail">
+                                            <span class="rank-value">0.12%</span>
+                                            <span class="rank-percent">(1.22GiB)</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-progress-bar">
+                                        <div class="rank-progress-fill" style="width: 0.10%;"></div>
+                                    </div>
+                                    <div class="rank-info">
+                                        <span class="rank-name">日本</span>
+                                        <span class="rank-detail">
+                                            <span class="rank-value">0.10%</span>
+                                            <span class="rank-percent">(1.02GiB)</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-progress-bar">
+                                        <div class="rank-progress-fill" style="width: 0.08%;"></div>
+                                    </div>
+                                    <div class="rank-info">
+                                        <span class="rank-name">韩国</span>
+                                        <span class="rank-detail">
+                                            <span class="rank-value">0.08%</span>
+                                            <span class="rank-percent">(819MiB)</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-progress-bar">
+                                        <div class="rank-progress-fill" style="width: 0.05%;"></div>
+                                    </div>
+                                    <div class="rank-info">
+                                        <span class="rank-name">新加坡</span>
+                                        <span class="rank-detail">
+                                            <span class="rank-value">0.05%</span>
+                                            <span class="rank-percent">(512MiB)</span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">24小时流量趋势</div>
-                        <div class="layui-card-body">
-                            <div id="traffic-chart" class="chart-container" style="height: 280px;"></div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">24小时流量趋势</div>
+                        <div id="traffic-chart" class="chart-container"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 访问量趋势 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">24小时访问量趋势</div>
-                        <div class="layui-card-body">
-                            <div id="access-chart" class="chart-container"></div>
-                        </div>
+            <!-- 访问量趋势 - 表格风格 -->
+            <div class="chart-table">
+                <div class="chart-row">
+                    <div class="chart-cell">
+                        <div class="chart-label">24小时访问量趋势</div>
+                        <div id="access-chart" class="chart-container"></div>
                     </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">域名访问排行（24小时）</div>
-                        <div class="layui-card-body">
-                            <div id="domain-chart" class="chart-container"></div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">域名访问排行（24小时）</div>
+                        <div id="domain-chart" class="chart-container"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 节点和来源排行 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">节点访问排行（24小时）</div>
-                        <div class="layui-card-body">
-                            <div id="node-chart" class="chart-container"></div>
-                        </div>
+            <!-- 节点和来源排行 - 表格风格 -->
+            <div class="chart-table">
+                <div class="chart-row">
+                    <div class="chart-cell">
+                        <div class="chart-label">节点访问排行（24小时）</div>
+                        <div id="node-chart" class="chart-container"></div>
                     </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">请求来源排行（请求数）</div>
-                        <div class="layui-card-body">
-                            <div id="source-chart" class="chart-container"></div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">请求来源排行（请求数）</div>
+                        <div id="source-chart" class="chart-container"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 状态码和请求方法 -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">状态码分布（请求数）</div>
-                        <div class="layui-card-body">
-                            <div id="status-chart" class="pie-chart-container"></div>
-                        </div>
+            <!-- 状态码和请求方法 - 表格风格 -->
+            <div class="chart-table">
+                <div class="chart-row">
+                    <div class="chart-cell">
+                        <div class="chart-label">状态码分布（请求数）</div>
+                        <div id="status-chart" class="pie-chart-container"></div>
                     </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">请求方法分布（请求数）</div>
-                        <div class="layui-card-body">
-                            <div id="method-chart" class="pie-chart-container"></div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">请求方法分布（请求数）</div>
+                        <div id="method-chart" class="pie-chart-container"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 请求路径和独立IP -->
-            <div class="layui-row layui-col-space15" style="margin-top: 15px;">
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">请求路径排行（请求数）</div>
-                        <div class="layui-card-body">
-                            <div id="path-chart" class="chart-container"></div>
-                        </div>
+            <!-- 请求路径和独立IP - 表格风格 -->
+            <div class="chart-table">
+                <div class="chart-row">
+                    <div class="chart-cell">
+                        <div class="chart-label">请求路径排行（请求数）</div>
+                        <div id="path-chart" class="chart-container"></div>
                     </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header" style="font-weight: 600;">独立IP排行（下行流量）</div>
-                        <div class="layui-card-body">
-                            <div id="ip-chart" class="chart-container"></div>
-                        </div>
+                    <div class="chart-cell">
+                        <div class="chart-label">独立IP排行（下行流量）</div>
+                        <div id="ip-chart" class="chart-container"></div>
                     </div>
                 </div>
             </div>
