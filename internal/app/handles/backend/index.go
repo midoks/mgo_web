@@ -2,6 +2,7 @@ package backend
 
 import (
 	// "fmt"
+	"errors"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -53,7 +54,7 @@ func loginHash(c *gin.Context, req *LoginReq) {
 	}
 	// validate password hash
 	if err := user.ValidatePwdStaticHash(req.Password); err != nil {
-		common.ErrorResp(c, err, 400)
+		common.ErrorResp(c, errors.New("认证失败"), 400)
 		return
 	}
 
