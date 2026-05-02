@@ -15,17 +15,17 @@ type ClusterNodeUpdateStatus struct {
 }
 
 type ClusterNodeIpAddr struct {
-	Ip             int64  `form:"ip"`
-	AllowPublic    string `form:"allow_public"`
-	CanHealthCheck string `form:"can_health_check"`
-	IsOn           string `form:"is_on"`
-	Description    string `form:"description"`
+	Ip             string `form:"ip" json:"ip"`
+	AllowPublic    string `form:"allow_public" json:"allow_public"`
+	CanHealthCheck string `form:"can_health_check" json:"can_health_check"`
+	IsOn           string `form:"is_on" json:"is_on"`
+	Description    string `form:"description" json:"description"`
 }
 
 type ClusterNodeSettings struct {
-	ID              int64               `form:"id"`
-	Name            string              `form:"name"`
-	IpAddressesJson []ClusterNodeIpAddr `form:"ip_addresses_json"`
+	ID              int64  `form:"id"`
+	Name            string `form:"name"`
+	IpAddressesJson string `form:"ip_addresses_json"`
 }
 
 type ClusterNodeLoginAdd struct {
