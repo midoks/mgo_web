@@ -224,7 +224,7 @@ Admin.prototype.del = function(_this,_url,_id) {
     });
 };
 //弹出层
-Admin.prototype.open = function (title,url,w,h,full) {
+Admin.prototype.open = function (title,url,w,h,full,data) {
     // console.log(title,url,w,h,full);
     if (title == null || title == '') {
         var title = false;
@@ -236,6 +236,12 @@ Admin.prototype.open = function (title,url,w,h,full) {
         var h = ($(window).height() - 50);
     };
     h = h-20;
+    
+    // 存储数据到全局变量，供子页面访问
+    if (data) {
+        window._tempOpenData = data;
+    }
+
     var open = layer.open({
         type: 2,
         area: [w+'px', h +'px'],

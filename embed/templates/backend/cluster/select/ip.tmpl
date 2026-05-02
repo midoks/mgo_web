@@ -133,6 +133,32 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+var editData = null;
+
+// 如果是编辑模式，从父页面读取数据填充表单
+if (parent && parent._tempOpenData) {
+    editData = parent._tempOpenData;
+    // 清理临时数据
+    delete parent._tempOpenData;
+
+    // 填充表单
+    $('input[name="ip"]').val(editData.ip || '');
+    
+    if (editData.allow_public == 1) {
+        $('input[name="allow_public"]').prop('checked', true);
+    }
+    if (editData.can_health_check == 1) {
+        $('input[name="can_health_check"]').prop('checked', true);
+    }
+    if (editData.is_on == 1) {
+        $('input[name="is_on"]').prop('checked', true);
+    }
+    $('textarea[name="description"]').val(editData.description || '');
+    
+    // 重新渲染表单
+    form.render();
+}
+
 //监听全局表单提交
 form.on('submit(select)', function(data){
     var field = data.field;
@@ -161,16 +187,6 @@ form.on('submit(select)', function(data){
     var val = $('input[name=ip]').val();
     if (val && parent && parent.$) {
 
-        var content = '<div class="ip_row" style="display:inline-block;">';
-        content += '<span class="layui-btn layui-btn-primary layui-btn-sm" style="margin-right:8px;">';
-
-        content += '<span class="ip">'+ val +'</span>';
-        content += '<a class="edit" onclick="Admin.open(\'修改IP地址\',\'/{[$.admin_path]}/clusters/select/ip\',700,450)" style="cursor:pointer;"><i class="layui-icon layui-icon-edit"></i></a>';
-        content += '<a class="remove" style="cursor:pointer;"><i class="layui-icon layui-icon-close"></i></a>';
-        content += '</span></div>';
-
-        parent.$('#ip_btn').append(content);
-
         var ip_addr_data = parent.$('input[name="ip_addresses_json"]').val();
         var ip_array = [];
         
@@ -185,7 +201,16 @@ form.on('submit(select)', function(data){
             }
         }
 
-        if (ip_array.length>0){
+        if (editData) {
+            // 编辑模式：更新现有记录
+            for (var i = 0; i < ip_array.length; i++) {
+                if (ip_array[i].ip == editData.ip) {
+                    ip_array[i] = field;
+                    break;
+                }
+            }
+        } else {
+            // 新增模式：添加新记录
             var is_has = false;
             for (var i = 0; i < ip_array.length; i++) {
                 if (ip_array[i].ip == field["ip"]){
@@ -196,12 +221,33 @@ form.on('submit(select)', function(data){
             if (!is_has){
                 ip_array.push(field);
             }
+        }
 
-        } else {
-            ip_array.push(field);
+        // 重新渲染 IP 按钮列表
+        parent.$('#ip_btn').empty();
+        for (var i = 0; i < ip_array.length; i++) {
+            var ipItem = ip_array[i];
+            var statusClass = (ipItem.is_on === 1 || ipItem.is_on === true) ? 'layui-bg-green' : 'layui-bg-gray';
+            var statusText = (ipItem.is_on === 1 || ipItem.is_on === true) ? '启用' : '禁用';
+            var publicIcon = (ipItem.allow_public === 1 || ipItem.allow_public === true) ? '<i class="layui-icon layui-icon-share" style="color:#1E9FFF;margin-left:6px;"></i>' : '';
+            
+            var content = '<span class="ip_item" style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;margin:4px;background:#fafafa;border-radius:4px;border:1px solid #e2e2e2;">';
+            content += '<i class="layui-icon layui-icon-ip" style="color:#1E9FFF;"></i>';
+            content += '<span class="ip" style="font-family:monospace;font-weight:500;color:#333;">'+ ipItem.ip +'</span>';
+            content += publicIcon;
+            content += '<span class="layui-badge '+ statusClass +'">'+ statusText +'</span>';
+            content += '<a class="edit" data-ip=\''+ JSON.stringify(ipItem) +'\' style="cursor:pointer;color:#1E9FFF;margin-left:4px;" title="编辑">';
+            content += '<i class="layui-icon layui-icon-edit"></i></a>';
+            content += '<a class="remove" style="cursor:pointer;color:#FF5722;" title="删除">';
+            content += '<i class="layui-icon layui-icon-close"></i></a>';
+            content += '</span>';
+            parent.$('#ip_btn').append(content);
         }
         
-        
+        // 重新绑定编辑按钮事件
+        parent.window.loadIpBtn();
+
+        // 保存数据
         var data = JSON.stringify(ip_array);
         parent.$('input[name="ip_addresses_json"]').val(data);
 

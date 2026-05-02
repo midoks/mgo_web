@@ -1,8 +1,8 @@
 package cluster
 
 import (
+	"encoding/json"
 	"errors"
-	// "fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -51,6 +51,13 @@ func NodeSettings(c *gin.Context) {
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
 	node_data, _ := db.GetClusterNodeByID(node_idint)
 	data["Data"] = node_data
+
+	if node_data != nil && node_data.IpAddressesJson != "" {
+		data["IpAddressesJson"] = node_data.IpAddressesJson
+	} else {
+		data["IpAddressesJson"] = "[]"
+	}
+
 	c.HTML(http.StatusOK, "backend/cluster/node/settings.tmpl", data)
 }
 
@@ -66,13 +73,13 @@ func PostNodeSettings(c *gin.Context) {
 		return
 	}
 
-	if field.ID > 0 {
-
-	}
+	ipJsonBytes, _ := json.Marshal(field.IpAddressesJson)
+	ipJsonStr := string(ipJsonBytes)
 
 	common_data := &model.ClusterNode{
-		Name:       field.Name,
-		UpdateTime: time.Now().Unix(),
+		Name:            field.Name,
+		IpAddressesJson: ipJsonStr,
+		UpdateTime:      time.Now().Unix(),
 	}
 
 	if err := db.GetDb().Model(&model.ClusterNode{}).Where("id = ?", field.ID).Updates(common_data).Error; err != nil {

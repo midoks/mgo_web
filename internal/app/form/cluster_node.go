@@ -14,9 +14,18 @@ type ClusterNodeUpdateStatus struct {
 	IsInstalled string `form:"is_installed"`
 }
 
+type ClusterNodeIpAddr struct {
+	Ip             int64  `form:"ip"`
+	AllowPublic    string `form:"allow_public"`
+	CanHealthCheck string `form:"can_health_check"`
+	IsOn           string `form:"is_on"`
+	Description    string `form:"description"`
+}
+
 type ClusterNodeSettings struct {
-	ID   int64  `form:"id"`
-	Name string `form:"name"`
+	ID              int64               `form:"id"`
+	Name            string              `form:"name"`
+	IpAddressesJson []ClusterNodeIpAddr `form:"ip_addresses_json"`
 }
 
 type ClusterNodeLoginAdd struct {

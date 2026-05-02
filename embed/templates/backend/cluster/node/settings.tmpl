@@ -118,6 +118,32 @@ var admin = layui.admin
 ,form = layui.form
 ,table = layui.table;
 
+// 页面加载时初始化已有 IP 数据
+var initIpData = {[.IpAddressesJson]};
+if (Array.isArray(initIpData) && initIpData.length > 0) {
+    $('input[name="ip_addresses_json"]').val(JSON.stringify(initIpData));
+    for (var i = 0; i < initIpData.length; i++) {
+        var ipItem = initIpData[i];
+        var statusClass = (ipItem.is_on === 1 || ipItem.is_on === true) ? 'layui-bg-green' : 'layui-bg-gray';
+        var statusText = (ipItem.is_on === 1 || ipItem.is_on === true) ? '启用' : '禁用';
+        var publicIcon = (ipItem.allow_public === 1 || ipItem.allow_public === true) ? '<i class="layui-icon layui-icon-share" style="color:#1E9FFF;margin-left:6px;"></i>' : '';
+        
+        var content = '<span class="ip_item" style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;margin:4px;background:#fafafa;border-radius:4px;border:1px solid #e2e2e2;">';
+        content += '<i class="layui-icon layui-icon-ip" style="color:#1E9FFF;"></i>';
+        content += '<span class="ip" style="font-family:monospace;font-weight:500;color:#333;">'+ ipItem.ip +'</span>';
+        content += publicIcon;
+        content += '<span class="layui-badge '+ statusClass +'">'+ statusText +'</span>';
+        content += '<a class="edit" data-ip=\''+ JSON.stringify(ipItem) +'\' style="cursor:pointer;color:#1E9FFF;margin-left:4px;" title="编辑">';
+        content += '<i class="layui-icon layui-icon-edit"></i></a>';
+        content += '<a class="remove" style="cursor:pointer;color:#FF5722;" title="删除">';
+        content += '<i class="layui-icon layui-icon-close"></i></a>';
+        content += '</span>';
+        $('#ip_btn').append(content);
+    }
+    $('#ip_origin').show();
+    $('#ip .line').css('display','block');
+}
+
 window.loadRegionBtn = function(){
     $('#region_btn .remove').bind('click',function(){
         $(this).parent().parent().remove();
@@ -132,11 +158,29 @@ window.loadGroupBtn = function(){
     });
 }
 
+// 编辑 IP 时传递数据
+window.editIp = function(ipItem) {
+    Admin.open('修改IP地址','/{[$.admin_path]}/clusters/select/ip',700,450,false,ipItem);
+};
+
 window.loadIpBtn = function(){
     $('#ip_origin').show();
     $('#ip .line').css('display','block');
 
-
+    // 绑定编辑按钮事件
+    $('#ip_btn .edit').off('click').on('click', function(){
+        var ipData = $(this).data('ip');
+        if (typeof ipData === 'string') {
+            try {
+                ipData = JSON.parse(ipData);
+            } catch (e) {
+                console.error('解析IP数据失败', e);
+            }
+        }
+        if (ipData) {
+            Admin.open('修改IP地址','/{[$.admin_path]}/clusters/select/ip',700,450,false,ipData);
+        }
+    });
 
     $('#ip_btn .remove').bind('click',function(){
 
@@ -165,9 +209,7 @@ window.loadIpBtn = function(){
                 }
             }
 
-            if (!is_has){
-                ip_array.push(field);
-            }
+            // 修复：删除模式下不需要 push field
         }
 
         // console.log(ip_array);
@@ -191,6 +233,9 @@ form.on('submit(submit_node_settings)', function(data){
     },'json');
     return true;
 });
+
+// 初始化 IP 按钮事件
+loadIpBtn();
 
 ///
 });
