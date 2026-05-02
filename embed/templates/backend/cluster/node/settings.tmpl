@@ -124,20 +124,19 @@ if (Array.isArray(initIpData) && initIpData.length > 0) {
     $('input[name="ip_addresses_json"]').val(JSON.stringify(initIpData));
     for (var i = 0; i < initIpData.length; i++) {
         var ipItem = initIpData[i];
-        var statusClass = (ipItem.is_on === 1 || ipItem.is_on === true) ? 'layui-bg-green' : 'layui-bg-gray';
-        var statusText = (ipItem.is_on === 1 || ipItem.is_on === true) ? '启用' : '禁用';
-        var publicIcon = (ipItem.allow_public === 1 || ipItem.allow_public === true) ? '<i class="layui-icon layui-icon-share" style="color:#1E9FFF;margin-left:6px;"></i>' : '';
         
-        var content = '<span class="ip_item" style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;margin:4px;background:#fafafa;border-radius:4px;border:1px solid #e2e2e2;">';
-        content += '<i class="layui-icon layui-icon-ip" style="color:#1E9FFF;"></i>';
-        content += '<span class="ip" style="font-family:monospace;font-weight:500;color:#333;">'+ ipItem.ip +'</span>';
-        content += publicIcon;
-        content += '<span class="layui-badge '+ statusClass +'">'+ statusText +'</span>';
-        content += '<a class="edit" data-ip=\''+ JSON.stringify(ipItem) +'\' style="cursor:pointer;color:#1E9FFF;margin-left:4px;" title="编辑">';
-        content += '<i class="layui-icon layui-icon-edit"></i></a>';
-        content += '<a class="remove" style="cursor:pointer;color:#FF5722;" title="删除">';
-        content += '<i class="layui-icon layui-icon-close"></i></a>';
-        content += '</span>';
+        var content = '<div class="layui-btn-group" style="margin-bottom:6px;">';
+        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="border-right-width:0;">';
+        content += '<i class="layui-icon layui-icon-ip" style="font-size:12px;margin-right:4px;"></i>';
+        content += '<span style="font-family:monospace;font-size:13px;">'+ ipItem.ip +'</span>';
+        content += '</button>';
+        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm edit" data-ip=\''+ JSON.stringify(ipItem) +'\' title="编辑" style="border-right-width:0;">';
+        content += '<i class="layui-icon layui-icon-edit" style="font-size:12px;"></i>';
+        content += '</button>';
+        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger remove" title="删除">';
+        content += '<i class="layui-icon layui-icon-close" style="font-size:12px;"></i>';
+        content += '</button>';
+        content += '</div>';
         $('#ip_btn').append(content);
     }
     $('#ip_origin').show();
@@ -183,8 +182,8 @@ window.loadIpBtn = function(){
     });
 
     $('#ip_btn .remove').bind('click',function(){
-
-        var delete_ip = $(this).parent().parent().find(".ip").text();
+        // 从按钮组中获取IP地址
+        var delete_ip = $(this).parents('.layui-btn-group').find('button:first-child span').text().trim();
 
         var ip_addr_data = $('input[name="ip_addresses_json"]').val();
         var ip_array = [];
@@ -208,16 +207,13 @@ window.loadIpBtn = function(){
                     ip_array.splice(i, 1);
                 }
             }
-
-            // 修复：删除模式下不需要 push field
         }
 
-        // console.log(ip_array);
         var data = JSON.stringify(ip_array);
         $('input[name="ip_addresses_json"]').val(data);
 
-        $(this).parent().parent().remove();
-        var len = $('#ip_btn .ip_row').length;
+        $(this).parents('.layui-btn-group').remove();
+        var len = $('#ip_btn .layui-btn-group').length;
         if (len < 1){
             $('#ip .line').css('display','none');
         }
