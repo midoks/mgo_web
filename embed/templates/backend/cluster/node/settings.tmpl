@@ -158,10 +158,10 @@ window.loadIpBtn = function(){
 
         if (ip_array.length>0){
             var is_has = false;
-            for (var i = 0; i < ip_array.length; i++) {
-                if (ip_array[i].ip == delete_ip){
+            for (var i = ip_array.length - 1; i >= 0; i--) {
+                if (ip_array[i] && ip_array[i].ip == delete_ip){
                     is_has = true;
-                    delete ip_array[i];
+                    ip_array.splice(i, 1);
                 }
             }
 
