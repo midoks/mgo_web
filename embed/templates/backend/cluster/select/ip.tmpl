@@ -75,7 +75,7 @@
                 <tr>
                     <td>允许公开访问</td>
                     <td>
-                        <input type="checkbox" name="allow_public" checked> 
+                        <input type="checkbox" name="can_access" checked> 
                         <p class="layui-font-12 pt5">是否为可以公开访问的IP，如果选中表示当前IP可以被公开访问。</p>
                     </td>
                 </tr>
@@ -144,8 +144,8 @@ if (parent && parent._tempOpenData) {
     // 填充表单
     $('input[name="ip"]').val(editData.ip || '');
     
-    if (editData.allow_public == 1) {
-        $('input[name="allow_public"]').prop('checked', true);
+    if (editData.can_access == 1) {
+        $('input[name="can_access"]').prop('checked', true);
     }
     if (editData.can_health_check == 1) {
         $('input[name="can_health_check"]').prop('checked', true);
@@ -164,22 +164,22 @@ form.on('submit(select)', function(data){
     var field = data.field;
     
 
-    if (field['allow_public'] == "on"){
-        field['allow_public'] = 1;
+    if (field['can_access'] == "on"){
+        field['can_access'] = true;
     } else {
-        field['allow_public'] = 0;
+        field['can_access'] = false;
     }
 
     if (field['can_health_check'] == "on"){
-        field['can_health_check'] = 1;
+        field['can_health_check'] = true;
     } else {
-        field['can_health_check'] = 0;
+        field['can_health_check'] = false;
     }
 
     if (field['is_on'] == "on"){
-        field['is_on'] = 1;
+        field['is_on'] = true;
     } else {
-        field['is_on'] = 0;
+        field['is_on'] = false;
     }
 
     console.log(field);

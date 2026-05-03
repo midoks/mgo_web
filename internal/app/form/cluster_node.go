@@ -16,9 +16,9 @@ type ClusterNodeUpdateStatus struct {
 
 type ClusterNodeIpAddr struct {
 	Ip             string `form:"ip" json:"ip"`
-	AllowPublic    string `form:"allow_public" json:"allow_public"`
-	CanHealthCheck string `form:"can_health_check" json:"can_health_check"`
-	IsOn           string `form:"is_on" json:"is_on"`
+	CanAccess      bool   `form:"can_access" json:"can_access"`
+	CanHealthCheck bool   `form:"can_health_check" json:"can_health_check"`
+	IsOn           bool   `form:"is_on" json:"is_on"`
 	Description    string `form:"description" json:"description"`
 }
 

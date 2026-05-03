@@ -93,7 +93,7 @@
 
                                     <tr>
                                         <td colspan="2" >
-                                            <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
+                                            <input type="hidden" name="id" value="{[if .node_id]}{[.node_id]}{[end]}">
                                             <button class="layui-btn" lay-filter="submit_node_settings" lay-submit>保存</button>
                                         </td>
                                     </tr>
@@ -222,6 +222,8 @@ window.loadIpBtn = function(){
 
 form.on('submit(submit_node_settings)', function(data){
     var index = layer.load();
+
+
     $.post("/{[$.admin_path]}/clusters/node/settings", data.field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);

@@ -3,6 +3,7 @@ package cluster
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -68,17 +69,47 @@ func PostNodeSettings(c *gin.Context) {
 		return
 	}
 
+	//IpAddressesJson
+	if field.IpAddressesJson != "" {
+		var ipArray []form.ClusterNodeIpAddr
+		if err := json.Unmarshal([]byte(field.IpAddressesJson), &ipArray); err != nil {
+			common.ErrorResp(c, errors.New("invalid ip_addresses_json format: "+field.IpAddressesJson), -1)
+			return
+		}
+
+		fmt.Println("ipArray:", ipArray)
+
+		for _, ipinfo := range ipArray {
+			fmt.Println("ipinfo:", ipinfo)
+
+			common_ip_data := &model.ClusterNodeIpaddr{
+				NodeID:         field.ID,
+				Description:    ipinfo.Description,
+				CanAccess:      ipinfo.CanAccess,
+				CanHealthCheck: ipinfo.CanHealthCheck,
+				IsHealthy:      true,
+				IsOn:           ipinfo.IsOn,
+				IsUp:           true,
+				Order:          1,
+				Status:         true,
+				IsDeleted:      false,
+				UpdateTime:     time.Now().Unix(),
+				CreateTime:     time.Now().Unix(),
+			}
+
+			fmt.Println(common_ip_data)
+
+		}
+	}
+
 	if field.Name == "" {
-		common.ErrorResp(c, errors.New("name cannot be empty!"), -1)
+		common.ErrorResp(c, errors.New("节点名称不能空!"), -1)
 		return
 	}
 
-	ipJsonBytes, _ := json.Marshal(field.IpAddressesJson)
-	ipJsonStr := string(ipJsonBytes)
-
 	common_data := &model.ClusterNode{
 		Name:            field.Name,
-		IpAddressesJson: ipJsonStr,
+		IpAddressesJson: "",
 		UpdateTime:      time.Now().Unix(),
 	}
 
