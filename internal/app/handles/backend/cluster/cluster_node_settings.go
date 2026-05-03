@@ -3,7 +3,6 @@ package cluster
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -69,7 +68,7 @@ func PostNodeSettings(c *gin.Context) {
 		return
 	}
 
-	//IpAddressesJson
+	// IpAddressesJson
 	if field.IpAddressesJson != "" {
 		var ipArray []form.ClusterNodeIpAddr
 		if err := json.Unmarshal([]byte(field.IpAddressesJson), &ipArray); err != nil {
@@ -77,13 +76,20 @@ func PostNodeSettings(c *gin.Context) {
 			return
 		}
 
-		fmt.Println("ipArray:", ipArray)
+		// 先全部软删除该节点的所有旧 IP 地址
+		if err := db.GetDb().Model(&model.ClusterNodeIpaddr{}).Where("node_id = ?", field.ID).Updates(map[string]interface{}{
+			"is_deleted":  1,
+			"update_time": time.Now().Unix(),
+		}).Error; err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
 
+		// 遍历新列表，存在就更新，不存在就创建
 		for _, ipinfo := range ipArray {
-			fmt.Println("ipinfo:", ipinfo)
-
 			common_ip_data := &model.ClusterNodeIpaddr{
 				NodeID:         field.ID,
+				Ip:             ipinfo.Ip,
 				Description:    ipinfo.Description,
 				CanAccess:      ipinfo.CanAccess,
 				CanHealthCheck: ipinfo.CanHealthCheck,
@@ -91,13 +97,29 @@ func PostNodeSettings(c *gin.Context) {
 				IsOn:           ipinfo.IsOn,
 				IsUp:           true,
 				Order:          1,
-				IsDeleted:      false,
-				UpdateTime:     time.Now().Unix(),
-				CreateTime:     time.Now().Unix(),
+				IsDeleted:      0,
 			}
 
-			fmt.Println(common_ip_data)
+			// 查询是否存在（包括已软删除的）
+			var existing model.ClusterNodeIpaddr
+			err := db.GetDb().Unscoped().Where("node_id = ? AND ip = ?", field.ID, ipinfo.Ip).First(&existing).Error
 
+			if err == nil {
+				// 存在则更新（包含已软删除的记录）
+				common_ip_data.UpdateTime = time.Now().Unix()
+				if err := db.GetDb().Unscoped().Model(&model.ClusterNodeIpaddr{}).Where("node_id = ? AND ip = ?", field.ID, ipinfo.Ip).Updates(common_ip_data).Error; err != nil {
+					common.ErrorResp(c, err, -2)
+					return
+				}
+			} else {
+				// 不存在则创建
+				common_ip_data.CreateTime = time.Now().Unix()
+				common_ip_data.UpdateTime = time.Now().Unix()
+				if err := db.GetDb().Create(common_ip_data).Error; err != nil {
+					common.ErrorResp(c, err, -1)
+					return
+				}
+			}
 		}
 	}
 
@@ -108,7 +130,7 @@ func PostNodeSettings(c *gin.Context) {
 
 	common_data := &model.ClusterNode{
 		Name:            field.Name,
-		IpAddressesJson: "",
+		IpAddressesJson: field.IpAddressesJson,
 		UpdateTime:      time.Now().Unix(),
 	}
 

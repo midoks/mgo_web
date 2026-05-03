@@ -4,9 +4,15 @@ import (
 	"time"
 
 	"mgo/internal/model"
-	// "github.com/pkg/errors"
-	// "gorm.io/gorm"
 )
+
+func FindClusterNodeIpaddrByNodeIDAndIp(node_id int64, ip string) (*model.ClusterNodeIpaddr, error) {
+	var data model.ClusterNodeIpaddr
+	if err := db.Order(columnName("id")).Where("node_id = ?", node_id).Where("ip = ?", ip).First(&data).Error; err != nil {
+		return nil, err
+	}
+	return &data, nil
+}
 
 func ClusterNodeIpaddrSoftDeleteByID(id int64) error {
 	if err := db.Model(&model.ClusterNodeIpaddr{}).
