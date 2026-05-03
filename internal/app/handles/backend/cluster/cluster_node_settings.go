@@ -99,6 +99,7 @@ func PostNodeSettings(c *gin.Context) {
 				// 存在则更新（包含已软删除的记录）
 				updateData := map[string]interface{}{
 					"description":      ipinfo.Description,
+					"ip":               ipinfo.Ip,
 					"can_access":       ipinfo.CanAccess,
 					"can_health_check": ipinfo.CanHealthCheck,
 					"is_healthy":       true,
@@ -125,12 +126,37 @@ func PostNodeSettings(c *gin.Context) {
 					Order:          1,
 					IsDeleted:      0,
 				}
-				// 不存在则创建
-				common_ip_data.CreateTime = time.Now().Unix()
-				common_ip_data.UpdateTime = time.Now().Unix()
-				if err := db.GetDb().Create(common_ip_data).Error; err != nil {
-					common.ErrorResp(c, err, -1)
-					return
+
+				// 创建新数据时,先查找是否有已删除的数据
+				if delete_id, err := db.GetClusterNodeIpaddrDeletedID(); err == nil {
+					// 存在则更新（包含已软删除的记录）
+					updateData := map[string]interface{}{
+						"node_id":          field.ID,
+						"description":      ipinfo.Description,
+						"ip":               ipinfo.Ip,
+						"can_access":       ipinfo.CanAccess,
+						"can_health_check": ipinfo.CanHealthCheck,
+						"is_healthy":       true,
+						"is_on":            ipinfo.IsOn,
+						"is_up":            true,
+						"order":            1,
+						"is_deleted":       0,
+						"update_time":      time.Now().Unix(),
+					}
+					if err := db.GetDb().Unscoped().Model(&model.ClusterNodeIpaddr{}).Where("id", delete_id).Updates(updateData).Error; err != nil {
+						common.ErrorResp(c, err, -2)
+						return
+					}
+
+				} else {
+
+					// 不存在则创建
+					common_ip_data.CreateTime = time.Now().Unix()
+					common_ip_data.UpdateTime = time.Now().Unix()
+					if err := db.GetDb().Create(common_ip_data).Error; err != nil {
+						common.ErrorResp(c, err, -1)
+						return
+					}
 				}
 			}
 		}

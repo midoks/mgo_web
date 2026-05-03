@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"time"
 
 	"mgo/internal/model"
@@ -12,6 +13,15 @@ func GetClusterNodeIpaddrByNodeID(node_id int64) ([]model.ClusterNodeIpaddr, err
 		return nil, err
 	}
 	return data, nil
+}
+
+// 根据创建时间排序，获取一条删除的监控ID (重复使用)
+func GetClusterNodeIpaddrDeletedID() (int64, error) {
+	var data model.ClusterNodeIpaddr
+	if err := db.Order(columnName("create_time")).Where("is_deleted=?", 1).First(&data).Error; err != nil {
+		return 0, errors.New("failed get cluster node ipaddr deleted data: " + err.Error())
+	}
+	return data.ID, nil
 }
 
 func FindClusterNodeIpaddrByNodeIDAndIp(node_id int64, ip string) (*model.ClusterNodeIpaddr, error) {
