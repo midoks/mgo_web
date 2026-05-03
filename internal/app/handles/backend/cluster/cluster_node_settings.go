@@ -91,7 +91,6 @@ func PostNodeSettings(c *gin.Context) {
 				IsOn:           ipinfo.IsOn,
 				IsUp:           true,
 				Order:          1,
-				Status:         true,
 				IsDeleted:      false,
 				UpdateTime:     time.Now().Unix(),
 				CreateTime:     time.Now().Unix(),

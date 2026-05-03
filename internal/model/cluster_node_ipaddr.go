@@ -11,7 +11,6 @@ type ClusterNodeIpaddr struct {
 	IsOn           bool   `json:"is_on" gorm:"index"`                        // is_on
 	IsUp           bool   `json:"is_up" gorm:"index"`                        // is_up
 	Order          int    `json:"order" gorm:"index" default:"0"`            // order
-	Status         bool   `json:"status" gorm:"index"`                       // status
 	IsDeleted      bool   `json:"is_deleted" gorm:"default:0"`               // is_deleted
 	CreateTime     int64  `json:"create_time"`                               // create_time
 	UpdateTime     int64  `json:"update_time"`                               // update_time
