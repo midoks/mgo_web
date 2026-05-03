@@ -52,10 +52,13 @@ func NodeSettings(c *gin.Context) {
 	node_data, _ := db.GetClusterNodeByID(node_idint)
 	data["Data"] = node_data
 
-	if node_data != nil && node_data.IpAddressesJson != "" {
-		data["IpAddressesJson"] = node_data.IpAddressesJson
-	} else {
-		data["IpAddressesJson"] = "[]"
+	ipaddrs, err := db.GetClusterNodeIpaddrByNodeID(node_idint)
+	data["IpAddressesJson"] = "[]"
+	if err == nil {
+		ipaddrs_json, err := json.Marshal(ipaddrs)
+		if err == nil {
+			data["IpAddressesJson"] = string(ipaddrs_json)
+		}
 	}
 
 	c.HTML(http.StatusOK, "backend/cluster/node/settings.tmpl", data)

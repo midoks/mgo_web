@@ -6,9 +6,17 @@ import (
 	"mgo/internal/model"
 )
 
+func GetClusterNodeIpaddrByNodeID(node_id int64) ([]model.ClusterNodeIpaddr, error) {
+	var data []model.ClusterNodeIpaddr
+	if err := db.Order(columnName("id")).Where("node_id", node_id).Where("is_deleted", 0).Find(&data).Error; err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 func FindClusterNodeIpaddrByNodeIDAndIp(node_id int64, ip string) (*model.ClusterNodeIpaddr, error) {
 	var data model.ClusterNodeIpaddr
-	if err := db.Order(columnName("id")).Where("node_id = ?", node_id).Where("ip = ?", ip).First(&data).Error; err != nil {
+	if err := db.Order(columnName("id")).Where("node_id", node_id).Where("ip", ip).First(&data).Error; err != nil {
 		return nil, err
 	}
 	return &data, nil

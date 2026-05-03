@@ -119,28 +119,38 @@ var admin = layui.admin
 ,table = layui.table;
 
 // 页面加载时初始化已有 IP 数据
-var initIpData = {[.IpAddressesJson]};
-if (Array.isArray(initIpData) && initIpData.length > 0) {
-    $('input[name="ip_addresses_json"]').val(JSON.stringify(initIpData));
-    for (var i = 0; i < initIpData.length; i++) {
-        var ipItem = initIpData[i];
-        
-        var content = '<div class="layui-btn-group" style="margin-bottom:6px;">';
-        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="border-right-width:0;">';
-        content += '<i class="layui-icon layui-icon-ip" style="font-size:12px;margin-right:4px;"></i>';
-        content += '<span style="font-family:monospace;font-size:13px;">'+ ipItem.ip +'</span>';
-        content += '</button>';
-        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm edit" data-ip=\''+ JSON.stringify(ipItem) +'\' title="编辑" style="border-right-width:0;">';
-        content += '<i class="layui-icon layui-icon-edit" style="font-size:12px;"></i>';
-        content += '</button>';
-        content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger remove" title="删除">';
-        content += '<i class="layui-icon layui-icon-close" style="font-size:12px;"></i>';
-        content += '</button>';
-        content += '</div>';
-        $('#ip_btn').append(content);
+function initIpAddresses() {
+    var initIpData = '{[$.IpAddressesJson]}';
+    console.log("initIpData (raw):", initIpData);
+    try {
+        initIpData = JSON.parse(initIpData);
+    } catch (e) {
+        console.error("Failed to parse initIpData:", e);
+        initIpData = [];
     }
-    $('#ip_origin').show();
-    $('#ip .line').css('display','block');
+    console.log("initIpData (parsed):", initIpData);
+    if (Array.isArray(initIpData) && initIpData.length > 0) {
+        $('input[name="ip_addresses_json"]').val(JSON.stringify(initIpData));
+        for (var i = 0; i < initIpData.length; i++) {
+            var ipItem = initIpData[i];
+            
+            var content = '<div class="layui-btn-group" style="margin-bottom:6px;">';
+            content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="border-right-width:0;">';
+            content += '<i class="layui-icon layui-icon-ip" style="font-size:12px;margin-right:4px;"></i>';
+            content += '<span style="font-family:monospace;font-size:13px;">'+ ipItem.ip +'</span>';
+            content += '</button>';
+            content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm edit" data-ip=\''+ JSON.stringify(ipItem) +'\' title="编辑" style="border-right-width:0;">';
+            content += '<i class="layui-icon layui-icon-edit" style="font-size:12px;"></i>';
+            content += '</button>';
+            content += '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger remove" title="删除">';
+            content += '<i class="layui-icon layui-icon-close" style="font-size:12px;"></i>';
+            content += '</button>';
+            content += '</div>';
+            $('#ip_btn').append(content);
+        }
+        $('#ip_origin').show();
+        $('#ip .line').css('display','block');
+    }
 }
 
 window.loadRegionBtn = function(){
@@ -231,6 +241,9 @@ form.on('submit(submit_node_settings)', function(data){
     },'json');
     return true;
 });
+
+// 初始化 IP 地址数据
+initIpAddresses();
 
 // 初始化 IP 按钮事件
 loadIpBtn();
