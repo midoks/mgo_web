@@ -87,18 +87,6 @@ func PostNodeSettings(c *gin.Context) {
 
 		// 遍历新列表，存在就更新，不存在就创建
 		for _, ipinfo := range ipArray {
-			common_ip_data := &model.ClusterNodeIpaddr{
-				NodeID:         field.ID,
-				Ip:             ipinfo.Ip,
-				Description:    ipinfo.Description,
-				CanAccess:      ipinfo.CanAccess,
-				CanHealthCheck: ipinfo.CanHealthCheck,
-				IsHealthy:      true,
-				IsOn:           ipinfo.IsOn,
-				IsUp:           true,
-				Order:          1,
-				IsDeleted:      0,
-			}
 
 			// 查询是否存在（包括已软删除的）
 			var existing model.ClusterNodeIpaddr
@@ -106,12 +94,34 @@ func PostNodeSettings(c *gin.Context) {
 
 			if err == nil {
 				// 存在则更新（包含已软删除的记录）
-				common_ip_data.UpdateTime = time.Now().Unix()
-				if err := db.GetDb().Unscoped().Model(&model.ClusterNodeIpaddr{}).Where("node_id = ? AND ip = ?", field.ID, ipinfo.Ip).Updates(common_ip_data).Error; err != nil {
+				updateData := map[string]interface{}{
+					"description":      ipinfo.Description,
+					"can_access":       ipinfo.CanAccess,
+					"can_health_check": ipinfo.CanHealthCheck,
+					"is_healthy":       true,
+					"is_on":            ipinfo.IsOn,
+					"is_up":            true,
+					"order":            1,
+					"is_deleted":       0,
+					"update_time":      time.Now().Unix(),
+				}
+				if err := db.GetDb().Unscoped().Model(&model.ClusterNodeIpaddr{}).Where("node_id = ? AND ip = ?", field.ID, ipinfo.Ip).Updates(updateData).Error; err != nil {
 					common.ErrorResp(c, err, -2)
 					return
 				}
 			} else {
+				common_ip_data := &model.ClusterNodeIpaddr{
+					NodeID:         field.ID,
+					Ip:             ipinfo.Ip,
+					Description:    ipinfo.Description,
+					CanAccess:      ipinfo.CanAccess,
+					CanHealthCheck: ipinfo.CanHealthCheck,
+					IsHealthy:      true,
+					IsOn:           ipinfo.IsOn,
+					IsUp:           true,
+					Order:          1,
+					IsDeleted:      0,
+				}
 				// 不存在则创建
 				common_ip_data.CreateTime = time.Now().Unix()
 				common_ip_data.UpdateTime = time.Now().Unix()
