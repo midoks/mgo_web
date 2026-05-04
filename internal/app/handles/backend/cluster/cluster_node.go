@@ -134,7 +134,22 @@ func GetNodeSubMenu() []form.SubMenu {
 
 func Node(c *gin.Context) {
 	data := common.CommonVer(c)
-	c.HTML(http.StatusOK, "backend/cluster/node.tmpl", data)
+	c.HTML(http.StatusOK, "backend/cluster/node/index.tmpl", data)
+}
+
+func NodeList(c *gin.Context) {
+	var field form.ClusterNodeList
+	if err := c.ShouldBind(&field); err != nil {
+		common.ErrorResp(c, err, -1)
+		return
+	}
+
+	result, count, err := db.GetClusterNodeListByArgs(field)
+	if err != nil {
+		common.ErrorResp(c, err, -2)
+		return
+	}
+	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
 func CreateNode(c *gin.Context) {
@@ -169,20 +184,6 @@ func NodeDatail(c *gin.Context) {
 	data["Data"] = node_data
 
 	c.HTML(http.StatusOK, "backend/cluster/node/details.tmpl", data)
-}
-
-func NodeList(c *gin.Context) {
-	var field form.ClusterNodeList
-	if err := c.ShouldBind(&field); err != nil {
-		common.ErrorResp(c, err, -1)
-		return
-	}
-	result, count, err := db.GetClusterNodeListByClusterID(field.ClusterID, field.Page.Page, field.Page.Limit)
-	if err != nil {
-		common.ErrorResp(c, err, -2)
-		return
-	}
-	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
 func PostCreateNode(c *gin.Context) {
