@@ -1,5 +1,12 @@
 package form
 
+type ClusterCreateNode struct {
+	Ip              string `form:"ip"`
+	Name            string `form:"name"`
+	ClusterID       int64  `form:"cluster_id"`
+	IpAddressesJson string `form:"ip_addresses_json"`
+}
+
 type ClusterNodeQuery struct {
 	ID int64 `form:"id"`
 	Page

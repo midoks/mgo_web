@@ -72,18 +72,17 @@ func PostNodeSettings(c *gin.Context) {
 	}
 
 	// IpAddressesJson
+	var ipArray []form.ClusterNodeIpAddr
 	if field.IpAddressesJson != "" {
-		var ipArray []form.ClusterNodeIpAddr
-		if err := json.Unmarshal([]byte(field.IpAddressesJson), &ipArray); err != nil {
-			common.ErrorResp(c, errors.New("invalid ip_addresses_json format: "+field.IpAddressesJson), -1)
+		var err error
+		ipArray, err = parseClusterNodeIpArray(field.IpAddressesJson)
+		if err != nil {
+			common.ErrorResp(c, err, -1)
 			return
 		}
 
 		// 先全部软删除该节点的所有旧 IP 地址
-		if err := db.GetDb().Model(&model.ClusterNodeIpaddr{}).Where("node_id = ?", field.ID).Updates(map[string]interface{}{
-			"is_deleted":  1,
-			"update_time": time.Now().Unix(),
-		}).Error; err != nil {
+		if err := db.ClusterNodeIpaddrSoftDeleteByNodeID(field.ID); err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
@@ -91,11 +90,8 @@ func PostNodeSettings(c *gin.Context) {
 		// 遍历新列表，存在就更新，不存在就创建
 		for _, ipinfo := range ipArray {
 
-			// 查询是否存在（包括已软删除的）
-			var existing model.ClusterNodeIpaddr
-			err := db.GetDb().Unscoped().Where("node_id = ? AND ip = ?", field.ID, ipinfo.Ip).First(&existing).Error
-
-			if err == nil {
+			existing := db.ExistClusterNodeIpaddrByNodeIDAndIp(field.ID, ipinfo.Ip)
+			if existing {
 				// 存在则更新（包含已软删除的记录）
 				updateData := map[string]interface{}{
 					"description":      ipinfo.Description,

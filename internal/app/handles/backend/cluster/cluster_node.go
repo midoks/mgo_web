@@ -1,6 +1,7 @@
 package cluster
 
 import (
+	"encoding/json"
 	"errors"
 	"strconv"
 
@@ -18,6 +19,17 @@ import (
 	"mgo/internal/model"
 	tools "mgo/internal/utils"
 )
+
+func parseClusterNodeIpArray(ipJson string) ([]form.ClusterNodeIpAddr, error) {
+	if ipJson == "" {
+		return nil, nil
+	}
+	var ipArray []form.ClusterNodeIpAddr
+	if err := json.Unmarshal([]byte(ipJson), &ipArray); err != nil {
+		return nil, errors.New("invalid ip_addresses_json format: " + ipJson)
+	}
+	return ipArray, nil
+}
 
 func GetNodeSubMenu() []form.SubMenu {
 	menu := []form.SubMenu{
@@ -133,6 +145,15 @@ func PostCreateNode(c *gin.Context) {
 		common.ErrorResp(c, err, -1)
 		return
 	}
+
+	if field.IpAddressesJson != "" {
+		_, err := parseClusterNodeIpArray(field.IpAddressesJson)
+		if err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+	}
+
 	common.SuccessResp(c)
 }
 

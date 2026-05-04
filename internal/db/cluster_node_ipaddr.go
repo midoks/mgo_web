@@ -32,6 +32,28 @@ func FindClusterNodeIpaddrByNodeIDAndIp(node_id int64, ip string) (*model.Cluste
 	return &data, nil
 }
 
+func ExistClusterNodeIpaddrByNodeIDAndIp(node_id int64, ip string) bool {
+	// 查询是否存在（包括已软删除的）
+	var existing model.ClusterNodeIpaddr
+	err := db.Unscoped().Where("node_id = ? AND ip = ?", node_id, ip).First(&existing).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func ClusterNodeIpaddrSoftDeleteByNodeID(node_id int64) error {
+	if err := db.Model(&model.ClusterNodeIpaddr{}).
+		Where("node_id = ?", node_id).
+		Updates(map[string]interface{}{
+			"is_deleted":  1,
+			"update_time": time.Now().Unix(),
+		}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func ClusterNodeIpaddrSoftDeleteByID(id int64) error {
 	if err := db.Model(&model.ClusterNodeIpaddr{}).
 		Where("id = ?", id).
