@@ -192,8 +192,8 @@ func PostCreateNode(c *gin.Context) {
 		return
 	}
 
-	if field.Ip == "" {
-		common.ErrorResp(c, errors.New("ip address cannot be empty!"), -1)
+	if field.Name == "" {
+		common.ErrorResp(c, errors.New("节点名称不能空!"), -1)
 		return
 	}
 
@@ -202,7 +202,6 @@ func PostCreateNode(c *gin.Context) {
 
 	nodeip := &model.ClusterNode{
 		Name:        field.Name,
-		Ip:          field.Ip,
 		ClusterID:   field.ClusterID,
 		IsInstalled: false,
 		Secret:      secret,

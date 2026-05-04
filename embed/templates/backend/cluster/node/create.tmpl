@@ -28,8 +28,7 @@
                         <tbody>
                             <tr>
                                 <td>节点名称</td>
-                                <!--  lay-verify="required" -->
-                                <td><input type="text" name="name" autocomplete="off" placeholder="" class="layui-input"></td>
+                                <td><input type="text" name="name" autocomplete="off" placeholder="" class="layui-input" lay-verify="required"></td>
                             </tr>
 
                             <tr>
@@ -212,10 +211,16 @@ form.on('submit(submit_step1)', function(data){
     field['ip'] = ip;
 
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
+        console.log(res);
         showMsg(res.msg, function(){
             layer.close(index);
-            $('.install_node_step1').hide();
-            $('.install_node_step2').show();
+            if (res.code > -1){
+                $('.install_node_step1').hide();
+                $('.install_node_step2').show();
+
+
+                $('#ssh_host').val("");
+            }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');
     return false;
