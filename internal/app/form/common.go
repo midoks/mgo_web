@@ -4,6 +4,7 @@ type SubMenu struct {
 	Number int64  `form:"number"`
 	Name   string `form:"name"`
 	Link   string `form:"link"`
+	Icon   string `form:"icon"`
 }
 
 type SubSettingMenu struct {

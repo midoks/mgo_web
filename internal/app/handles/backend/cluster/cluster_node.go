@@ -107,26 +107,31 @@ func GetNodeSubMenu() []form.SubMenu {
 			Number: 1,
 			Name:   "节点看板",
 			Link:   "clusters/node/boards",
+			Icon:   "layui-icon-home",
 		},
 		{
 			Number: 2,
 			Name:   "节点详情",
 			Link:   "clusters/node/details",
+			Icon:   "layui-icon-file",
 		},
 		{
 			Number: 3,
 			Name:   "运行日志",
 			Link:   "clusters/node/logs",
+			Icon:   "layui-icon-rss",
 		},
 		{
 			Number: 4,
 			Name:   "安装节点",
 			Link:   "clusters/node/install",
+			Icon:   "layui-icon-download-circle",
 		},
 		{
 			Number: 5,
 			Name:   "节点设置",
 			Link:   "clusters/node/settings",
+			Icon:   "layui-icon-set",
 		},
 	}
 	return menu
