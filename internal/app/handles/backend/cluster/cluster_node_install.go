@@ -291,6 +291,14 @@ func executeInstallation(nodeID int64) {
 	// 更新状态
 	setInstallStatus(nodeID, "running", 90, "正在配置节点...")
 
+	// 开放8080端口
+	open_port_cmd := "firewall-cmd --add-port=8080/tcp --permanent && firewall-cmd --reload"
+	stdout, stderr, err = ssh_client.Run(open_port_cmd)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("开放8080端口失败: %v, stderr: %s", err, stderr))
+		return
+	}
+
 	fmt.Printf("Install output: %s\n", stdout)
 
 	// 安装完成
