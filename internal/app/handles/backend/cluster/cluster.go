@@ -20,36 +20,43 @@ func GetSubMenu() []form.SubMenu {
 			Number: 1,
 			Name:   "集群看板",
 			Link:   "clusters/cluster/boards",
+			Icon:   "layui-icon-home",
 		},
 		{
 			Number: 2,
 			Name:   "节点列表",
 			Link:   "clusters/cluster/list",
+			Icon:   "layui-icon-list",
 		},
 		{
 			Number: 3,
 			Name:   "创建节点",
 			Link:   "clusters/cluster/create_node",
+			Icon:   "layui-icon-add-circle",
 		},
 		{
 			Number: 4,
 			Name:   "安装升级",
 			Link:   "clusters/cluster/upgrade",
+			Icon:   "layui-icon-download-circle",
 		},
 		{
 			Number: 5,
 			Name:   "节点分组",
 			Link:   "clusters/cluster/groups",
+			Icon:   "layui-icon-group",
 		},
 		{
 			Number: 6,
 			Name:   "集群设置",
 			Link:   "clusters/cluster/settings",
+			Icon:   "layui-icon-set",
 		},
 		{
 			Number: 7,
 			Name:   "其它操作",
 			Link:   "clusters/cluster/delete",
+			Icon:   "layui-icon-more-vertical",
 		},
 	}
 	return menu
