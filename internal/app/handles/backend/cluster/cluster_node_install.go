@@ -257,10 +257,23 @@ func executeInstallation(nodeID int64) {
 	}
 
 	// 更新状态
-	setInstallStatus(nodeID, "running", 80, "正在执行安装命令...")
+	setInstallStatus(nodeID, "running", 80, "正在解压文件...")
+
+	// 解压文件
+	extract_cmd := fmt.Sprintf("cd %s && tar -xzf %s", remote_dir, remote_file)
+	stdout, stderr, err = ssh_client.Run(extract_cmd)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("解压文件失败: %v, stderr: %s", err, stderr))
+		return
+	}
+
+	// 更新状态
+	setInstallStatus(nodeID, "running", 85, "正在执行安装命令...")
 
 	// 在远程服务器上执行安装命令
-	install_cmd := fmt.Sprintf("chmod +x %s && %s install", remote_file, remote_file)
+	// 假设解压后的可执行文件名为 network_probe
+	executable_path := filepath.Join(remote_dir, "network_probe")
+	install_cmd := fmt.Sprintf("chmod +x %s && %s install", executable_path, executable_path)
 	stdout, stderr, err = ssh_client.Run(install_cmd)
 	if err != nil {
 		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("执行安装命令失败: %v, stderr: %s", err, stderr))
