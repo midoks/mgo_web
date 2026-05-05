@@ -289,7 +289,60 @@ func executeInstallation(nodeID int64) {
 	}
 
 	// 更新状态
-	setInstallStatus(nodeID, "running", 90, "正在配置节点...")
+	setInstallStatus(nodeID, "running", 90, "正在生成配置文件...")
+
+	// 获取节点信息
+	node_data, err := db.GetClusterNodeByID(nodeID)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, "获取节点信息失败")
+		return
+	}
+
+	// 生成配置文件内容
+	config_content := fmt.Sprintf(`rpc.endpoints: [ "http://127.0.0.1:8001" ]
+nodeId: "%s"
+secret: "%s"`, node_data.UniqueID, node_data.Secret)
+
+	// 创建临时配置文件
+	config_dir := "/tmp/mgo_install"
+	err = os.MkdirAll(config_dir, 0755)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("创建临时目录失败: %v", err))
+		return
+	}
+
+	local_config_file := filepath.Join(config_dir, "api_node.yaml")
+	err = os.WriteFile(local_config_file, []byte(config_content), 0644)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("生成配置文件失败: %v", err))
+		return
+	}
+
+	// 上传配置文件到远程服务器
+	remote_config_dir := filepath.Join(remote_dir, "configs")
+	remote_config_file := filepath.Join(remote_config_dir, "api_node.yaml")
+
+	// 创建远程配置目录
+	setInstallStatus(nodeID, "running", 92, "正在创建远程配置目录...")
+	stdout, stderr, err = ssh_client.Run(fmt.Sprintf("mkdir -p %s", remote_config_dir))
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("创建远程配置目录失败: %v, stderr: %s", err, stderr))
+		return
+	}
+
+	// 上传配置文件
+	setInstallStatus(nodeID, "running", 94, "正在上传配置文件...")
+	err = ssh_client.Upload(local_config_file, remote_config_file, 0644, nil)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("上传配置文件失败: %v", err))
+		return
+	}
+
+	// 清理临时文件
+	os.Remove(local_config_file)
+
+	// 更新状态
+	setInstallStatus(nodeID, "running", 96, "正在配置节点...")
 
 	// 检测防火墙类型并开放8080端口
 	stdout, stderr, err = ssh_client.Run("which firewall-cmd")
