@@ -226,11 +226,20 @@ func executeInstallation(nodeID int64) {
 	// 上传文件
 	appname := fmt.Sprintf("network_probe_v1.0_linux_%s.tar.gz", archSuffix)
 	local_file := filepath.Join("deploy", "network_probe", appname)
-	remote_file := "/home/root/mgo_web"
+	remote_dir := "/home/root/mgo_web"
+	remote_file := remote_dir + appname
 
 	// 检查本地文件是否存在
 	if _, err = os.Stat(local_file); os.IsNotExist(err) {
 		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("deploy/network_probe/network_probe_v1.0_linux_%s.tar.gz 文件不存在", archSuffix))
+		return
+	}
+
+	// 检查远程目录是否存在，不存在则创建
+	setInstallStatus(nodeID, "running", 18, "正在检查远程目录...")
+	stdout, stderr, err = ssh_client.Run(fmt.Sprintf("mkdir -p %s", remote_dir))
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("创建远程目录失败: %v, stderr: %s", err, stderr))
 		return
 	}
 
