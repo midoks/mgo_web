@@ -227,7 +227,7 @@ func executeInstallation(nodeID int64) {
 	appname := fmt.Sprintf("network_probe_v1.0_linux_%s.tar.gz", archSuffix)
 	local_file := filepath.Join("deploy", "network_probe", appname)
 	remote_dir := "/home/root/mgo_web"
-	remote_file := remote_dir + "/" + appname
+	remote_file := filepath.Join(remote_dir, appname)
 
 	// 检查本地文件是否存在
 	if _, err = os.Stat(local_file); os.IsNotExist(err) {
@@ -259,11 +259,19 @@ func executeInstallation(nodeID int64) {
 	// 更新状态
 	setInstallStatus(nodeID, "running", 80, "正在解压文件...")
 
-	// 解压文件
-	extract_cmd := fmt.Sprintf("cd %s && tar -xzf %s", remote_dir, remote_file)
+	// 解压文件（覆盖已有文件）
+	extract_cmd := fmt.Sprintf("cd %s && tar -xzf %s --overwrite", remote_dir, remote_file)
 	stdout, stderr, err = ssh_client.Run(extract_cmd)
 	if err != nil {
 		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("解压文件失败: %v, stderr: %s", err, stderr))
+		return
+	}
+
+	// 删除压缩包文件
+	delete_cmd := fmt.Sprintf("rm -rf %s", remote_file)
+	stdout, stderr, err = ssh_client.Run(delete_cmd)
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("删除压缩包文件失败: %v, stderr: %s", err, stderr))
 		return
 	}
 
