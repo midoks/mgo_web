@@ -224,8 +224,9 @@ func executeInstallation(nodeID int64) {
 	}
 
 	// 上传文件
-	local_file := filepath.Join("deploy", "network_probe", fmt.Sprintf("network_probe_v1.0_linux_%s.tar.gz", archSuffix))
-	remote_file := "/tmp/mgo_web"
+	appname := fmt.Sprintf("network_probe_v1.0_linux_%s.tar.gz", archSuffix)
+	local_file := filepath.Join("deploy", "network_probe", appname)
+	remote_file := "/home/root/mgo_web"
 
 	// 检查本地文件是否存在
 	if _, err = os.Stat(local_file); os.IsNotExist(err) {
