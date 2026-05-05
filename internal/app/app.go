@@ -157,7 +157,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/node/settings", backend_cluster.NodeSettings)
 	backstage_admin.POST("/clusters/node/settings", backend_cluster.PostNodeSettings)
 	backstage_admin.GET("/clusters/node/settings/ssh", backend_cluster.NodeSettingsSsh)
-	backstage_admin.POST("/clusters/node_login/add", backend_cluster.PostNodeLoginAdd)
+	backstage_admin.POST("/clusters/node_login_add", backend_cluster.PostNodeLoginAdd)
 
 	backstage_admin.GET("/clusters/ipaddr", backend_cluster.Node)
 	backstage_admin.GET("/clusters/create", backend_cluster.Create)
@@ -168,7 +168,6 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/cluster/create_node", backend_cluster.CreateNode)
 	backstage_admin.POST("/clusters/cluster/create_node", backend_cluster.PostCreateNode)
 	backstage_admin.POST("/clusters/cluster/delete_node", backend_cluster.PostDeleteNode)
-	backstage_admin.GET("/clusters/cluster/node_list", backend_cluster.NodeList)
 
 	// 边缘节点 - 分组
 	backstage_admin.GET("/clusters/cluster/groups", backend_cluster.ClusterGroups)

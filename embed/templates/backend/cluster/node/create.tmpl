@@ -216,8 +216,17 @@ form.on('submit(submit_step1)', function(data){
                 $('.install_node_step1').hide();
                 $('.install_node_step2').show();
 
-
-                $('input[name="ssh_host"]').val("");
+                var ipAddressesJson = $('input[name="ip_addresses_json"]').val();
+                var firstIp = "";
+                try {
+                    var ipArray = JSON.parse(ipAddressesJson);
+                    if (Array.isArray(ipArray) && ipArray.length > 0) {
+                        firstIp = ipArray[0].ip || "";
+                    }
+                } catch (e) {
+                    console.error("failed to parse ip_addresses_json:", e);
+                }
+                $('input[name="ssh_host"]').val(firstIp);
             }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');

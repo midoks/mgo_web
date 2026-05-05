@@ -48,7 +48,7 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[.admin_path]}/clusters/cluster/node_list?cluster_id={[.cluster_id]}',
+    url: '/{[.admin_path]}/clusters/node/list?cluster_id={[.cluster_id]}',
     title: '数据表',
     cols: [[
         {field:'name', title:'节点名称', minWidth: 160, toolbar: '#nameTpl'},
