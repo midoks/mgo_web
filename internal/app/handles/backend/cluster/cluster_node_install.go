@@ -202,7 +202,7 @@ func executeInstallation(nodeID int64) {
 	defer ssh_client.Close()
 
 	// 上传文件
-	local_file := filepath.Join("deploy", "mgo_web")
+	local_file := filepath.Join("deploy", "network_probe/network_probe_v1.0_linux_amd64.tar.gz")
 	remote_file := "/tmp/mgo_web"
 
 	// 检查本地文件是否存在
