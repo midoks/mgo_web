@@ -224,6 +224,7 @@ form.on('submit(submit_step1)', function(data){
                         firstIp = ipArray[0].ip || "";
                     }
                 } catch (e) {
+                    firstIp = "127.0.0.1";
                     console.error("failed to parse ip_addresses_json:", e);
                 }
                 $('input[name="ssh_host"]').val(firstIp);
