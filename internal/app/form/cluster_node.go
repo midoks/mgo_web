@@ -17,8 +17,8 @@ type ClusterNodeDone struct {
 }
 
 type ClusterNodeUpdateStatus struct {
-	ID          int64  `form:"id"`
-	IsInstalled string `form:"is_installed"`
+	ID          int64 `form:"id"`
+	IsInstalled bool  `form:"is_installed"`
 }
 
 type ClusterNodeIpAddr struct {

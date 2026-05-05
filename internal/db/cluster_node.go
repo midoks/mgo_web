@@ -82,3 +82,11 @@ func ClusterNodeDeleteByID(tx *gorm.DB, id int64) error {
 	var d model.ClusterNode
 	return tx.Where("id = ?", id).Delete(&d).Error
 }
+
+// 节点安装成功,状态修改
+func ClusterNodeInstallDone(node_id int64, is_installed bool) error {
+	if err := db.Model(&model.ClusterNode{}).Where("id = ?", node_id).Update("is_installed", is_installed).Error; err != nil {
+		return err
+	}
+	return nil
+}

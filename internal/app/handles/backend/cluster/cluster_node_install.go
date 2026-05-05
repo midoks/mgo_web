@@ -91,7 +91,7 @@ func PostNodeInstallUpdateStatus(c *gin.Context) {
 		return
 	}
 	if field.ID > 0 {
-		if err := db.GetDb().Model(&model.ClusterNode{}).Where("id = ?", field.ID).Update("is_installed", field.IsInstalled).Error; err != nil {
+		if err := db.ClusterNodeInstallDone(field.ID, field.IsInstalled); err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
@@ -313,6 +313,9 @@ func executeInstallation(nodeID int64) {
 
 	// 安装完成
 	setInstallStatus(nodeID, "success", 100, "安装成功完成")
+
+	db.ClusterNodeInstallDone(nodeID, true)
+
 }
 
 // 获取安装状态
