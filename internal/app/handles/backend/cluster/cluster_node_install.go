@@ -201,13 +201,35 @@ func executeInstallation(nodeID int64) {
 	}
 	defer ssh_client.Close()
 
+	// 检测远程服务器架构
+	setInstallStatus(nodeID, "running", 15, "正在检测服务器架构...")
+	stdout, stderr, err := ssh_client.Run("uname -m")
+	if err != nil {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("检测服务器架构失败: %v, stderr: %s", err, stderr))
+		return
+	}
+	arch := string(stdout)
+	arch = arch[:len(arch)-1]
+
+	var archSuffix string
+	switch arch {
+	case "x86_64":
+		archSuffix = "amd64"
+	case "i386", "i686":
+		archSuffix = "386"
+	case "aarch64", "arm64":
+		archSuffix = "arm64"
+	default:
+		archSuffix = "amd64"
+	}
+
 	// 上传文件
-	local_file := filepath.Join("deploy", "network_probe/network_probe_v1.0_linux_amd64.tar.gz")
+	local_file := filepath.Join("deploy", "network_probe", fmt.Sprintf("network_probe_v1.0_linux_%s.tar.gz", archSuffix))
 	remote_file := "/tmp/mgo_web"
 
 	// 检查本地文件是否存在
-	if _, err := os.Stat(local_file); os.IsNotExist(err) {
-		setInstallStatus(nodeID, "failed", 0, "deploy/mgo_web 文件不存在")
+	if _, err = os.Stat(local_file); os.IsNotExist(err) {
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("deploy/network_probe/network_probe_v1.0_linux_%s.tar.gz 文件不存在", archSuffix))
 		return
 	}
 
@@ -229,7 +251,7 @@ func executeInstallation(nodeID int64) {
 
 	// 在远程服务器上执行安装命令
 	install_cmd := fmt.Sprintf("chmod +x %s && %s install", remote_file, remote_file)
-	stdout, stderr, err := ssh_client.Run(install_cmd)
+	stdout, stderr, err = ssh_client.Run(install_cmd)
 	if err != nil {
 		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("执行安装命令失败: %v, stderr: %s", err, stderr))
 		return
