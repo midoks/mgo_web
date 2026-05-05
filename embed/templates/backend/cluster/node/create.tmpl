@@ -223,7 +223,7 @@ form.on('submit(submit_step1)', function(data){
                 }
 
                 // 更新步骤指示器高亮
-                $('.steps .step').removeClass('active');
+                // $('.steps .step').removeClass('active');
                 $('.steps .step:nth-child(2)').addClass('active');
 
                 var ipAddressesJson = $('input[name="ip_addresses_json"]').val();
@@ -258,7 +258,7 @@ form.on('submit(submit_step2)', function(data){
                 $('.install_node_step3').show();
 
                 // 更新步骤指示器高亮
-                $('.steps .step').removeClass('active');
+                // $('.steps .step').removeClass('active');
                 $('.steps .step:nth-child(3)').addClass('active');
             }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
