@@ -242,6 +242,11 @@ form.on('submit(submit_step2)', function(data){
         console.log(res);
         showMsg(res.msg, function(){
             layer.close(index);
+            if(res.code > -1){
+                $('.install_node_step1').hide();
+                $('.install_node_step2').hide();
+                $('.install_node_step3').show();
+            }
         },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
     },'json');
     return false;
