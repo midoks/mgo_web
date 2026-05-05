@@ -171,10 +171,10 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	// 边缘节点 - 分组
 	backstage_admin.GET("/clusters/cluster/groups", backend_cluster.ClusterGroups)
-	backstage_admin.GET("/clusters/cluster/groups_add", backend_cluster.ClusterGroupsAdd)
-	backstage_admin.GET("/clusters/cluster/groups_list", backend_cluster.ClusterGroupsList)
-	backstage_admin.POST("/clusters/cluster/groups_add", backend_cluster.PostClusterGroupsAdd)
-	backstage_admin.POST("/clusters/cluster/groups_delete", backend_cluster.ClusterGroupsDelete)
+	backstage_admin.GET("/clusters/cluster/groups/add", backend_cluster.ClusterGroupsAdd)
+	backstage_admin.GET("/clusters/cluster/groups/list", backend_cluster.ClusterGroupsList)
+	backstage_admin.POST("/clusters/cluster/groups/add", backend_cluster.PostClusterGroupsAdd)
+	backstage_admin.POST("/clusters/cluster/groups/delete", backend_cluster.ClusterGroupsDelete)
 
 	backstage_admin.GET("/clusters/cluster/install", backend_cluster.ClusterInstall)
 	backstage_admin.GET("/clusters/cluster/upgrade", backend_cluster.ClusterUpgrade)

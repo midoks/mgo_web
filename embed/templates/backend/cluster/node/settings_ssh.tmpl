@@ -121,7 +121,7 @@ form.on("submit(submit_setting_ssh)", function(data){
     var index = layer.load();
     var field = data.field;
 
-    $.post("/{[$.admin_path]}/clusters/node_login/add", field, function(res) {
+    $.post("/{[$.admin_path]}/clusters/node_login_add", field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){
