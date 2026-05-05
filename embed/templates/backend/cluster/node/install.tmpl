@@ -177,7 +177,29 @@ form.on("submit(mod_install)", function(data){
     $.post("/{[$.admin_path]}/clusters/node/install_update_status", field, function(res) {
         layer.msg(res.msg, {
             icon: res.code > -1 ? 1 : 2,
-            shift: res.code > -1 ? 0 : 6,
+            shift: 0,
+            time: 2000
+        }, function() {
+            layer.close(index);
+            if(res.code > -1){
+                parent.location.reload();
+            }
+        });
+    }, 'json');
+    return false;
+});
+
+form.on("submit(mod_reinstall)", function(data){
+    var index = layer.load();
+    var field = {
+        "id": "{[.node_id]}",
+        "is_installed": "0"
+    };
+
+    $.post("/{[$.admin_path]}/clusters/node/install_update_status", field, function(res) {
+        layer.msg(res.msg, {
+            icon: res.code > -1 ? 1 : 2,
+            shift: 0,
             time: 2000
         }, function() {
             layer.close(index);
