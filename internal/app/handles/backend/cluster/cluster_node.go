@@ -234,7 +234,7 @@ func PostCreateNode(c *gin.Context) {
 		}
 	}
 
-	common.SuccessResp(c)
+	common.SuccessResp(c, map[string]interface{}{"id": nodeip.ID})
 }
 
 func PostDeleteNode(c *gin.Context) {
