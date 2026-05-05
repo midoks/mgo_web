@@ -291,12 +291,22 @@ func executeInstallation(nodeID int64) {
 	// 更新状态
 	setInstallStatus(nodeID, "running", 90, "正在配置节点...")
 
-	// 开放8080端口
-	open_port_cmd := "firewall-cmd --add-port=8080/tcp --permanent && firewall-cmd --reload"
-	stdout, stderr, err = ssh_client.Run(open_port_cmd)
-	if err != nil {
-		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("开放8080端口失败: %v, stderr: %s", err, stderr))
-		return
+	// 检测防火墙类型并开放8080端口
+	stdout, stderr, err = ssh_client.Run("which firewall-cmd")
+	if err == nil && len(stdout) > 0 {
+		open_port_cmd := "firewall-cmd --add-port=8080/tcp --permanent && firewall-cmd --reload"
+		stdout, stderr, err = ssh_client.Run(open_port_cmd)
+		if err != nil {
+			setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("开放8080端口失败: %v, stderr: %s", err, stderr))
+			return
+		}
+	} else {
+		open_port_cmd := "iptables -A INPUT -p tcp --dport 8080 -j ACCEPT"
+		stdout, stderr, err = ssh_client.Run(open_port_cmd)
+		if err != nil {
+			setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("开放8080端口失败: %v, stderr: %s", err, stderr))
+			return
+		}
 	}
 
 	fmt.Printf("Install output: %s\n", stdout)
