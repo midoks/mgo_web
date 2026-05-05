@@ -126,8 +126,8 @@
                                     <div style="margin-bottom:12px;">
                                         <div style="font-size:14px;color:#111827;margin-bottom:8px;">配置文件 <span style="color:#6b7280;">configs/api_node.yaml</span> <a href="#" style="margin-left:8px;color:#1d4ed8;">下载</a></div>
                                         <pre style="background:#0b1021;color:#e5e7eb;padding:12px;border-radius:6px;overflow:auto;"><code>rpc.endpoints: [ "http://xxx:8001" ]
-nodeId: "xx"
-secret: "xx"</code></pre>
+nodeId: "{[if .Data]}{[.Data.UniqueID]}{[end]}"
+secret: "{[if .Data]}{[.Data.Secret]}{[end]}"</code></pre>
                                         <div style="color:#6b7280;margin-top:8px;">手动替换cloud-node安装目录下的 configs/api_node.yaml 文件，然后重新启动生效；如果文件不存在，则需要创建。</div>
                                     </div>
 
