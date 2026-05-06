@@ -2,6 +2,7 @@ package db
 
 import (
 	"mgo/internal/model"
+	"time"
 
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -76,4 +77,28 @@ func ClusterNodeLoginFindFrequentSshIDs(clusterID int64) ([]int64, error) {
 		}
 	}
 	return ids, nil
+}
+
+func ClusterNodeLoginAddOrUpdate(nodeID int64, host string, port int, sshID int64) error {
+	common_data := &model.ClusterNodeLogin{
+		Name:       "ssh",
+		NodeID:     nodeID,
+		UpdateTime: time.Now().Unix(),
+	}
+
+	common_data.SetParams(model.ClusterNodeLoginParams{
+		Host:  host,
+		Port:  port,
+		SshID: sshID,
+	})
+
+	var existing model.ClusterNodeLogin
+	err := db.Where("node_id = ?", nodeID).First(&existing).Error
+	if err == nil && existing.ID > 0 {
+		return db.Model(&model.ClusterNodeLogin{}).Where("id = ?", existing.ID).Updates(common_data).Error
+	}
+
+	common_data.Status = true
+	common_data.CreateTime = time.Now().Unix()
+	return db.Create(common_data).Error
 }

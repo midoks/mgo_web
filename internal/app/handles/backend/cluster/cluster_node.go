@@ -234,6 +234,14 @@ func PostCreateNode(c *gin.Context) {
 		}
 	}
 
+	if field.Host != "" || field.Port > 0 || field.SshID > 0 {
+		err := db.ClusterNodeLoginAddOrUpdate(nodeip.ID, field.Host, field.Port, field.SshID)
+		if err != nil {
+			common.ErrorResp(c, err, -1)
+			return
+		}
+	}
+
 	common.SuccessResp(c, map[string]interface{}{"id": nodeip.ID})
 }
 

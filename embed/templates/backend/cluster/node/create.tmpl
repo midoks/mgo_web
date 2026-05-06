@@ -20,6 +20,14 @@
                     <div class="step"><span class="num">3</span><span class="label">完成</span></div>
                 </div>
 
+                <!-- display:none; -->
+                <div id="install-progress" style="margin-top:16px;">
+                    <div style="margin-bottom:8px;color:#374151;">安装进度</div>
+                    <div style="background:#e5e7eb;border-radius:6px;height:24px;overflow:hidden;">
+                        <div id="progress-bar" style="background:#1d4ed8;height:100%;width:0%;transition:width 0.3s;"></div>
+                    </div>
+                    <div id="progress-text" style="margin-top:8px;color:#6b7280;font-size:14px;">准备中...</div>
+                </div>
 
                 <div class="layui-form toolbar install_node_step1">
                 <form class="layui-form layui-form-pane">
@@ -82,12 +90,12 @@
 
                             <tr class="more_table hide">
                                 <td>SSH主机地址</td>
-                                <td><input type="text" name="ssh_host" autocomplete="off" value="127.0.0.1" class="layui-input"></td>
+                                <td><input type="text" name="ssh_host" autocomplete="off" value="" class="layui-input"></td>
                             </tr>
 
                             <tr class="more_table hide">
                                 <td>SSH主机端口</td>
-                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input" value="22"></td>
+                                <td><input type="number" name="ssh_port" autocomplete="off" placeholder="" class="layui-input" value=""></td>
                             </tr>
 
                             <tr class="more_table hide">
@@ -156,6 +164,8 @@
                     </table>
                 </form>
                 </div>
+
+
 
                 <div class="layui-form toolbar install_node_step3" style="display:none;">
                     <div>

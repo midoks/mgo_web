@@ -5,6 +5,11 @@ type ClusterCreateNode struct {
 	Name            string `form:"name"`
 	ClusterID       int64  `form:"cluster_id"`
 	IpAddressesJson string `form:"ip_addresses_json"`
+
+	//ssh配置
+	Host  string `form:"host"`
+	Port  int    `form:"port"`
+	SshID int64  `form:"ssh_id"`
 }
 
 type ClusterNodeQuery struct {
