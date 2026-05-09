@@ -5,7 +5,6 @@ import (
 	"errors"
 	"strconv"
 
-	// "fmt"
 	"net/http"
 	// "strconv"
 	"strings"
@@ -234,15 +233,20 @@ func PostCreateNode(c *gin.Context) {
 		}
 	}
 
-	if field.Host != "" || field.Port > 0 || field.SshID > 0 {
-		err := db.ClusterNodeLoginAddOrUpdate(nodeip.ID, field.Host, field.Port, field.SshID)
+	if field.SshHost != "" || field.SshPort > 0 || field.SshID > 0 {
+		err := db.ClusterNodeLoginAddOrUpdate(nodeip.ID, field.SshHost, field.SshPort, field.SshID)
 		if err != nil {
 			common.ErrorResp(c, err, -1)
 			return
 		}
+
+		// 异步执行安装
+		AsyncExecuteInstall(nodeip.ID)
+		common.SuccessResp(c, map[string]interface{}{"step": 2, "id": nodeip.ID})
+		return
 	}
 
-	common.SuccessResp(c, map[string]interface{}{"id": nodeip.ID})
+	common.SuccessResp(c, map[string]interface{}{"step": 1, "id": nodeip.ID})
 }
 
 func PostDeleteNode(c *gin.Context) {

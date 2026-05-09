@@ -214,22 +214,11 @@ window.loadGroupBtn = function(){
 //安装节点第一步
 form.on('submit(submit_step1)', function(data){
     var field = data.field;
-    var ip = $('#ip_btn .ip').text();
-    field['ip'] = ip;
-
-    // 显示进度条
-    $('#install-progress').show();
-    $('#progress-bar').width('0%');
-    $('#progress-text').text('准备中...');
 
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         console.log("submit_step1:",res);
         
         if (res.code > -1){
-            // 更新进度到100%
-            $('#progress-bar').width('100%');
-            $('#progress-text').text('创建成功，正在跳转...');
-            
             setTimeout(function(){
                 $('.install_node_step1').hide();
                 $('.install_node_step2').show();
@@ -258,11 +247,35 @@ form.on('submit(submit_step1)', function(data){
                 }
                 $('input[name="ssh_host"]').val(firstIp);
                 $('input[name="ssh_port"]').val(ssh_port);
-                
-                // 隐藏进度条
-                $('#install-progress').hide();
-                $('#progress-bar').width('0%');
-                $('#progress-text').text('准备中...');
+
+
+                 // 将返回的 node_id 设置到第二步表单中
+                if (res.data && res.data.step && res.data.step==2) {
+                    var node_id = res.data.id;
+
+                    console.log("step2:", node_id);
+
+                    $('#install-progress').show();
+                    $('#progress-bar').width('0%');
+                    $('#progress-text').text('保存登录信息...');
+
+                    // 调用安装API
+                    $.post("/{[$.admin_path]}/clusters/node/doinstall", {id: node_id}, function(installRes) {
+                        console.log("doinstall step2:", installRes);
+                        
+                        if(installRes.code > -1){
+                            // 安装已启动，开始轮询进度
+                            $('#progress-text').text('正在安装...');
+                            progressInterval = setInterval(function(){
+                                checkInstallStatus(node_id);
+                            }, 1000);
+                        } else {
+                            showMsg(installRes.msg, function(){}, {icon: 2, shift: 6});
+                            $('#install-progress').hide();
+                        }
+                    }, 'json');
+                }                
+
             }, 500);
         } else {
             showMsg(res.msg, function(){}, {icon: 2, shift: 6});

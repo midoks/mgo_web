@@ -131,19 +131,22 @@ func PostNodeInstallDone(c *gin.Context) {
 	setInstallStatus(field.ID, "running", 0, "开始安装...")
 
 	// 异步执行安装
-	go func(nodeID int64) {
+	AsyncExecuteInstall(field.ID)
+
+	// 返回成功，告知客户端安装已开始
+	common.SuccessResp(c)
+}
+
+// 异步执行安装的共用函数
+func AsyncExecuteInstall(nodeID int64) {
+	go func() {
 		defer func() {
 			if r := recover(); r != nil {
 				setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("安装过程发生异常: %v", r))
 			}
 		}()
-
-		// 执行安装过程
 		executeInstallation(nodeID)
-	}(field.ID)
-
-	// 返回成功，告知客户端安装已开始
-	common.SuccessResp(c)
+	}()
 }
 
 // 执行安装过程

@@ -22,7 +22,7 @@ func PostNodeLoginAdd(c *gin.Context) {
 		return
 	}
 
-	err := db.ClusterNodeLoginAddOrUpdate(field.NodeID, field.Host, field.Port, field.SshID)
+	err := db.ClusterNodeLoginAddOrUpdate(field.NodeID, field.SshHost, field.SshPort, field.SshID)
 	if err != nil {
 		common.ErrorResp(c, err, -1)
 		return

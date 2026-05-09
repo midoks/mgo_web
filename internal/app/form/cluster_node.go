@@ -7,9 +7,9 @@ type ClusterCreateNode struct {
 	IpAddressesJson string `form:"ip_addresses_json"`
 
 	//ssh配置
-	Host  string `form:"host"`
-	Port  int    `form:"port"`
-	SshID int64  `form:"ssh_id"`
+	SshHost string `form:"ssh_host"`
+	SshPort int    `form:"ssh_port"`
+	SshID   int64  `form:"ssh_id"`
 }
 
 type ClusterNodeQuery struct {
@@ -41,9 +41,9 @@ type ClusterNodeSettings struct {
 }
 
 type ClusterNodeLoginAdd struct {
-	ID     int64  `form:"id"`
-	Host   string `form:"ssh_host"`
-	Port   int    `form:"ssh_port"`
-	SshID  int64  `form:"ssh_id"`
-	NodeID int64  `form:"node_id"`
+	ID      int64  `form:"id"`
+	SshHost string `form:"ssh_host"`
+	SshPort int    `form:"ssh_port"`
+	SshID   int64  `form:"ssh_id"`
+	NodeID  int64  `form:"node_id"`
 }
