@@ -241,7 +241,7 @@ func PostCreateNode(c *gin.Context) {
 		}
 
 		// 异步执行安装
-		AsyncExecuteInstall(nodeip.ID)
+		// AsyncExecuteInstall(nodeip.ID)
 		common.SuccessResp(c, map[string]interface{}{"step": 2, "id": nodeip.ID})
 		return
 	}
