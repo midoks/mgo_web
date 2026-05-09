@@ -20,8 +20,7 @@
                     <div class="step"><span class="num">3</span><span class="label">完成</span></div>
                 </div>
 
-                <!-- display:none; -->
-                <div id="install-progress" style="margin-top:16px;">
+                <div id="install-progress" style="margin-top:16px;display:none;">
                     <div style="margin-bottom:8px;color:#374151;">安装进度</div>
                     <div style="background:#e5e7eb;border-radius:6px;height:24px;overflow:hidden;">
                         <div id="progress-bar" style="background:#1d4ed8;height:100%;width:0%;transition:width 0.3s;"></div>
@@ -214,16 +213,24 @@ window.loadGroupBtn = function(){
 
 //安装节点第一步
 form.on('submit(submit_step1)', function(data){
-    var index = layer.load();
     var field = data.field;
     var ip = $('#ip_btn .ip').text();
     field['ip'] = ip;
 
+    // 显示进度条
+    $('#install-progress').show();
+    $('#progress-bar').width('0%');
+    $('#progress-text').text('准备中...');
+
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         console.log("submit_step1:",res);
-        showMsg(res.msg, function(){
-            layer.close(index);
-            if (res.code > -1){
+        
+        if (res.code > -1){
+            // 更新进度到100%
+            $('#progress-bar').width('100%');
+            $('#progress-text').text('创建成功，正在跳转...');
+            
+            setTimeout(function(){
                 $('.install_node_step1').hide();
                 $('.install_node_step2').show();
 
@@ -233,10 +240,12 @@ form.on('submit(submit_step1)', function(data){
                 }
 
                 // 更新步骤指示器高亮
-                // $('.steps .step').removeClass('active');
+                $('.steps .step').removeClass('active');
                 $('.steps .step:nth-child(2)').addClass('active');
 
                 var ipAddressesJson = $('input[name="ip_addresses_json"]').val();
+
+                var ssh_port = $('input[name="ssh_port"]').val();
                 var firstIp = "";
                 try {
                     var ipArray = JSON.parse(ipAddressesJson);
@@ -248,30 +257,90 @@ form.on('submit(submit_step1)', function(data){
                     console.error("failed to parse ip_addresses_json:", e);
                 }
                 $('input[name="ssh_host"]').val(firstIp);
-            }
-        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+                $('input[name="ssh_port"]').val(ssh_port);
+                
+                // 隐藏进度条
+                $('#install-progress').hide();
+                $('#progress-bar').width('0%');
+                $('#progress-text').text('准备中...');
+            }, 500);
+        } else {
+            showMsg(res.msg, function(){}, {icon: 2, shift: 6});
+            $('#install-progress').hide();
+        }
     },'json');
     return false;
 });
 
 
-form.on('submit(submit_step2)', function(data){
-    var index = layer.load();
-    var field = data.field;
-    $.post("/{[$.admin_path]}/clusters/node_login_add", data.field, function(res) {
-        console.log("submit_step2:",res);
-        showMsg(res.msg, function(){
-            layer.close(index);
-            if(res.code > -1){
-                $('.install_node_step1').hide();
-                $('.install_node_step2').hide();
-                $('.install_node_step3').show();
+// 安装进度轮询函数
+var progressInterval = null;
 
-                // 更新步骤指示器高亮
-                // $('.steps .step').removeClass('active');
-                $('.steps .step:nth-child(3)').addClass('active');
+function checkInstallStatus(nodeId) {
+    $.get("/{[$.admin_path]}/clusters/node/install_status", {node_id: nodeId}, function(res) {
+        if (res.code > -1 && res.data) {
+            var status = res.data;
+            $('#progress-bar').width(status.progress + '%');
+            $('#progress-text').text(status.message);
+            
+            if (status.status === 'success') {
+                // 安装成功
+                clearInterval(progressInterval);
+                setTimeout(function(){
+                    $('.install_node_step1').hide();
+                    $('.install_node_step2').hide();
+                    $('.install_node_step3').show();
+                    $('.steps .step').removeClass('active');
+                    $('.steps .step:nth-child(3)').addClass('active');
+                    $('#install-progress').hide();
+                    $('#progress-bar').width('0%');
+                    $('#progress-text').text('准备中...');
+                }, 500);
+            } else if (status.status === 'failed') {
+                // 安装失败
+                clearInterval(progressInterval);
+                showMsg(status.message, function(){}, {icon: 2, shift: 6});
+                $('#install-progress').hide();
             }
-        },{icon: res.code > -1 ? 1 : 2,shift:res.code>-1 ? 0 : 6});
+        }
+    }, 'json');
+}
+
+form.on('submit(submit_step2)', function(data){
+    var field = data.field;
+    
+    // 显示进度条
+    $('#install-progress').show();
+    $('#progress-bar').width('0%');
+    $('#progress-text').text('保存登录信息...');
+
+    // 先保存登录信息
+    $.post("/{[$.admin_path]}/clusters/node_login_add", data.field, function(res) {
+        console.log("submit_step2 save login:", res);
+        
+        if(res.code > -1){
+            // 登录信息保存成功，开始安装
+            $('#progress-text').text('开始安装...');
+            
+            // 调用安装API
+            $.post("/{[$.admin_path]}/clusters/node/doinstall", {id: field.node_id}, function(installRes) {
+                console.log("doinstall:", installRes);
+                
+                if(installRes.code > -1){
+                    // 安装已启动，开始轮询进度
+                    $('#progress-text').text('正在安装...');
+                    progressInterval = setInterval(function(){
+                        checkInstallStatus(field.node_id);
+                    }, 1000);
+                } else {
+                    showMsg(installRes.msg, function(){}, {icon: 2, shift: 6});
+                    $('#install-progress').hide();
+                }
+            }, 'json');
+        } else {
+            showMsg(res.msg, function(){}, {icon: 2, shift: 6});
+            $('#install-progress').hide();
+        }
     },'json');
     return false;
 });

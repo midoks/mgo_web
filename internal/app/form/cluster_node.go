@@ -42,8 +42,8 @@ type ClusterNodeSettings struct {
 
 type ClusterNodeLoginAdd struct {
 	ID     int64  `form:"id"`
-	Host   string `form:"host"`
-	Port   int    `form:"port"`
+	Host   string `form:"ssh_host"`
+	Port   int    `form:"ssh_port"`
 	SshID  int64  `form:"ssh_id"`
 	NodeID int64  `form:"node_id"`
 }
