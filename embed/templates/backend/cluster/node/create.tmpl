@@ -169,14 +169,14 @@
                 <div class="layui-form toolbar install_node_step3" style="display:none;">
                     <div>
                         <div style="text-align: center; font-size: 1.4em; margin-top: 2.4em;">
-                            <span class="green">"127.0.0.1"节点已被创建并安装成功。</span>
+                            <span class="green" id="success-node-name">""</span><span class="green">节点已被创建并安装成功。</span>
                         </div>
 
                          <div style="text-align: center; margin-top: 3em;">
-                            <a href="/clusters/cluster/node?node_id=0&amp;cluster_id=0" type="button" class="layui-btn">现在进入节点详情<i class="layui-icon layui-icon-right"></i></a>
+                            <a id="enter-node-link" href="/clusters/cluster/node?node_id=0&amp;cluster_id=0" type="button" class="layui-btn">现在进入节点详情<i class="layui-icon layui-icon-right"></i></a>
                         </div>
 
-                        <div style="text-align: center; margin-top: 1em;"><a class="mlink" href="">继续创建下一个节点</a></div>
+                        <div style="text-align: center; margin-top: 1em;"><a class="mlink" href="/{[$.admin_path]}/clusters/cluster/create_node">继续创建下一个节点</a></div>
                     </div>
                 </div>
             <!--  end  -->
@@ -214,6 +214,10 @@ window.loadGroupBtn = function(){
 //安装节点第一步
 form.on('submit(submit_step1)', function(data){
     var field = data.field;
+    
+    // 保存节点名称和cluster_id供后续使用
+    currentNodeName = field.name || '';
+    currentClusterId = field.cluster_id || 0;
 
     $.post("/{[$.admin_path]}/clusters/cluster/create_node", data.field, function(res) {
         console.log("submit_step1:",res);
@@ -288,6 +292,8 @@ form.on('submit(submit_step1)', function(data){
 
 // 安装进度轮询函数
 var progressInterval = null;
+var currentNodeName = '';
+var currentClusterId = 0;
 
 function checkInstallStatus(nodeId) {
     $.get("/{[$.admin_path]}/clusters/node/install_status", {node_id: nodeId}, function(res) {
@@ -308,6 +314,16 @@ function checkInstallStatus(nodeId) {
                     $('#install-progress').hide();
                     $('#progress-bar').width('0%');
                     $('#progress-text').text('准备中...');
+                    
+                    // 显示节点名称
+                    if (currentNodeName) {
+                        $('#success-node-name').text('"' + currentNodeName + '"');
+                    }
+                    
+                    // 更新节点详情链接
+                    if (nodeId && currentClusterId) {
+                        $('#enter-node-link').attr('href', '/{[$.admin_path]}/clusters/cluster/node?node_id=' + nodeId + '&cluster_id=' + currentClusterId);
+                    }
                 }, 500);
             } else if (status.status === 'failed') {
                 // 安装失败
