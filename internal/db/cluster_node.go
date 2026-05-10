@@ -1,16 +1,15 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
+	"mgo/internal/app/entity"
 	"mgo/internal/app/form"
 	"mgo/internal/model"
 )
 
-func GetClusterNodeListByArgs(field form.ClusterNodeList) ([]model.ClusterNode, int64, error) {
+func GetClusterNodeListByArgs(field form.ClusterNodeList) ([]entity.ClusterNodeEntityList, int64, error) {
 	page := field.Page.Page
 	size := field.Page.Limit
 
@@ -31,11 +30,16 @@ func GetClusterNodeListByArgs(field form.ClusterNodeList) ([]model.ClusterNode, 
 		return nil, 0, errors.WithStack(err)
 	}
 
-	for _, d := range list {
-		fmt.Println("d:", d)
+	result := make([]entity.ClusterNodeEntityList, len(list))
+	for i, d := range list {
+		ip_list, _ := GetClusterNodeIpaddrByNodeID(d.ID)
+		result[i] = entity.ClusterNodeEntityList{
+			ClusterNode: d,
+			IpList:      ip_list,
+		}
 	}
 
-	return list, count, nil
+	return result, count, nil
 }
 
 func GetClusterNodeList(page, size int) ([]model.ClusterNode, int64, error) {
