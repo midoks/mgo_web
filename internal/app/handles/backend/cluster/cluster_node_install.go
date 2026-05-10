@@ -364,8 +364,7 @@ secret: "%s"`, node_data.UniqueID, node_data.Secret)
 			return
 		}
 	}
-
-	fmt.Printf("Install output: %s\n", stdout)
+	// fmt.Printf("Install output: %s\n", stdout)
 
 	// 安装完成
 	setInstallStatus(nodeID, "success", 100, "安装成功完成")
