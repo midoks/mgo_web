@@ -107,17 +107,6 @@ func ClusterDelete(c *gin.Context) {
 	c.HTML(http.StatusOK, "backend/cluster/delete.tmpl", data)
 }
 
-func Edit(c *gin.Context) {
-	id := c.Query("id")
-	idInt, _ := strconv.ParseInt(id, 10, 64)
-
-	admin_data, _ := db.GetAdminByID(idInt)
-
-	data := common.CommonVer(c)
-	data["Data"] = admin_data
-	c.HTML(http.StatusOK, "backend/cluster/edit.tmpl", data)
-}
-
 func List(c *gin.Context) {
 	var field form.Page
 	if err := c.ShouldBind(&field); err != nil {
@@ -129,59 +118,70 @@ func List(c *gin.Context) {
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
-func PostEdit(c *gin.Context) {
-	var f struct {
-		Id       int64  `form:"id"`
-		Username string `form:"username"`
-		Tel      string `form:"Tel"`
-		Email    string `form:"email"`
-		Password string `form:"password"`
-	}
+// func Edit(c *gin.Context) {
+// 	id := c.Query("id")
+// 	idInt, _ := strconv.ParseInt(id, 10, 64)
 
-	if err := c.ShouldBind(&f); err != nil {
-		common.ErrorResp(c, err, 0)
-		return
-	}
+// 	admin_data, _ := db.GetAdminByID(idInt)
 
-	d := &model.Admin{
-		Username: f.Username,
-		Password: f.Password,
-	}
+// 	data := common.CommonVer(c)
+// 	data["Data"] = admin_data
+// 	c.HTML(http.StatusOK, "backend/cluster/edit.tmpl", data)
+// }
 
-	if f.Id > 0 {
+// func PostEdit(c *gin.Context) {
+// 	var f struct {
+// 		Id       int64  `form:"id"`
+// 		Username string `form:"username"`
+// 		Tel      string `form:"Tel"`
+// 		Email    string `form:"email"`
+// 		Password string `form:"password"`
+// 	}
 
-		if f.Password != "" {
-			db.AdminUpdatePass(nil, f.Id, f.Password)
-		}
+// 	if err := c.ShouldBind(&f); err != nil {
+// 		common.ErrorResp(c, err, 0)
+// 		return
+// 	}
 
-		if f.Tel != "" {
-			db.AdminUpdateTel(nil, f.Id, f.Tel)
-		}
+// 	d := &model.Admin{
+// 		Username: f.Username,
+// 		Password: f.Password,
+// 	}
 
-		if f.Email != "" {
-			db.AdminUpdateEmail(nil, f.Id, f.Email)
-		}
+// 	if f.Id > 0 {
 
-		common.SuccessResp(c)
-		return
-	}
+// 		if f.Password != "" {
+// 			db.AdminUpdatePass(nil, f.Id, f.Password)
+// 		}
 
-	if d.Password != "" {
-		salt := utils.RandString(16)
-		d.Salt = salt
-		d.Password = model.TwoHashPwd(d.Password, salt)
-	}
-	d.CreateTime = time.Now().Unix()
-	d.UpdateTime = time.Now().Unix()
+// 		if f.Tel != "" {
+// 			db.AdminUpdateTel(nil, f.Id, f.Tel)
+// 		}
 
-	err := db.CreateAdmin(nil, d)
-	if err == nil {
-		common.SuccessResp(c)
-		return
-	}
+// 		if f.Email != "" {
+// 			db.AdminUpdateEmail(nil, f.Id, f.Email)
+// 		}
 
-	common.ErrorResp(c, err, 0)
-}
+// 		common.SuccessResp(c)
+// 		return
+// 	}
+
+// 	if d.Password != "" {
+// 		salt := utils.RandString(16)
+// 		d.Salt = salt
+// 		d.Password = model.TwoHashPwd(d.Password, salt)
+// 	}
+// 	d.CreateTime = time.Now().Unix()
+// 	d.UpdateTime = time.Now().Unix()
+
+// 	err := db.CreateAdmin(nil, d)
+// 	if err == nil {
+// 		common.SuccessResp(c)
+// 		return
+// 	}
+
+// 	common.ErrorResp(c, err, 0)
+// }
 
 func PostCreate(c *gin.Context) {
 	var field form.ClusterCreate
