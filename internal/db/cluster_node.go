@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
@@ -28,6 +30,11 @@ func GetClusterNodeListByArgs(field form.ClusterNodeList) ([]model.ClusterNode, 
 	if err := mm.Offset((page - 1) * size).Limit(size).Find(&list).Error; err != nil {
 		return nil, 0, errors.WithStack(err)
 	}
+
+	for _, d := range list {
+		fmt.Println("d:", d)
+	}
+
 	return list, count, nil
 }
 

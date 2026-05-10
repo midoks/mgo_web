@@ -153,6 +153,7 @@ func NodeList(c *gin.Context) {
 		common.ErrorResp(c, err, -2)
 		return
 	}
+
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
