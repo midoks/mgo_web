@@ -47,7 +47,7 @@ table.render({
         {field:'db_usage', title:'用量', width: 120, templet: '#usageTpl'},
         {field:'db_type', title:'类型', width: 100, templet: '#typeTpl'},
         {field:'status', title:'状态', width: 100, templet:"#statusTpl"},
-        {title:'操作', toolbar: '#cmdTpl', width: 220, fixed: 'right'}
+        {title:'操作', toolbar: '#cmdTpl', width: 240, fixed: 'right'}
      ]],
     page: true
 });
@@ -78,7 +78,9 @@ table.render({
 </script>
 
 <script type="text/html" id="versionTpl">
-    <span style="font-family:monospace;font-size:13px;background:#f2f2f2;padding:3px 8px;border-radius:4px;">{{d.db_version || '未知'}}</span>
+<!--     <span style="font-family:monospace;font-size:13px;background:#f2f2f2;padding:3px 8px;border-radius:4px;">
+    </span> -->
+    {{d.db_version || '未知'}}
 </script>
 
 <script type="text/html" id="usageTpl">
@@ -91,13 +93,13 @@ table.render({
 
 <script type="text/html" id="typeTpl">
     {{# if (d.db_type === 'mysql') { }}
-        <span class="layui-badge layui-bg-blue" style="padding:3px 8px;">MySQL</span>
+        <span class="layui-badge layui-bg-blue" style="padding:3px 8px;;line-height: 12px;">MySQL</span>
     {{# } else if (d.db_type === 'postgres') { }}
-        <span class="layui-badge layui-bg-cyan" style="padding:3px 8px;">PostgreSQL</span>
+        <span class="layui-badge layui-bg-cyan" style="padding:3px 8px;;line-height: 12px;">PostgreSQL</span>
     {{# } else if (d.db_type === 'sqlite') { }}
-        <span class="layui-badge layui-bg-orange" style="padding:3px 8px;">SQLite</span>
+        <span class="layui-badge layui-bg-orange" style="padding:3px 8px;;line-height: 12px;">SQLite</span>
     {{# } else { }}
-        <span class="layui-badge layui-bg-gray" style="padding:3px 8px;">{{d.db_type || '未知'}}</span>
+        <span class="layui-badge layui-bg-gray" style="padding:3px 8px;;line-height: 12px;">{{d.db_type || '未知'}}</span>
     {{# } }}
 </script>
 
