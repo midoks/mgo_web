@@ -24,12 +24,7 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 2,
 			Name:   "API节点",
-			Link:   "clusters/cluster/list",
-		},
-		{
-			Number: 3,
-			Name:   "用户节点",
-			Link:   "clusters/cluster/create_node",
+			Link:   "system/api",
 		},
 		{
 			Number: 4,
@@ -39,7 +34,7 @@ func GetSysAdvancedSubMenu() []form.ClusterSubMenu {
 		{
 			Number: 5,
 			Name:   "迁移",
-			Link:   "clusters/cluster/create_node",
+			Link:   "system/transfer",
 		},
 	}
 	return menu

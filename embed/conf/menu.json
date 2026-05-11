@@ -320,6 +320,10 @@
                     {
                         "code":"system_database",
                         "path": "/system/db/logs" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/api" 
                     }
                 ]
             }

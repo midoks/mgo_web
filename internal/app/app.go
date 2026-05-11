@@ -250,6 +250,10 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/system/db/clean", backend_system.DbNodeClean)
 	backstage_admin.GET("/system/db/logs", backend_system.DbNodeLogs)
 	backstage_admin.GET("/system/db/update", backend_system.DbNodeUpdate)
+
+	backstage_admin.GET("/system/api", backend_system.Api)
+	backstage_admin.GET("/system/api/add", backend_system.ApiAdd)
+
 }
 
 func initRuoteInstall(r *gin.Engine) {
