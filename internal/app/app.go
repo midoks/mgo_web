@@ -253,6 +253,7 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	backstage_admin.GET("/system/api", backend_system.Api)
 	backstage_admin.GET("/system/api/add", backend_system.ApiAdd)
+	backstage_admin.GET("/system/api/details", backend_system.ApiDetails)
 
 }
 
