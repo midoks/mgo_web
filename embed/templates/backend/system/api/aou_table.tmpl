@@ -11,17 +11,6 @@
                 </td>
             </tr>
 
-            <tr>
-                <td>数据库类型 *</td>
-                <td>
-                    <select name="db_type" lay-filter="db_type">
-                        <option value="mysql" {[if .Data]}{[if eq .Data.DbType "mysql"]}selected{[end]}{[end]}>MySQL</option>
-                        <option value="postgres" {[if .Data]}{[if eq .Data.DbType "postgres"]}selected{[end]}{[end]}>PostgreSQL</option>
-                        <option value="sqlite3" {[if .Data]}{[if eq .Data.DbType "sqlite3"]}selected{[end]}{[end]}>SQLite3</option>
-                    </select>
-                    <p class="layui-font-12 pt5">选择要使用的数据库类型。</p>
-                </td>
-            </tr>
 
             <tr>
                 <td>主机地址 *</td>
@@ -73,7 +62,7 @@
             </tr>
 
             <tr class="more_table hide">
-                <td>启用当前数据库</td>
+                <td>启用当前节点</td>
                 <td>
                     <input type="checkbox" name="status"
                     {[if $.Data]}{[if $.Data.Status]}checked{[end]}
