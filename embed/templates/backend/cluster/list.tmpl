@@ -51,10 +51,10 @@ table.render({
     url: '/{[.admin_path]}/clusters/node/list?cluster_id={[.cluster_id]}',
     title: '数据表',
     cols: [[
-        {field:'name', title:'节点名称', minWidth: 160, toolbar: '#nameTpl'},
-        {field:'ip', title:'IP地址', width: 160, templet: '#ipTpl'},
-        {field:'is_installed', title:'安装状态', width: 100, templet: '#installedTpl'},
-        {field:'status', title:'运行状态', width: 120, templet: '#statusTpl'},
+        {field:'name', title:'节点名称', minWidth: 120, toolbar: '#nameTpl'},
+        {field:'ip', title:'IP地址', toolbar: '#ipTpl'},
+        {field:'is_installed', title:'安装状态', width: 100, toolbar: '#installedTpl'},
+        {field:'status', title:'运行状态', width: 120, toolbar: '#statusTpl'},
         {title:'操作', toolbar: '#cmdTpl', width: 240, fixed: 'right'}
      ]],
     page: true
@@ -85,9 +85,21 @@ table.on('toolbar', function(obj){
 </script>
 
 <script type="text/html" id="ipTpl">
-    <div style="display:flex;align-items:center;">
-        <i class="layui-icon layui-icon-ip" style="font-size:16px;color:#666;margin-right:6px;"></i>
-        <span style="font-family:monospace;color:#333;">{{d.ip}}</span>
+    <div>
+        {{# if (d.ip_list && d.ip_list.length > 0) { }}
+            {{# layui.each(d.ip_list, function(index, item){ }}
+                <div style="display:flex;align-items:center;margin-bottom:4px;" {{# if(index > 0){ }}style="display:flex;align-items:center;margin-top:4px;"{{# } }}>
+                    <i class="layui-icon layui-icon-ip" style="font-size:14px;color:#666;margin-right:4px;"></i>
+                    <span 
+                        style="font-family:monospace;color:#1E9FFF;cursor:pointer;text-decoration:underline;"
+                        onclick="copyIP('{{item.ip}}')"
+                        title="点击复制IP"
+                    >{{item.ip}}</span>
+                </div>
+            {{# }); }}
+        {{# } else { }}
+            <div style="display:flex;align-items:center;">-</div>
+        {{# } }}
     </div>
 </script>
 
@@ -129,6 +141,18 @@ table.on('toolbar', function(obj){
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete_node','{{d.id}}')">
         <i class="layui-icon layui-icon-delete"></i> 删除
     </a>
+</script>
+
+<script>
+function copyIP(ip) {
+    var input = document.createElement('input');
+    input.value = ip;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    layer.msg('IP已复制到剪贴板', {icon: 1});
+}
 </script>
 
 {[template "backend/common/footer.tmpl" .]}
