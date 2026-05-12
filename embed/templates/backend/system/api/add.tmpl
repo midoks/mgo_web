@@ -57,7 +57,7 @@
 
 <div class="layui-fluid">
     <div style="padding: 15px;">
-    {[template "backend/system/db/aou_table.tmpl" .]}
+    {[template "backend/system/api/aou_table.tmpl" .]}
     </div>
 </div>
 
@@ -81,7 +81,7 @@ form.on("submit(submit_db)", function(data){
         field['status'] = false;
     }
 
-    $.post("/{[$.admin_path]}/system/db/add", field, function(res) {
+    $.post("/{[$.admin_path]}/system/api/add", field, function(res) {
         showMsg(res.msg, function(){
             layer.close(index);
             if(res.code > -1){

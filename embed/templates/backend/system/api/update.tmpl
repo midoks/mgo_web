@@ -14,7 +14,7 @@
                 </div>
 
                 <div style="display:flex;align-items:center;gap:8px;margin-top: 1rem;">
-                    <a href="/{[.admin_path]}/system/db" style="display:flex;align-items:center;">
+                    <a href="/{[.admin_path]}/system/api" style="display:flex;align-items:center;">
                         <i class="layui-icon layui-icon-return"></i>  
                     </a>
 
@@ -25,14 +25,14 @@
 
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
-                        <li data-status="1"><a href="/{[.admin_path]}/system/db/details?id={[.id]}">详情</a></li>
-                        <li data-status="2"><a href="/{[.admin_path]}/system/db/clean?id={[.id]}">清理</a></li>
-                        <li data-status="3"><a href="/{[.admin_path]}/system/db/logs?id={[.id]}">运行日志</a></li>
+                        <li data-status="1"><a href="/{[.admin_path]}/system/api/details?id={[.id]}">详情</a></li>
+                        <li data-status="2"><a href="/{[.admin_path]}/system/api/clean?id={[.id]}">清理</a></li>
+                        <li data-status="3"><a href="/{[.admin_path]}/system/api/logs?id={[.id]}">运行日志</a></li>
                         <li data-status="4" class="layui-this">修改</li>
                     </ul>
                 </div>
 
-                {[template "backend/system/db/aou_table.tmpl" .]}
+                {[template "backend/system/api/aou_table.tmpl" .]}
 
             </div>
         </div>
@@ -56,7 +56,7 @@ form.on('submit(submit_db)', function(data){
     }
 
     $.ajax({
-        url: "/{[$.admin_path]}/system/db/add",
+        url: "/{[$.admin_path]}/system/api/add",
         type: "POST",
         data: field,
         traditional: true,
