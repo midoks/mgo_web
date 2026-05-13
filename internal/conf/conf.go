@@ -145,12 +145,12 @@ func InstallConf(data map[string]string) error {
 	appConfig.Security.SecretKey = randString(32)
 
 	saveConfig := AppConfigCustom{
-		AppName:   appConfig.AppName,
-		Log:       appConfig.Log,
-		Session:   appConfig.Session,
-		Web:       appConfig.Web,
-		Security:  appConfig.Security,
-		Database:  appConfig.Database,
+		AppName:  appConfig.AppName,
+		Log:      appConfig.Log,
+		Session:  appConfig.Session,
+		Web:      appConfig.Web,
+		Security: appConfig.Security,
+		Database: appConfig.Database,
 	}
 
 	yamlData, err := yaml.Marshal(saveConfig)
