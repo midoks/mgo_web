@@ -294,7 +294,7 @@ func executeInstallation(nodeID int64) {
 	// 在远程服务器上执行安装命令
 	// 假设解压后的可执行文件名为 network_probe
 	executable_path := filepath.Join(remote_dir, "network_probe")
-	install_cmd := fmt.Sprintf("chmod +x %s && %s install", executable_path, executable_path)
+	install_cmd := fmt.Sprintf("cd %s && chmod +x %s && %s install", remote_dir, executable_path, executable_path)
 	stdout, stderr, err = ssh_client.Run(install_cmd)
 	if err != nil {
 		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("执行安装命令失败: %v, stderr: %s", err, stderr))
