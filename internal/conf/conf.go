@@ -28,15 +28,12 @@ type AppConfig struct {
 }
 
 type AppConfigCustom struct {
-	AppName   string         `yaml:"app_name"`
-	BrandName string         `yaml:"brand_name"`
-	RunUser   string         `yaml:"run_user"`
-	RunMode   string         `yaml:"run_mode"`
-	Log       LogConfig      `yaml:"log"`
-	Session   SessionConfig  `yaml:"session"`
-	Web       WebConfig      `yaml:"web"`
-	Security  SecurityConfig `yaml:"security"`
-	Database  DatabaseConfig `yaml:"database"`
+	AppName  string         `yaml:"app_name"`
+	Log      LogConfig      `yaml:"log"`
+	Session  SessionConfig  `yaml:"session"`
+	Web      WebConfig      `yaml:"web"`
+	Security SecurityConfig `yaml:"security"`
+	Database DatabaseConfig `yaml:"database"`
 }
 
 type GeneralConfig struct {
@@ -149,9 +146,6 @@ func InstallConf(data map[string]string) error {
 
 	saveConfig := AppConfigCustom{
 		AppName:   appConfig.AppName,
-		BrandName: appConfig.BrandName,
-		RunUser:   appConfig.RunUser,
-		RunMode:   appConfig.RunMode,
 		Log:       appConfig.Log,
 		Session:   appConfig.Session,
 		Web:       appConfig.Web,
