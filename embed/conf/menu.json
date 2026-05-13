@@ -109,7 +109,17 @@
             {
                 "code": "clusters_region",
                 "name": "区域设置",
-                "path": "/clusters/regions"
+                "path": "/clusters/regions",
+                "subapi":[
+                    {
+                        "code":"clusters_region",
+                        "path": "/clusters/regions"
+                    },
+                    {
+                        "code":"clusters_region",
+                        "path": "/clusters/regions/nodes"
+                    }
+                ]
             },
             {
                 "code": "ssh",
