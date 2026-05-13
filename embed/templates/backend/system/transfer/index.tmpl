@@ -1,0 +1,155 @@
+{[template "backend/common/header_nonav.tmpl" .]}
+
+<style type="text/css">
+.transfer-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.step-item.active .step-number {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.step-item.done .step-number {
+    background: #10b981;
+    color: #fff;
+}
+
+.step-line {
+    width: 60px;
+    height: 2px;
+    background: #e8e8e8;
+    margin: 0 5px;
+    flex-shrink: 0;
+}
+
+.step-item.active ~ .step-line {
+    background: #3b82f6;
+}
+
+.step-item.done ~ .step-line {
+    background: #10b981;
+}
+
+.step-title {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.step-item.active .step-title {
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+.step-item.done .step-title {
+    color: #10b981;
+}
+
+.transfer-content {
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    line-height: 2;
+    color: #666;
+}
+
+.transfer-content p {
+    margin-bottom: 10px;
+}
+
+.layui-btn-blue {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.layui-btn-blue:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+</style>
+
+
+<div class="layui-fluid">
+    <div class="layui-col-md12" style="padding: 5px;">
+        <div class="layui-card">
+            <div class="layui-card-body">
+
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title" id="status">
+                        {[range $menu := .submenu]}
+                            <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}">{[$menu.Name]}</a></li>
+                        {[end]}
+                    </ul>
+                </div>
+
+
+                <!-- 步骤指示器 -->
+                <div class="layui-row" style="margin-bottom: 30px;">
+                    <div class="transfer-steps">
+                        {[range $index, $step := .steps]}
+                            <div class="step-item {[if eq $index 0]}active{[end]}">
+                                <div class="step-number">{[if eq $index 0]}1{[end]}{[if eq $index 1]}2{[end]}{[if eq $index 2]}3{[end]}{[if eq $index 3]}4{[end]}{[if eq $index 4]}5{[end]}{[if eq $index 5]}6{[end]}{[if eq $index 6]}7{[end]}</div>
+                                <div class="step-title">{[$step.Name]}</div>
+                            </div>
+                            {[if lt $index 6]}<div class="step-line"></div>{[end]}
+                        {[end]}
+                    </div>
+                </div>
+
+                <!-- 内容区域 -->
+                <div class="transfer-content">
+                    <p>通过此引导程序可以帮助你将当前平台配置迁移到新的平台中。</p>
+                    <p>每个步骤请小心操作，一旦配置错误可能需要手工还原。</p>
+                    <p>每个步骤请小心操作，一旦配置错误可能需要手工还原。</p>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="layui-form-item" style="text-align: right; margin-top: 40px;">
+                    <button class="layui-btn layui-btn-blue" onclick="nextStep()">下一步</button>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+layui.config({base: '/static/layuiadmin/'}).use(['layer','jquery'], function(){
+    var layer = layui.layer;
+    var $ = layui.$;
+
+    window.nextStep = function() {
+        window.location.href = '/{[$.admin_path]}/system/transfer/step2';
+    };
+});
+</script>
+
+{[template "backend/common/footer.tmpl" .]}

@@ -21,22 +21,6 @@
             </tr>
 
             <tr>
-                <td>数据库端口 *</td>
-                <td>
-                    <input type="number" name="port" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Port]}{[end]}" placeholder="SQLite3时留空">
-                    <p class="layui-font-12 pt5">连接数据库的端口，MySQL默认3306，PostgreSQL默认5432。</p>
-                </td>
-            </tr>
-
-            <tr>
-                <td>数据库名称/路径 *</td>
-                <td>
-                    <input type="text" name="dbname" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Dbname]}{[end]}" placeholder="">
-                    <p class="layui-font-12 pt5">MySQL/PostgreSQL时为数据库名称，SQLite3时为文件路径（如data/mgo.db）。</p>
-                </td>
-            </tr>
-
-            <tr>
                 <td>用户名</td>
                 <td>
                     <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="SQLite3时留空">

@@ -324,6 +324,10 @@
                     {
                         "code":"system_database",
                         "path": "/system/api" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/transfer" 
                     }
                 ]
             }

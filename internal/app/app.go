@@ -255,6 +255,8 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/system/api/add", backend_system.ApiAdd)
 	backstage_admin.GET("/system/api/details", backend_system.ApiDetails)
 
+	backstage_admin.GET("/system/transfer", backend_system.Transfer)
+
 }
 
 func initRuoteInstall(r *gin.Engine) {
