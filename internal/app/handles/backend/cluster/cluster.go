@@ -11,7 +11,7 @@ import (
 	"mgo/internal/app/form"
 	"mgo/internal/db"
 	"mgo/internal/model"
-	// utils "mgo/internal/utils"
+	tools "mgo/internal/utils"
 )
 
 func GetSubMenu() []form.SubMenu {
@@ -118,71 +118,6 @@ func List(c *gin.Context) {
 	common.SuccessLayuiResp(c, count, "ok", result)
 }
 
-// func Edit(c *gin.Context) {
-// 	id := c.Query("id")
-// 	idInt, _ := strconv.ParseInt(id, 10, 64)
-
-// 	admin_data, _ := db.GetAdminByID(idInt)
-
-// 	data := common.CommonVer(c)
-// 	data["Data"] = admin_data
-// 	c.HTML(http.StatusOK, "backend/cluster/edit.tmpl", data)
-// }
-
-// func PostEdit(c *gin.Context) {
-// 	var f struct {
-// 		Id       int64  `form:"id"`
-// 		Username string `form:"username"`
-// 		Tel      string `form:"Tel"`
-// 		Email    string `form:"email"`
-// 		Password string `form:"password"`
-// 	}
-
-// 	if err := c.ShouldBind(&f); err != nil {
-// 		common.ErrorResp(c, err, 0)
-// 		return
-// 	}
-
-// 	d := &model.Admin{
-// 		Username: f.Username,
-// 		Password: f.Password,
-// 	}
-
-// 	if f.Id > 0 {
-
-// 		if f.Password != "" {
-// 			db.AdminUpdatePass(nil, f.Id, f.Password)
-// 		}
-
-// 		if f.Tel != "" {
-// 			db.AdminUpdateTel(nil, f.Id, f.Tel)
-// 		}
-
-// 		if f.Email != "" {
-// 			db.AdminUpdateEmail(nil, f.Id, f.Email)
-// 		}
-
-// 		common.SuccessResp(c)
-// 		return
-// 	}
-
-// 	if d.Password != "" {
-// 		salt := utils.RandString(16)
-// 		d.Salt = salt
-// 		d.Password = model.TwoHashPwd(d.Password, salt)
-// 	}
-// 	d.CreateTime = time.Now().Unix()
-// 	d.UpdateTime = time.Now().Unix()
-
-// 	err := db.CreateAdmin(nil, d)
-// 	if err == nil {
-// 		common.SuccessResp(c)
-// 		return
-// 	}
-
-// 	common.ErrorResp(c, err, 0)
-// }
-
 func PostCreate(c *gin.Context) {
 	var field form.ClusterCreate
 	if err := c.ShouldBind(&field); err != nil {
@@ -190,8 +125,10 @@ func PostCreate(c *gin.Context) {
 		return
 	}
 
+	unique_id := tools.RandString(32)
 	cluster := &model.Cluster{
 		Name:       field.Name,
+		UniqueID:   unique_id,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}
