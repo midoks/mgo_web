@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 
 	"mgo/internal/model"
@@ -26,4 +28,18 @@ func GetApiNodeByID(id int64) (*model.ApiNode, error) {
 		return nil, errors.Wrapf(err, "failed get api log")
 	}
 	return &u, nil
+}
+
+func GetApiNodeAddr() string {
+	var node model.ApiNode
+
+	if err := db.Where("status = ? AND is_primary = ?", true, true).First(&node).Error; err == nil {
+		return fmt.Sprintf("%s:%d", node.Domain, node.Port)
+	}
+
+	if err := db.Where("status = ?", true).Order("`order` asc").First(&node).Error; err == nil {
+		return fmt.Sprintf("%s:%d", node.Domain, node.Port)
+	}
+
+	return "http://127.0.0.1:9292"
 }

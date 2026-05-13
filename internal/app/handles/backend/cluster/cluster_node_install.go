@@ -234,7 +234,7 @@ func executeInstallation(nodeID int64) {
 
 	// 检查本地文件是否存在
 	if _, err = os.Stat(local_file); os.IsNotExist(err) {
-		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("deploy/network_probe/network_probe_v1.0_linux_%s.tar.gz 文件不存在", archSuffix))
+		setInstallStatus(nodeID, "failed", 0, fmt.Sprintf("[%s]文件不存在", appname))
 		return
 	}
 
@@ -301,10 +301,12 @@ func executeInstallation(nodeID int64) {
 		return
 	}
 
+	api_addr := db.GetApiNodeAddr()
+	// http://127.0.0.1:8001
 	// 生成配置文件内容
-	config_content := fmt.Sprintf(`rpc.endpoints: [ "http://127.0.0.1:8001" ]
+	config_content := fmt.Sprintf(`rpc.endpoints: [ "%s" ]
 nodeId: "%s"
-secret: "%s"`, node_data.UniqueID, node_data.Secret)
+secret: "%s"`, api_addr, node_data.UniqueID, node_data.Secret)
 
 	// 创建临时配置文件
 	config_dir := "/tmp/mgo_install"
