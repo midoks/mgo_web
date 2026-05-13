@@ -6,7 +6,6 @@ type ApiNode struct {
 	Type       string `json:"type"`                 // type
 	Domain     string `json:"domain"`               // domain
 	IsPrimary  bool   `json:"is_primary"`           // is_primary
-	Port       int64  `json:"port"`                 // port
 	Order      int64  `json:"order"`                // order
 	Weigth     int64  `json:"weigth"`               // weigth
 	Status     bool   `json:"status"`               // status
