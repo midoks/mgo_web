@@ -16,7 +16,7 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         <li data-status="1" class="layui-this">API节点列表</li>
-                        <li data-status="2"><a onclick="Admin.open('添加节点','/{[$.admin_path]}/system/api/add',700,630)">添加节点</a></li>
+                        <li data-status="2"><a onclick="Admin.open('添加节点','/{[$.admin_path]}/system/api/add',700,530)">添加节点</a></li>
                     </ul>
                 </div>
 
@@ -121,7 +121,7 @@ table.render({
     <a class="layui-btn layui-btn-xs layui-btn-normal" href="/{[$.admin_path]}/system/api/details?id={{d.id}}">
         <i class="layui-icon layui-icon-chart-screen"></i> 详情
     </a>
-    <a class="layui-btn layui-btn-xs layui-btn-primary" onclick="Admin.open('编辑节点','/{[$.admin_path]}/system/api/update?id={{d.id}}',700,630)">
+    <a class="layui-btn layui-btn-xs layui-btn-primary" onclick="Admin.open('编辑节点','/{[$.admin_path]}/system/api/update?id={{d.id}}',700,530)">
         <i class="layui-icon layui-icon-edit"></i> 编辑
     </a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">

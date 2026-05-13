@@ -11,28 +11,24 @@
                 </td>
             </tr>
 
+            <tr>
+                <td>类型</td>
+                <td>
+                    <div class="layui-input-inline">
+                        <select name="type" lay-verify="required" lay-search lay-filter="type">
+                            <option value="">[选择类型]</option>
+                            <option value="http" {[if $.Data]}{[if eq $.Data.Type "http" ]}selected{[end]}{[end]}>HTTP</option>
+                            <option value="https" {[if $.Data]}{[if eq $.Data.Type "https" ]}selected{[end]}{[end]}>HTTPS</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
 
             <tr>
                 <td>主机地址 *</td>
                 <td>
-                    <input type="text" name="host" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Host]}{[end]}" placeholder="SQLite3时留空">
-                    <p class="layui-font-12 pt5">连接数据库的主机地址，SQLite3时留空。</p>
-                </td>
-            </tr>
-
-            <tr>
-                <td>用户名</td>
-                <td>
-                    <input type="text" name="username" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Username]}{[end]}" placeholder="SQLite3时留空">
-                    <p class="layui-font-12 pt5">连接数据库的用户名，SQLite3时留空。</p>
-                </td>
-            </tr>
-
-            <tr>
-                <td>密码</td>
-                <td>
-                    <input type="password" name="password" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Password]}{[end]}" placeholder="SQLite3时留空">
-                    <p class="layui-font-12 pt5">连接数据库的密码，SQLite3时留空。</p>
+                    <input type="text" name="domain" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Host]}{[end]}" placeholder="">
+                    <p class="layui-font-12 pt5">域名获取IP地址。</p>
                 </td>
             </tr>
 
