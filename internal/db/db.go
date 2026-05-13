@@ -160,6 +160,7 @@ func Init(d *gorm.DB) {
 		new(model.ClusterSsh),
 		new(model.Log),
 		new(model.DbNode),
+		new(model.ApiNode),
 		new(model.User),
 	)
 	if err != nil {

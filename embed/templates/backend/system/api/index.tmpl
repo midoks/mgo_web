@@ -37,17 +37,13 @@ var admin = layui.admin
 
 table.render({
     elem: '#list',
-    url: '/{[$.admin_path]}/system/db/list',
+    url: '/{[$.admin_path]}/system/api/list',
     title: '数据表',
     cols: [[
-        {field:'name', title:'节点名称', minWidth: 150, templet: '#nameTpl'},
-        {field:'host', title:'连接地址', width: 180, templet:"#hostTpl"},
-        {field:'dbname', title:'数据库名', minWidth: 120, templet: '#dbnameTpl'},
-        {field:'db_version', title:'版本', width: 120, templet: '#versionTpl'},
-        {field:'db_usage', title:'用量', width: 120, templet: '#usageTpl'},
-        {field:'db_type', title:'类型', width: 100, templet: '#typeTpl'},
+        {field:'name', title:'节点名称', templet: '#nameTpl'},
+        {field:'addr', title:'连接地址', templet:"#addrTpl"},
         {field:'status', title:'状态', width: 100, templet:"#statusTpl"},
-        {title:'操作', toolbar: '#cmdTpl', width: 228, fixed: 'right'}
+        {title:'操作', toolbar: '#cmdTpl', width: 165, fixed: 'right'}
      ]],
     page: true
 });
@@ -56,51 +52,11 @@ table.render({
 });
 </script>
 
-<script type="text/html" id="nameTpl">
-    <div style="display:flex;align-items:center;">
-        <i class="layui-icon layui-icon-database" style="font-size:18px;color:#FF5722;margin-right:8px;"></i>
-        <span style="font-weight:500;">{{d.name}}</span>
-    </div>
-</script>
-
-<script type="text/html" id="hostTpl">
+<script type="text/html" id="addrTpl">
     <div style="display:flex;align-items:center;">
         <i class="layui-icon layui-icon-ip" style="font-size:14px;color:#666;margin-right:5px;"></i>
-        <span style="font-family:monospace;">{{d.host}}:{{d.port}}</span>
+        <span style="font-family:monospace;">{{d.type}}:{{d.domain}}</span>
     </div>
-</script>
-
-<script type="text/html" id="dbnameTpl">
-    <div style="display:flex;align-items:center;">
-        <i class="layui-icon layui-icon-folder" style="font-size:14px;color:#1E9FFF;margin-right:5px;"></i>
-        <span>{{d.dbname}}</span>
-    </div>
-</script>
-
-<script type="text/html" id="versionTpl">
-<!--     <span style="font-family:monospace;font-size:13px;background:#f2f2f2;padding:3px 8px;border-radius:4px;">
-    </span> -->
-    {{d.db_version || '未知'}}
-</script>
-
-<script type="text/html" id="usageTpl">
-    {{# if (d.db_usage && d.db_usage !== '未知' && d.db_usage !== '获取失败') { }}
-        <span style="color:#16b777;font-weight:500;">{{d.db_usage}}</span>
-    {{# } else { }}
-        <span style="color:#999;">{{d.db_usage || '-'}}</span>
-    {{# } }}
-</script>
-
-<script type="text/html" id="typeTpl">
-    {{# if (d.db_type === 'mysql') { }}
-        <span class="layui-badge layui-bg-blue" style="padding:3px 8px;;line-height: 12px;">MySQL</span>
-    {{# } else if (d.db_type === 'postgres') { }}
-        <span class="layui-badge layui-bg-cyan" style="padding:3px 8px;;line-height: 12px;">PostgreSQL</span>
-    {{# } else if (d.db_type === 'sqlite') { }}
-        <span class="layui-badge layui-bg-orange" style="padding:3px 8px;;line-height: 12px;">SQLite</span>
-    {{# } else { }}
-        <span class="layui-badge layui-bg-gray" style="padding:3px 8px;;line-height: 12px;">{{d.db_type || '未知'}}</span>
-    {{# } }}
 </script>
 
 <script type="text/html" id="statusTpl">
@@ -120,9 +76,6 @@ table.render({
 <script type="text/html" id="cmdTpl">
     <a class="layui-btn layui-btn-xs layui-btn-normal" href="/{[$.admin_path]}/system/api/details?id={{d.id}}">
         <i class="layui-icon layui-icon-chart-screen"></i> 详情
-    </a>
-    <a class="layui-btn layui-btn-xs layui-btn-primary" onclick="Admin.open('编辑节点','/{[$.admin_path]}/system/api/update?id={{d.id}}',700,530)">
-        <i class="layui-icon layui-icon-edit"></i> 编辑
     </a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event='delete' onclick="Admin.del(this, 'delete','{{d.id}}')">
         <i class="layui-icon layui-icon-delete"></i> 删除

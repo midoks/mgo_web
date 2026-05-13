@@ -93,7 +93,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/console", backend.ConsoleIndex)
 
 	// 管理员
-	backstage_admin.GET("", backend.HomePage)
+	backstage_admin.GET("", handles.Home)
 	backstage_admin.GET("/index", handles.Home)
 	backstage_admin.GET("/admin/index", backend_admin.Home)
 
@@ -253,7 +253,12 @@ func initRuoteAdmin(r *gin.Engine) {
 
 	backstage_admin.GET("/system/api", backend_system.Api)
 	backstage_admin.GET("/system/api/add", backend_system.ApiAdd)
+	backstage_admin.POST("/system/api/add", backend_system.PostApiAdd)
 	backstage_admin.GET("/system/api/details", backend_system.ApiDetails)
+	backstage_admin.GET("/system/api/list", backend_system.ApiList)
+	backstage_admin.GET("/system/api/clean", backend_system.ApiClean)
+	backstage_admin.GET("/system/api/logs", backend_system.ApiLogs)
+	backstage_admin.GET("/system/api/update", backend_system.ApiUpdate)
 
 	backstage_admin.GET("/system/transfer", backend_system.Transfer)
 

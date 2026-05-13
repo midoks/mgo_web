@@ -1,7 +1,7 @@
 app_name: mgo
 brand_name: mgo
 run_user: mgo
-run_mode: prod
+run_mode: dev
 
 general:
   menu_file: "menu.json"
@@ -56,7 +56,7 @@ database:
 
 
 security:
-  install_lock: false
+  install_lock: true
   secret_key: "!#@FDEWREWR&*("
   login_remember_days: 7
   cookie_remember_name: mgo_incredible
