@@ -49,7 +49,7 @@ func ApiClean(c *gin.Context) {
 	data["id"] = id
 
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	dbnode_data, err := db.GetDbNodeByID(idInt)
+	dbnode_data, err := db.GetApiNodeByID(idInt)
 	if err == nil {
 		data["Data"] = dbnode_data
 	}
@@ -65,7 +65,7 @@ func ApiLogs(c *gin.Context) {
 	data["id"] = id
 
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	dbnode_data, err := db.GetDbNodeByID(idInt)
+	dbnode_data, err := db.GetApiNodeByID(idInt)
 	if err == nil {
 		data["Data"] = dbnode_data
 	}
@@ -81,7 +81,7 @@ func ApiUpdate(c *gin.Context) {
 	data["id"] = id
 
 	idInt, _ := strconv.ParseInt(id, 10, 64)
-	dbnode_data, err := db.GetDbNodeByID(idInt)
+	dbnode_data, err := db.GetApiNodeByID(idInt)
 	if err == nil {
 		data["Data"] = dbnode_data
 	}

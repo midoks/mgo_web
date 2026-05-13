@@ -15,7 +15,7 @@
                 </div>
 
                 <div style="display:flex;align-items:center;gap:8px;margin-top: 1rem;">
-                    <a href="/{[.admin_path]}/system/db" style="display:flex;align-items:center;">
+                    <a href="/{[.admin_path]}/system/api" style="display:flex;align-items:center;">
                         <i class="layui-icon layui-icon-return"></i>  
                     </a>
 
@@ -27,9 +27,9 @@
                 <div class="layui-tab layui-tab-brief">
                     <ul class="layui-tab-title" id="status">
                         <li data-status="1" class="layui-this">详情</li>
-                        <li data-status="2"><a href="/{[.admin_path]}/system/db/clean?id={[.id]}">清理</a></li>
-                        <li data-status="3"><a href="/{[.admin_path]}/system/db/logs?id={[.id]}">运行日志</a></li>
-                        <li data-status="4"><a href="/{[.admin_path]}/system/db/update?id={[.id]}">修改</a></li>
+                        <li data-status="2"><a href="/{[.admin_path]}/system/api/clean?id={[.id]}">清理</a></li>
+                        <li data-status="3"><a href="/{[.admin_path]}/system/api/logs?id={[.id]}">运行日志</a></li>
+                        <li data-status="4"><a href="/{[.admin_path]}/system/api/update?id={[.id]}">修改</a></li>
                     </ul>
                 </div>
 
@@ -57,38 +57,10 @@
           
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">主机地址（Host）</div>
-                                <div style="font-size: 12px;">{[if .Data]}{[.Data.Host]}{[end]}</div>
+                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">地址</div>
+                                <div style="font-size: 12px;">{[if .Data]}{[.Data.Type]}:{[.Data.Domain]}{[end]}</div>
                             </div>
-                        </div>
-
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                            <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">数据库端口（Port）</div>
-                                <div style="font-size: 12px;">{[if .Data]}{[.Data.Port]}{[end]}</div>
-                            </div>
-                        </div>
-
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                            <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">数据库名称（Database）</div>
-                                <div style="font-size: 12px;">{[if .Data]}{[.Data.Dbname]}{[end]}</div>
-                            </div>
-                        </div>
-
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                            <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">用户名（Username）</div>
-                                <div style="font-size: 12px;">{[if .Data]}{[.Data.Username]}{[end]}</div>
-                            </div>
-                        </div>
-
-                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
-                            <div class="ccc_hover">
-                                <div style="color: rgb(100, 116, 139); font-size: 14px; margin-bottom: 6px;">密码（Password）</div>
-                                <div style="font-size: 12px;">****************</div>
-                            </div>
-                        </div>
+                        </div>        
 
                         <div class="layui-col-xs12 layui-col-sm4 layui-col-md3">
                             <div class="ccc_hover">

@@ -27,7 +27,7 @@
             <tr>
                 <td>主机地址 *</td>
                 <td>
-                    <input type="text" name="domain" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Host]}{[end]}" placeholder="">
+                    <input type="text" name="domain" autocomplete="off" class="layui-input" value="{[if .Data]}{[.Data.Domain]}{[end]}" placeholder="">
                     <p class="layui-font-12 pt5">域名获取IP地址。</p>
                 </td>
             </tr>
@@ -60,7 +60,7 @@
             <tr>
                 <td colspan="2">
                     <input type="hidden" name="id" value="{[if .Data]}{[.Data.ID]}{[end]}">
-                    <button class="layui-btn" lay-filter="submit_db" lay-submit>保存</button>
+                    <button class="layui-btn" lay-filter="submit_app" lay-submit>保存</button>
                 </td>
             </tr>
 

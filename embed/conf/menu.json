@@ -327,6 +327,26 @@
                     },
                     {
                         "code":"system_database",
+                        "path": "/system/api" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/api/details" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/api/clean" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/api/logs" 
+                    },
+                    {
+                        "code":"system_database",
+                        "path": "/system/api/update" 
+                    },
+                    {
+                        "code":"system_database",
                         "path": "/system/transfer" 
                     }
                 ]
