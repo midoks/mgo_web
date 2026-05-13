@@ -260,7 +260,17 @@ func executeInstallation(nodeID int64) {
 	}
 
 	// 更新状态
-	setInstallStatus(nodeID, "running", 80, "正在解压文件...")
+	setInstallStatus(nodeID, "running", 80, "正在停止旧进程并解压文件...")
+
+	// 停止可能正在运行的进程
+	stop_cmd := "pkill -f network_probe || true"
+	stdout, stderr, err = ssh_client.Run(stop_cmd)
+	if err != nil {
+		// pkill 返回非零是正常的（进程不存在），所以不报错
+	}
+
+	// 等待进程完全停止
+	time.Sleep(2 * time.Second)
 
 	// 解压文件（覆盖已有文件）
 	extract_cmd := fmt.Sprintf("cd %s && tar -xzf %s --overwrite", remote_dir, remote_file)

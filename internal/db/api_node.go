@@ -34,11 +34,11 @@ func GetApiNodeAddr() string {
 	var node model.ApiNode
 
 	if err := db.Where("status = ? AND is_primary = ?", true, true).First(&node).Error; err == nil {
-		return fmt.Sprintf("%s//:%s", node.Type, node.Domain)
+		return fmt.Sprintf("%s://%s", node.Type, node.Domain)
 	}
 
 	if err := db.Where("status = ?", true).Order("`order` asc").First(&node).Error; err == nil {
-		return fmt.Sprintf("%s//:%s", node.Type, node.Domain)
+		return fmt.Sprintf("%s://%s", node.Type, node.Domain)
 	}
 
 	return "http://127.0.0.1:9292"
