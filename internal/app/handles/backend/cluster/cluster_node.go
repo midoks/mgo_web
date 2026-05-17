@@ -189,12 +189,14 @@ func NodeBoards(c *gin.Context) {
 	data["MemoryTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.MemoryTotal)/1073741824)
 	data["Load1mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load1m)
 
-	if err := c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data); err != nil {
-		fmt.Println("tmpl error: ", err)
+	// 渲染模板并检查错误
+	err := c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
+	if err != nil {
+		fmt.Println("NodeBoards template render error: ", err)
 	}
 }
 
-func NodeDatails(c *gin.Context) {
+func NodeDetails(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
