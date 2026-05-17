@@ -34,14 +34,6 @@ func LogsAdd(c *gin.Context) {
 	unique_id := api_header.Get("X-Node-Id")
 	secret := api_header.Get("X-Secret")
 
-	fmt.Println("=== Debug Info ===")
-	fmt.Println("X-Node-Id:", unique_id)
-	fmt.Println("X-Secret:", secret)
-
-	// 获取数据库连接信息
-	fmt.Println("DB Config:", db.GetDb().Config)
-	fmt.Println("WorkDir:", conf.WorkDir())
-	fmt.Println("CustomDir:", conf.CustomDir())
 
 	// 尝试获取SQLite数据库文件路径
 	sqlDB, _ := db.GetDb().DB()
@@ -56,8 +48,8 @@ func LogsAdd(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("item:", node_data)
-	DebugInfo(c)
+	
+	// DebugInfo(c)
 
 	var field form.ApiLogs
 	if err := c.ShouldBind(&field); err != nil {
@@ -86,6 +78,8 @@ func LogsAdd(c *gin.Context) {
 						fmt.Println("Update cluster node error:", err)
 					}
 				}
+			} else {
+				fmt.Println("item:", node_data)
 			}
 		}
 	}
