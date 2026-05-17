@@ -147,7 +147,7 @@ func initRuoteAdmin(r *gin.Engine) {
 	backstage_admin.GET("/clusters/node", backend_cluster.Node)
 	backstage_admin.GET("/clusters/node/list", backend_cluster.NodeList)
 	backstage_admin.GET("/clusters/node/boards", backend_cluster.NodeBoards)
-	backstage_admin.GET("/clusters/node/details", backend_cluster.NodeDatails)
+	backstage_admin.GET("/clusters/node/details", backend_cluster.NodeDetails)
 	backstage_admin.GET("/clusters/node/install", backend_cluster.NodeInstall)
 	backstage_admin.POST("/clusters/node/install_update_status", backend_cluster.PostNodeInstallUpdateStatus)
 	backstage_admin.POST("/clusters/node/doinstall", backend_cluster.PostNodeInstallDone)

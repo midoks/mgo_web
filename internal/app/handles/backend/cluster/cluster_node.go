@@ -189,11 +189,7 @@ func NodeBoards(c *gin.Context) {
 	data["MemoryTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.MemoryTotal)/1073741824)
 	data["Load1mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load1m)
 
-	// 渲染模板并检查错误
-	err := c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
-	if err != nil {
-		fmt.Println("NodeBoards template render error: ", err)
-	}
+	c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
 }
 
 func NodeDetails(c *gin.Context) {
@@ -209,13 +205,6 @@ func NodeDetails(c *gin.Context) {
 		fmt.Println("GetClusterNodeByID error:", err)
 	}
 	data["Data"] = node_data
-
-	// 调试信息
-	fmt.Println("=== NodeDetails Debug ===")
-	fmt.Println("node_id:", node_id)
-	fmt.Println("cluster_id:", c.Query("cluster_id"))
-	fmt.Println("node_data.ID:", node_data.ID)
-	fmt.Println("node_data.Name:", node_data.Name)
 
 	c.HTML(http.StatusOK, "backend/cluster/node/details.tmpl", data)
 }
