@@ -3,10 +3,9 @@ package cluster
 import (
 	"encoding/json"
 	"errors"
-	"strconv"
-
+	"fmt"
 	"net/http"
-	// "strconv"
+	"strconv"
 	"strings"
 	"time"
 
@@ -174,6 +173,22 @@ func NodeBoards(c *gin.Context) {
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
 	data["cluster_id"] = c.Query("cluster_id")
+
+	node_id := c.Query("node_id")
+	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
+	node_data, _ := db.GetClusterNodeByID(node_idint)
+	data["Node"] = node_data
+
+	// 获取节点信息参数
+	nodeInfo, _ := node_data.GetNodeInfoParams()
+	data["NodeInfo"] = nodeInfo
+
+	// 计算百分比和格式化值
+	data["CPUUsagePercent"] = fmt.Sprintf("%.2f", nodeInfo.CPUUsage*100)
+	data["MemoryUsagePercent"] = fmt.Sprintf("%.2f", nodeInfo.MemoryUsage*100)
+	data["MemoryTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.MemoryTotal)/1073741824)
+	data["Load1mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load1m)
+
 	c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
 }
 

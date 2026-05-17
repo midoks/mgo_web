@@ -40,3 +40,4 @@ mgo_web
 /dist
 *.tips
 /data
+mgo_test
