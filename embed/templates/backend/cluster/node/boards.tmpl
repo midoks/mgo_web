@@ -19,9 +19,9 @@
     .stats-cell {
         border-right: 1px solid #e8e8e8;
         border-bottom: 1px solid #e8e8e8;
-        padding: 20px 15px;
+        padding: 15px 12px;
         position: relative;
-        min-height: 90px;
+        min-height: 80px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -53,8 +53,8 @@
     }
     
     .stats-cell .stat-value {
-        font-size: 22px;
-        font-weight: bold;
+        font-size: 16px;
+        font-weight: 500;
         color: #333;
         display: flex;
         align-items: baseline;
@@ -132,7 +132,32 @@
         <div class="layui-card">
             <div class="layui-card-body">
 
-                <div class="layui-tab layui-tab-brief">
+                <div class="layui-card layadmin-header" style="display: block; line-height: 40px;height: 40px;">
+                    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+                        {[range $menu := .Menus]}
+                            {[if eq $menu.Code $.ActiveMenu]}
+                                <a><cite>{[$menu.Name]}</cite></a>
+                            {[end]}
+                            {[range $child := $menu.Children]}
+                                {[if eq $child.Code $.ActiveMenu]}
+                                    <a><cite>{[$menu.Name]}</cite></a>
+                                    <a><cite>{[$child.Name]}</cite></a>
+                                {[end]}
+                            {[end]}
+                        {[end]}
+                    </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:8px;margin-top: 1rem;">
+                    <a href="/{[.admin_path]}/clusters/cluster/list?cluster_id={[.cluster_id]}" style="display:flex;align-items:center;">
+                        <i class="layui-icon layui-icon-return"></i>  
+                    </a>
+                    <span style="margin:0;font-size:18px;">
+                        {[if .Data]}{[.Data.Name]}{[end]}
+                    </span>
+                </div>
+
+                <div class="layui-tab layui-tab-brief" style="margin-top: 10px;">
                     <ul class="layui-tab-title" id="status">
                         {[range $menu := .submenu]}
                             <li data-status="{[$menu.Number]}" {[if eq (print "/" $.admin_path "/" $menu.Link) $.CurrentPath]}class="layui-this"{[end]}><a href="/{[$.admin_path]}/{[$menu.Link]}?cluster_id={[$.cluster_id]}&node_id={[$.node_id]}"><i class="layui-icon {[$menu.Icon]}"></i>  {[$menu.Name]}</a></li>

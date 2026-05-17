@@ -16,7 +16,7 @@ import (
 const (
 	Version = "1.0"
 	AppName = "mgo"
-	CodeDev = false
+	CodeDev = true
 )
 
 func init() {

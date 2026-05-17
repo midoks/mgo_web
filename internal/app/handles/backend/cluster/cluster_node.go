@@ -177,7 +177,7 @@ func NodeBoards(c *gin.Context) {
 	node_id := c.Query("node_id")
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
 	node_data, _ := db.GetClusterNodeByID(node_idint)
-	data["Node"] = node_data
+	data["Data"] = node_data
 
 	// 获取节点信息参数
 	nodeInfo, _ := node_data.GetNodeInfoParams()
@@ -189,10 +189,12 @@ func NodeBoards(c *gin.Context) {
 	data["MemoryTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.MemoryTotal)/1073741824)
 	data["Load1mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load1m)
 
-	c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data)
+	if err := c.HTML(http.StatusOK, "backend/cluster/node/boards.tmpl", data); err != nil {
+		fmt.Println("tmpl error: ", err)
+	}
 }
 
-func NodeDatail(c *gin.Context) {
+func NodeDatails(c *gin.Context) {
 	data := common.CommonVer(c)
 	data["submenu"] = GetNodeSubMenu()
 	data["node_id"] = c.Query("node_id")
@@ -200,8 +202,18 @@ func NodeDatail(c *gin.Context) {
 
 	node_id := c.Query("node_id")
 	node_idint, _ := strconv.ParseInt(node_id, 10, 64)
-	node_data, _ := db.GetClusterNodeByID(node_idint)
+	node_data, err := db.GetClusterNodeByID(node_idint)
+	if err != nil {
+		fmt.Println("GetClusterNodeByID error:", err)
+	}
 	data["Data"] = node_data
+
+	// 调试信息
+	fmt.Println("=== NodeDetails Debug ===")
+	fmt.Println("node_id:", node_id)
+	fmt.Println("cluster_id:", c.Query("cluster_id"))
+	fmt.Println("node_data.ID:", node_data.ID)
+	fmt.Println("node_data.Name:", node_data.Name)
 
 	c.HTML(http.StatusOK, "backend/cluster/node/details.tmpl", data)
 }
