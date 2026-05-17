@@ -39,3 +39,4 @@ mgo_web
 /logs
 /dist
 *.tips
+/data

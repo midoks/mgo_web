@@ -45,7 +45,7 @@ database:
   # SQLite database path
   path: data/mgo.db
   # Database table prefix
-  table_prefix: mgo_
+  table_prefix: mg_
   # MySQL/PostgreSQL settings (only used if type is mysql or postgres)
   hostname: 127.0.0.1
   hostport: 3306
