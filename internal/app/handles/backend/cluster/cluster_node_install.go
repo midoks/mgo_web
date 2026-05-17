@@ -334,7 +334,7 @@ secret: "%s"`, api_addr, node_data.UniqueID, node_data.Secret)
 	}
 
 	// 上传配置文件到远程服务器
-	remote_config_dir := filepath.Join(remote_dir, "configs")
+	remote_config_dir := filepath.Join(remote_dir, "config")
 	remote_config_file := filepath.Join(remote_config_dir, "api_node.yaml")
 
 	// 创建远程配置目录
