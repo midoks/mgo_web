@@ -38,7 +38,84 @@
                     </ul>
                 </div>
 
+                <!-- 节点详情 -->
+                
                 <div class="cluster-boards" style="margin-top: 10px;">
+                    <!-- 运行状态 -->
+                    <div class="layui-card" style="margin-bottom: 15px;">
+                        <div class="layui-card-header">
+                            运行状态
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">运行状态</p>
+                                        <p style="margin: 0;">
+                                            {[if .NodeInfo.IsActive]}
+                                            <span style="color: #52c41a;">在线</span>
+                                            {[else]}
+                                            <span style="color: #ff4d4f;">离线</span>
+                                            {[end]}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">CPU用量</p>
+                                        <p style="margin: 0;">{[$.CPUUsagePercent]}% <span style="color: #999;">({[.NodeInfo.CPUPhysicalCount]}核{[.NodeInfo.CPULogicalCount]}线程)</span></p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">内存用量</p>
+                                        <p style="margin: 0;">{[$.MemoryUsagePercent]}% <span style="color: #999;">(总计 {[$.MemoryTotalGB]}GB)</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">负载</p>
+                                        <p style="margin: 0;">{[$.Load1mFormatted]} <span style="color: #999;">{[$.Load5mFormatted]} {[$.Load15mFormatted]}</span></p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">磁盘用量</p>
+                                        <p style="margin: 0;">{[printf "%.2f" .NodeInfo.DiskUsage]}% <span style="color: #999;">(总计 {[$.DiskTotalGB]}GB)</span></p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">磁盘写入速度</p>
+                                        <p style="margin: 0;">{[.NodeInfo.DiskWritingSpeedMB]} MB/s</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">系统信息</p>
+                                        <p style="margin: 0;">{[.NodeInfo.OS]} {[.NodeInfo.Arch]}</p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">主机名</p>
+                                        <p style="margin: 0;">{[.NodeInfo.Hostname]}</p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div style="margin-bottom: 15px;">
+                                        <p style="color: #999; margin: 0 0 8px 0;">版本</p>
+                                        <p style="margin: 0;">{[.NodeInfo.BuildVersion]}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- TCP端口状态 -->
                     <div class="layui-card" style="margin-bottom: 15px;">
                         <div class="layui-card-header">

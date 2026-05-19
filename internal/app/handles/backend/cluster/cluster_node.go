@@ -206,6 +206,19 @@ func NodeDetails(c *gin.Context) {
 	}
 	data["Data"] = node_data
 
+	// 获取节点信息参数
+	nodeInfo, _ := node_data.GetNodeInfoParams()
+	data["NodeInfo"] = nodeInfo
+
+	// 计算百分比和格式化值
+	data["CPUUsagePercent"] = fmt.Sprintf("%.2f", nodeInfo.CPUUsage*100)
+	data["MemoryUsagePercent"] = fmt.Sprintf("%.2f", nodeInfo.MemoryUsage*100)
+	data["MemoryTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.MemoryTotal)/1073741824)
+	data["DiskTotalGB"] = fmt.Sprintf("%.2f", float64(nodeInfo.DiskTotal)/1073741824)
+	data["Load1mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load1m)
+	data["Load5mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load5m)
+	data["Load15mFormatted"] = fmt.Sprintf("%.2f", nodeInfo.Load15m)
+
 	c.HTML(http.StatusOK, "backend/cluster/node/details.tmpl", data)
 }
 

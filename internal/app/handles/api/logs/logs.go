@@ -11,7 +11,7 @@ import (
 
 	"mgo/internal/app/common"
 	"mgo/internal/app/form"
-	"mgo/internal/conf"
+	// "mgo/internal/conf"
 	"mgo/internal/db"
 	"mgo/internal/model"
 )
@@ -34,7 +34,6 @@ func LogsAdd(c *gin.Context) {
 	unique_id := api_header.Get("X-Node-Id")
 	secret := api_header.Get("X-Secret")
 
-
 	// 尝试获取SQLite数据库文件路径
 	sqlDB, _ := db.GetDb().DB()
 	if sqlDB != nil {
@@ -48,7 +47,6 @@ func LogsAdd(c *gin.Context) {
 		return
 	}
 
-	
 	// DebugInfo(c)
 
 	var field form.ApiLogs
